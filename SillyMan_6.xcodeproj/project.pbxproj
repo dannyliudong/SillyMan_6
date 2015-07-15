@@ -47,9 +47,13 @@
 		A01412361B550ED400238667 /* game_music2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A01412301B550ED400238667 /* game_music2.mp3 */; };
 		A01412371B550ED400238667 /* collisionSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = A01412311B550ED400238667 /* collisionSound.wav */; };
 		A01412381B550ED400238667 /* game_music4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A01412321B550ED400238667 /* game_music4.mp3 */; };
+		A08D7B661B565555008E90AE /* glodPart.png in Resources */ = {isa = PBXBuildFile; fileRef = A08D7B651B565555008E90AE /* glodPart.png */; };
+		A08D7B691B56563D008E90AE /* coin_steal_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A08D7B681B56563D008E90AE /* coin_steal_02.mp3 */; };
+		A0A2F4481B56645A00FE5E6B /* EnemySplatter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0A2F4471B56645A00FE5E6B /* EnemySplatter.sks */; };
+		A0A2F44C1B56658E00FE5E6B /* AnimatingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */; };
 		A0B5AD9C1B56352C005C4FD3 /* Splat.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B5AD9B1B56352C005C4FD3 /* Splat.png */; };
 		A0C909B11B560B6D00684831 /* SKAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */; };
-		A0C909B41B5634C600684831 /* BugSplatter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0C909B31B5634C600684831 /* BugSplatter.sks */; };
+		A0C909B41B5634C600684831 /* GoldSplatter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0C909B31B5634C600684831 /* GoldSplatter.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,9 +111,13 @@
 		A01412301B550ED400238667 /* game_music2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_music2.mp3; sourceTree = "<group>"; };
 		A01412311B550ED400238667 /* collisionSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = collisionSound.wav; sourceTree = "<group>"; };
 		A01412321B550ED400238667 /* game_music4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_music4.mp3; sourceTree = "<group>"; };
+		A08D7B651B565555008E90AE /* glodPart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glodPart.png; sourceTree = "<group>"; };
+		A08D7B681B56563D008E90AE /* coin_steal_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = coin_steal_02.mp3; sourceTree = "<group>"; };
+		A0A2F4471B56645A00FE5E6B /* EnemySplatter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EnemySplatter.sks; sourceTree = "<group>"; };
+		A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingSprite.swift; sourceTree = "<group>"; };
 		A0B5AD9B1B56352C005C4FD3 /* Splat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Splat.png; sourceTree = "<group>"; };
 		A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKAction+Extensions.swift"; sourceTree = "<group>"; };
-		A0C909B31B5634C600684831 /* BugSplatter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BugSplatter.sks; sourceTree = "<group>"; };
+		A0C909B31B5634C600684831 /* GoldSplatter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GoldSplatter.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +207,7 @@
 		A01411ED1B550D9100238667 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */,
 				A01411EE1B550DA900238667 /* GameState.swift */,
 				A01411EF1B550DA900238667 /* GameObjectNode.swift */,
 				A01411F01B550DA900238667 /* EndGameScene.swift */,
@@ -282,6 +291,7 @@
 		A014122C1B550EC900238667 /* Sound */ = {
 			isa = PBXGroup;
 			children = (
+				A08D7B681B56563D008E90AE /* coin_steal_02.mp3 */,
 				A014122D1B550ED400238667 /* night_1_v3.mp3 */,
 				A014122E1B550ED400238667 /* Get.wav */,
 				A014122F1B550ED400238667 /* bgMusic.mp3 */,
@@ -295,7 +305,9 @@
 		A0C909B21B5634BC00684831 /* Particles */ = {
 			isa = PBXGroup;
 			children = (
-				A0C909B31B5634C600684831 /* BugSplatter.sks */,
+				A0C909B31B5634C600684831 /* GoldSplatter.sks */,
+				A0A2F4471B56645A00FE5E6B /* EnemySplatter.sks */,
+				A08D7B651B565555008E90AE /* glodPart.png */,
 				A0B5AD9B1B56352C005C4FD3 /* Splat.png */,
 			);
 			name = Particles;
@@ -405,10 +417,12 @@
 				A01412331B550ED400238667 /* night_1_v3.mp3 in Resources */,
 				A01411CE1B550B7900238667 /* Images.xcassets in Resources */,
 				A014121C1B550EBE00238667 /* face_1_001@2x.png in Resources */,
-				A0C909B41B5634C600684831 /* BugSplatter.sks in Resources */,
+				A0C909B41B5634C600684831 /* GoldSplatter.sks in Resources */,
 				A0B5AD9C1B56352C005C4FD3 /* Splat.png in Resources */,
 				A01412241B550EBE00238667 /* face_1_005@2x.png in Resources */,
 				A014121F1B550EBE00238667 /* face_1_002@3x.png in Resources */,
+				A0A2F4481B56645A00FE5E6B /* EnemySplatter.sks in Resources */,
+				A08D7B691B56563D008E90AE /* coin_steal_02.mp3 in Resources */,
 				A01412061B550E8D00238667 /* GameSpriteAtlas.1@2x.png in Resources */,
 				A01412081B550E8D00238667 /* GameSpriteAtlas.plist in Resources */,
 				A01412281B550EBE00238667 /* face_1_007@2x.png in Resources */,
@@ -421,6 +435,7 @@
 				A014121D1B550EBE00238667 /* face_1_001@3x.png in Resources */,
 				A01412231B550EBE00238667 /* face_1_004@3x.png in Resources */,
 				A014121E1B550EBE00238667 /* face_1_002@2x.png in Resources */,
+				A08D7B661B565555008E90AE /* glodPart.png in Resources */,
 				A01412071B550E8D00238667 /* GameSpriteAtlas.1@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,6 +466,7 @@
 				A01411F31B550DA900238667 /* EndGameScene.swift in Sources */,
 				A01411EC1B550D2B00238667 /* UnionModeGameScene.swift in Sources */,
 				A01412091B550E8D00238667 /* GameSpriteAtlas.swift in Sources */,
+				A0A2F44C1B56658E00FE5E6B /* AnimatingSprite.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

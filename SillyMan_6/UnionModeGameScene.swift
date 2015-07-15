@@ -274,9 +274,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
 //                starsLabel.text = "\(GameState.sharedInstance.stars)"
 //            }
             
-          
-            
-            
             let other = (contact.bodyA.categoryBitMask == CollisionCategoryBitmask.Player ? contact.bodyB : contact.bodyA)
             
             switch other.categoryBitMask {
@@ -300,10 +297,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    //MARK: 碰撞处理
-    func collisionWithStar(node:SKNode) {
+    //MARK: 碰撞效果
+    func collisionWithStar(node:StarNode) {
         
-        let starSound = SKAction.playSoundFileNamed("Get.wav", waitForCompletion: false)
+        let starSound = SKAction.playSoundFileNamed("coin_steal_02.mp3", waitForCompletion: false)
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
             runAction(starSound, completion: { () -> Void in
@@ -313,14 +310,14 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             node.removeFromParent()
         }
         
-        showParticlesForBug(node)
+        showParticlesForGold(node)
         
         GameState.sharedInstance.stars += 1
         updateHUD()
        
     }
     
-    func collisionWithEnemy(node:SKNode) {
+    func collisionWithEnemy(node:EnemyNode) {
         
         let enemySound = SKAction.playSoundFileNamed("collisionSound.wav", waitForCompletion: false)
         let musicOn = GameState.sharedInstance.musicState
@@ -331,11 +328,41 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             gameOver()
         }
         
+        showParticlesForEnemy(node)
+        
     }
+    
+    //MARK: 粒子特效
+    
+    // 撞击敌人 死亡特效
+    func showParticlesForEnemy(node: EnemyNode) {
+        
+        let emitter = SKEmitterNode.emitterNamed("EnemySplatter")
+        emitter.particleTexture!.filteringMode = .Nearest
+        emitter.position = node.position
+        
+        emitter.runAction(SKAction.removeFromParentAfterDelay(0.4))
+        addChild(emitter)
+    }
+    
+    func showParticlesForGold(node: StarNode) {
+        
+        let emitter = SKEmitterNode.emitterNamed("GoldSplatter")
+        emitter.particleTexture!.filteringMode = .Nearest
+        emitter.position = node.position
+        
+        emitter.runAction(SKAction.removeFromParentAfterDelay(0.4))
+        addChild(emitter)
+    }
+    
     
     func updateHUD() {
         // 更新分数
         starsLabel.text = "\(GameState.sharedInstance.stars)"
+        let scaleIn = SKAction.scaleTo(1.5, duration: 0.1)
+        let scaleOut = SKAction.scaleTo(1, duration: 0.2)
+        starsLabel.runAction(SKAction.sequence([scaleIn, scaleOut])) //starsLabel.yScale
+        
     }
 
     func updateMovingExtent() {
@@ -1184,18 +1211,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    //MARK: 粒子特效
+
     
-    // 撞击敌人 死亡特效
-    func showParticlesForBug(emeny: SKNode) {
-        
-        let emitter = SKEmitterNode.emitterNamed("BugSplatter")
-        emitter.particleTexture!.filteringMode = .Nearest
-        emitter.position = emeny.position
-        
-        emitter.runAction(SKAction.removeFromParentAfterDelay(0.4))
-        addChild(emitter)
-    }
     
     // MARK: 按钮事件
     

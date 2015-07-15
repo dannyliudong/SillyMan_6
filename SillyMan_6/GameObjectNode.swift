@@ -13,22 +13,7 @@ struct CollisionCategoryBitmask {
     static let Player: UInt32 = 0x00
     static let Star: UInt32 = 0x01 // 1 吃到加成
     static let Enemy: UInt32 = 0x02 // 2 吃到敌人 game over
-    //static let Edge:  UInt32 = 0b100 // 4 游戏区域边缘
-    //static let Edge1:  UInt32 = 0b1000 // 8 游戏区域边缘
-    
 }
-
-//struct PhysicsCategory {
-//    static let None:  UInt32 = 0
-//    static let Player:UInt32 = 0b1   // 1
-//    static let Block: UInt32 = 0b10  // 2
-//    static let enemy: UInt32 = 0b100 // 4
-//    static let Edge:  UInt32 = 0b1000 // 8
-//    static let Star: UInt32 = 0b10000 // 16
-//    static let Spring:UInt32 = 0b100000 // 32
-//    static let Hook:  UInt32 = 0b1000000 // 64
-//}
-
 
 enum EnemyType: Int {
     case Normal = 0
@@ -53,22 +38,18 @@ enum StarType: Int {
 }
 
 class GameObjectNode: SKNode {
-    
-    func collisionWithPlayer(player: SKNode) -> Bool {
-        return false
-    }
 
 }
 
-//protocol EnemyCollisionWithPlayerDelegate {
-//    func gameSateControll()
-//}
 
+class PlayerNode: GameObjectNode {
+    
+}
 
+// 敌人
 class EnemyNode: GameObjectNode {
     
     var enemyType: EnemyType!
-    //var delegate:EnemyCollisionWithPlayerDelegate?
     
     let micON = GameState.sharedInstance.musicState
 
@@ -92,48 +73,11 @@ class EnemyNode: GameObjectNode {
         
         return _node
     }
-    
-    override func collisionWithPlayer(player: SKNode) -> Bool {
-        // 如果关闭了音乐控制按钮 不播放音乐
-        
-        let enemySound = SKAction.playSoundFileNamed("collisionSound.wav", waitForCompletion: false)
-        
-        if micON {
-            runAction(enemySound)
-        }
-        
-        //self.delegate?.gameSateControll()
 
-        return true
-    }
 }
 
-class PlayerNode: GameObjectNode {
-    var playerSpeed = 0.0
-    
-}
-
-//  加星
+// 金币
 class StarNode: GameObjectNode {
-    
-    var starType: StarType!
-    let micON = GameState.sharedInstance.musicState
-    
-    let starSound = SKAction.playSoundFileNamed("Get.wav", waitForCompletion: false)
-    
-    override func collisionWithPlayer(player: SKNode) -> Bool {
-        
-        if micON {
-            runAction(starSound, completion: { () -> Void in
-                self.removeFromParent()
-            })
-        }
-        
-        // 星数
-        GameState.sharedInstance.stars += 1
-        
-        return true
-    }
-    
+
 }
 
