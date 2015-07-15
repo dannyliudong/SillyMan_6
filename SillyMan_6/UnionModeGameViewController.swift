@@ -13,7 +13,6 @@ class UnionModeGameViewController: UIViewController, GamePlayDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad .........", appendNewline: false)
         // 游戏开始后 改为显示
         
         let skView = self.view as! SKView
@@ -30,33 +29,7 @@ class UnionModeGameViewController: UIViewController, GamePlayDelegate {
         
     }
     
-//    func continueGame() {
-//        //  继续游戏
-//        print("continueGame->>>", appendNewline: false)
-//        
-////        continueButton.removeFromSuperview()
-////        tryAgainButton.removeFromSuperview()
-////        goHomeButton.removeFromSuperview()
-//        
-//        let scene = (self.view as! SKView).scene!
-//        scene.paused = false
-//        
-//    }
-    
 
-    
-//    func tryAgainGame() {
-//        // 重新创建游戏场景
-//        print("tryAgainGame->>>", appendNewline: false)
-//        
-//        //continueButton.removeFromSuperview()
-//        //tryAgainButton.removeFromSuperview()
-//        //goHomeButton.removeFromSuperview()
-//        
-//        newGameScene()
-//        
-//    }
-    
     func newGameScene() {
         print("newGameScene .........", appendNewline: false)
         let skView = self.view as! SKView
@@ -105,14 +78,6 @@ class UnionModeGameViewController: UIViewController, GamePlayDelegate {
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
-    
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if let ivc = segue.destinationViewController as? SettingsViewController {
-//            if let identifier = segue.identifier {
-//                
-//            }
-//        }
-//    }
     
     
 //    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue {

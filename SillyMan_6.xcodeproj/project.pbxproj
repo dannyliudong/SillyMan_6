@@ -47,6 +47,9 @@
 		A01412361B550ED400238667 /* game_music2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A01412301B550ED400238667 /* game_music2.mp3 */; };
 		A01412371B550ED400238667 /* collisionSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = A01412311B550ED400238667 /* collisionSound.wav */; };
 		A01412381B550ED400238667 /* game_music4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A01412321B550ED400238667 /* game_music4.mp3 */; };
+		A0B5AD9C1B56352C005C4FD3 /* Splat.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B5AD9B1B56352C005C4FD3 /* Splat.png */; };
+		A0C909B11B560B6D00684831 /* SKAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */; };
+		A0C909B41B5634C600684831 /* BugSplatter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0C909B31B5634C600684831 /* BugSplatter.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +107,9 @@
 		A01412301B550ED400238667 /* game_music2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_music2.mp3; sourceTree = "<group>"; };
 		A01412311B550ED400238667 /* collisionSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = collisionSound.wav; sourceTree = "<group>"; };
 		A01412321B550ED400238667 /* game_music4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_music4.mp3; sourceTree = "<group>"; };
+		A0B5AD9B1B56352C005C4FD3 /* Splat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Splat.png; sourceTree = "<group>"; };
+		A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKAction+Extensions.swift"; sourceTree = "<group>"; };
+		A0C909B31B5634C600684831 /* BugSplatter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BugSplatter.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,14 +151,12 @@
 		A01411BF1B550B7900238667 /* SillyMan_6 */ = {
 			isa = PBXGroup;
 			children = (
+				A0EF88991B55145100CEB65A /* Other */,
 				A01411FF1B550E7300238667 /* Resouce */,
 				A01411F41B550DB900238667 /* SKTUtils */,
 				A01411ED1B550D9100238667 /* Common */,
 				A01411E61B550C7900238667 /* Game */,
-				A01411C21B550B7900238667 /* AppDelegate.swift */,
-				A01411CA1B550B7900238667 /* Main.storyboard */,
 				A01411CD1B550B7900238667 /* Images.xcassets */,
-				A01411CF1B550B7900238667 /* LaunchScreen.xib */,
 				A01411C01B550B7900238667 /* Supporting Files */,
 			);
 			path = SillyMan_6;
@@ -205,6 +209,7 @@
 		A01411F41B550DB900238667 /* SKTUtils */ = {
 			isa = PBXGroup;
 			children = (
+				A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */,
 				A01411FD1B550E0100238667 /* SKTAudio.swift */,
 				A01411F51B550DC100238667 /* SKEmitterNode+Extras.swift */,
 				A01411F61B550DC100238667 /* SKSimpleButton.swift */,
@@ -216,6 +221,7 @@
 		A01411FF1B550E7300238667 /* Resouce */ = {
 			isa = PBXGroup;
 			children = (
+				A0C909B21B5634BC00684831 /* Particles */,
 				A014122C1B550EC900238667 /* Sound */,
 				A014120A1B550E9E00238667 /* OtherImages */,
 				A01412001B550E7F00238667 /* Atlas */,
@@ -284,6 +290,25 @@
 				A01412321B550ED400238667 /* game_music4.mp3 */,
 			);
 			name = Sound;
+			sourceTree = "<group>";
+		};
+		A0C909B21B5634BC00684831 /* Particles */ = {
+			isa = PBXGroup;
+			children = (
+				A0C909B31B5634C600684831 /* BugSplatter.sks */,
+				A0B5AD9B1B56352C005C4FD3 /* Splat.png */,
+			);
+			name = Particles;
+			sourceTree = "<group>";
+		};
+		A0EF88991B55145100CEB65A /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				A01411C21B550B7900238667 /* AppDelegate.swift */,
+				A01411CA1B550B7900238667 /* Main.storyboard */,
+				A01411CF1B550B7900238667 /* LaunchScreen.xib */,
+			);
+			name = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,6 +405,8 @@
 				A01412331B550ED400238667 /* night_1_v3.mp3 in Resources */,
 				A01411CE1B550B7900238667 /* Images.xcassets in Resources */,
 				A014121C1B550EBE00238667 /* face_1_001@2x.png in Resources */,
+				A0C909B41B5634C600684831 /* BugSplatter.sks in Resources */,
+				A0B5AD9C1B56352C005C4FD3 /* Splat.png in Resources */,
 				A01412241B550EBE00238667 /* face_1_005@2x.png in Resources */,
 				A014121F1B550EBE00238667 /* face_1_002@3x.png in Resources */,
 				A01412061B550E8D00238667 /* GameSpriteAtlas.1@2x.png in Resources */,
@@ -415,6 +442,7 @@
 				A01411F21B550DA900238667 /* GameObjectNode.swift in Sources */,
 				A01411FE1B550E0100238667 /* SKTAudio.swift in Sources */,
 				A01411FC1B550DC100238667 /* MyUtils.swift in Sources */,
+				A0C909B11B560B6D00684831 /* SKAction+Extensions.swift in Sources */,
 				A01411F91B550DC100238667 /* SKEmitterNode+Extras.swift in Sources */,
 				A01411EB1B550D2B00238667 /* UnionModeGameViewController.swift in Sources */,
 				A01411FA1B550DC100238667 /* SKSimpleButton.swift in Sources */,
@@ -551,7 +579,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = SillyMan_6/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -561,7 +591,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = SillyMan_6/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

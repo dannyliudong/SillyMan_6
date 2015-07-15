@@ -16,6 +16,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //  判断是否第一次启动
+        if !NSUserDefaults.standardUserDefaults().boolForKey("everLaunched") {
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "everLaunched")
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstLaunch")
+            print("第一次启动")
+            
+            //GameState.sharedInstance.iCloudState = true
+            GameState.sharedInstance.musicState = true
+            
+        } else {
+            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "firstLaunch")
+            print("不是第一次启动")
+            
+            //  读取用户的设置信息
+            let userDefaults = NSUserDefaults.standardUserDefaults()
+            
+            //GameState.sharedInstance.iCloudState = userDefaults.boolForKey("iCloudState")
+            GameState.sharedInstance.musicState = userDefaults.boolForKey("musicState")
+            
+            //print("launchOptions-> iCloudSwitch : \(GameState.sharedInstance.iCloudState)")
+            println("launchOptions-> musicSwitch : \(GameState.sharedInstance.musicState)")
+            
+        }
+        
+        
+        
         return true
     }
 
@@ -27,6 +54,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+        //  应用进入后台模式 暂停音乐
+        SKTAudio.sharedInstance().pauseBackgroundMusic()
+        
+        
     }
 
     func applicationWillEnterForeground(application: UIApplication) {

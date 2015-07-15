@@ -12,7 +12,7 @@ import SpriteKit
     func gameGoHome()
 }
 
-class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithPlayerDelegate {
+class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
 
     var gamePlaydelegate:GamePlayDelegate!
     
@@ -20,7 +20,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     
     // To Accommodate iPhone 6
     var scaleFactor: CGFloat!
-    
     
     let ButtonSpaceX:CGFloat = 0.3 // 按钮 X间距
     let ButtonSpaceX1:CGFloat = 0.5
@@ -54,7 +53,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     var movingExtent:Int = 0 {
         didSet{
             //gameLeveDataControlle()
-            print(".........movingExtent: \(self.movingExtent)")
         }
     }
     
@@ -94,16 +92,17 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     
     //MARK: 初始化
     override init(size: CGSize) {
+
         super.init(size: size)
         
         scaleFactor = self.size.width / 320.0
-        
         self.playableRect = CGRect(x: 0, y: 0 , width: size.width, height: size.height)
         
         self.backgroundColor = SKColor.random
         
         enemyTypeLeve = EnemyType.Normal
         enemySpeedLeve = 1
+        
         
         // 粒子背景
 //        let particlePath = NSBundle.mainBundle().pathForResource("Bokeh", ofType: "sks")
@@ -112,7 +111,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
 //        emitterNode.alpha = 0.5
 //        addChild(emitterNode)
 //        emitterNode.hidden = true
-        
         
         // 引导手指
         figerNode()
@@ -149,8 +147,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
         //  1.游戏开始前的音乐
         SKTAudio.sharedInstance().playBackgroundMusic("night_1_v3.mp3")
 
-        let micON = GameState.sharedInstance.musicState
-        if !micON {
+        let music = GameState.sharedInstance.musicState
+        
+        if !music {
+            // 暂停音乐
             SKTAudio.sharedInstance().pauseBackgroundMusic()
         }
 
@@ -264,16 +264,83 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     func didBeginContact(contact: SKPhysicsContact) {
         
         if !isGameOver {
-            var updateHUD = false
-            let whichNode = (contact.bodyA.node != playerNode) ? contact.bodyA.node : contact.bodyB.node
-            let other = whichNode as! GameObjectNode
-            updateHUD = other.collisionWithPlayer(playerNode)
+//            var updateHUD = false
+//            let whichNode = (contact.bodyA.node != playerNode) ? contact.bodyA.node : contact.bodyB.node
+//            let other = whichNode as! GameObjectNode
+//            updateHUD = other.collisionWithPlayer(playerNode)
+//            
+//            if updateHUD {
+//                starTotal = GameState.sharedInstance.stars
+//                starsLabel.text = "\(GameState.sharedInstance.stars)"
+//            }
             
-            if updateHUD {
-                starTotal = GameState.sharedInstance.stars
-                starsLabel.text = "\(GameState.sharedInstance.stars)"
+          
+            
+            
+            let other = (contact.bodyA.categoryBitMask == CollisionCategoryBitmask.Player ? contact.bodyB : contact.bodyA)
+            
+            switch other.categoryBitMask {
+            case CollisionCategoryBitmask.Star:
+                let starNode = other.node as! StarNode
+                collisionWithStar(starNode)
+                
+            case CollisionCategoryBitmask.Enemy:
+                let enemyNode = other.node as! EnemyNode
+                collisionWithEnemy(enemyNode)
+                
+            default:
+                break;
             }
+            
         }
+    }
+    
+    override func didSimulatePhysics() {
+        
+    }
+    
+    
+    //MARK: 碰撞处理
+    func collisionWithStar(node:SKNode) {
+        
+        let starSound = SKAction.playSoundFileNamed("Get.wav", waitForCompletion: false)
+        let musicOn = GameState.sharedInstance.musicState
+        if musicOn {
+            runAction(starSound, completion: { () -> Void in
+                node.removeFromParent()
+            })
+        } else {
+            node.removeFromParent()
+        }
+        
+        showParticlesForBug(node)
+        
+        GameState.sharedInstance.stars += 1
+        updateHUD()
+       
+    }
+    
+    func collisionWithEnemy(node:SKNode) {
+        
+        let enemySound = SKAction.playSoundFileNamed("collisionSound.wav", waitForCompletion: false)
+        let musicOn = GameState.sharedInstance.musicState
+        if musicOn {
+            runAction(enemySound)
+            gameOver()
+        } else {
+            gameOver()
+        }
+        
+    }
+    
+    func updateHUD() {
+        // 更新分数
+        starsLabel.text = "\(GameState.sharedInstance.stars)"
+    }
+
+    func updateMovingExtent() {
+        // 更新移动距离
+        scoreLabel.text = "\(Int(movingExtent))"
     }
     
     
@@ -288,7 +355,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
             self.enemyNode = self.creatEnemyformPosition(CGPointMake(randomEnemyX, self.playableRect.size.height + 50), ofType: self.enemyTypeLeve)
             
             let node = self.enemyNode as! EnemyNode
-            node.delegate = self
             self.addChild(node)
             
             let targetPostion = -self.playableRect.size.height + 50
@@ -429,9 +495,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
         _node.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Enemy
         _node.physicsBody?.collisionBitMask = 0//CollisionCategoryBitmask.Player
         _node.physicsBody?.contactTestBitMask = 0//CollisionCategoryBitmask.Player
-        
-        _node.delegate = self
-        //addChild(_node)
         
         return _node
         
@@ -578,7 +641,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     // 显示达成成就
     func showSuccessMark() {
         
-        print("showSuccessMark xxxxxxxxxx ")
+        println("showSuccessMark xxxxxxxxxx ")
         
         let markNode = SKNode()
         markNode.position = CGPointMake(self.size.width/2, self.size.height/2)
@@ -689,7 +752,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     
     //MARK: 开始游戏
     func starGame() {
-        print("UnionModeScene -> starGame:", appendNewline: false)
+        println("UnionModeScene -> starGame:", appendNewline: false)
         isGameOver = false
         isGameBegin = true
         
@@ -704,8 +767,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
         showGameSceneUI()
         
         // 2. 游戏开始后的音乐
-        let micON = GameState.sharedInstance.musicState
-        if micON {
+        let music = GameState.sharedInstance.musicState
+        if music {
+            // 播放音乐
             SKTAudio.sharedInstance().playBackgroundMusic("game_music2.mp3")
         }
         
@@ -716,7 +780,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     
     //MARK:  暂停游戏
     func pauseGame() {
-        print("游戏暂停", appendNewline: false)
+        println("游戏暂停", appendNewline: false)
 
         showGamePauseUI()
         
@@ -734,7 +798,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     
     //MARK: 继续游戏
     func continueGame() {
-        print("暂停 ->继续游戏", appendNewline: false)
+        println("暂停 ->继续游戏", appendNewline: false)
         self.view?.paused = false
         //gamePause = false
         
@@ -745,7 +809,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     
     //MARK: 游戏结束
     func gameOver() {
-        print("gameOver >>>>", appendNewline: true)
+        println("gameOver >>>>", appendNewline: true)
         isGameBegin = false
         self.isGameOver = true
         self.pauseButton.hidden = true
@@ -782,7 +846,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
         
         isOpenUI = true
         
-        print("打开设置")
+        println("打开设置")
     }
     
     // 关闭设置
@@ -797,13 +861,13 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     
     // 打开分享
     func openSharePage() {
-        print("打开分享")
+        println("打开分享")
         
     }
     
     // 显示游戏场景UI
     func showGameSceneUI() {
-        print("showGameSceneUI ->>>")
+        println("showGameSceneUI ->>>")
         
         gameSceneUINode = SKNode()
         addChild(gameSceneUINode)
@@ -920,7 +984,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     
     //  显示主页UI
     func showHomePageUI() {
-        print("显示主页UI ->>>")
         
         homePageUINode = SKNode()
         homePageUINode.zPosition = 50
@@ -983,8 +1046,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     
     // 显示暂停界面
     func showGamePauseUI() {
-        
-        print("showGamePauseUI ->>>")
         
         pauseUINode = SKNode()
         pauseUINode.zPosition = 60
@@ -1092,21 +1153,17 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     
     // 打开主页UI
     func openHomePageUI() {
-        print("关闭主页UI ->>>", appendNewline: true)
         showHomePageUI()
     }
     
     // 关闭主页UI
     func closeHomePageUI() {
-        print("关闭主页UI ->>>", appendNewline: true)
-        
         homePageUINode.hidden = true
         
     }
     
     // 关闭暂停游戏界面
     func closePauseUI() {
-        print("关闭暂停游戏界面", appendNewline: true)
         pauseUINode.removeFromParent()
         
     }
@@ -1127,37 +1184,47 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
         
     }
     
+    //MARK: 粒子特效
+    
+    // 撞击敌人 死亡特效
+    func showParticlesForBug(emeny: SKNode) {
+        
+        let emitter = SKEmitterNode.emitterNamed("BugSplatter")
+        emitter.particleTexture!.filteringMode = .Nearest
+        emitter.position = emeny.position
+        
+        emitter.runAction(SKAction.removeFromParentAfterDelay(0.4))
+        addChild(emitter)
+    }
+    
     // MARK: 按钮事件
     
     //  选择语言
     func languageButtonAction() {
-        print("选择语言", appendNewline: true)
+        println("选择语言", appendNewline: true)
     }
     
     // 音乐开关
     func musicButtonAction() {
-        print("音乐开关", appendNewline: true)
+        let music = GameState.sharedInstance.musicState
+        println(music)
 
-        let isON:Bool = GameState.sharedInstance.musicState
-        if isON {
+        if music {
             // 如果是开的 就暂停音乐
             self.musicButton.alpha = 0.5
             self.musicButton.color = SKColor.whiteColor()
             
             SKTAudio.sharedInstance().pauseBackgroundMusic()
             GameState.sharedInstance.musicState = false
-            GameState.sharedInstance.soundEffectState = false
             GameState.sharedInstance.saveState()
             
         } else {
             // 恢复音乐播放
-            
             self.musicButton.alpha = 1
             self.musicButton.color = SKColor.clearColor()
             
             SKTAudio.sharedInstance().resumeBackgroundMusic()
             GameState.sharedInstance.musicState = true
-            GameState.sharedInstance.soundEffectState = true
             GameState.sharedInstance.saveState()
         }
         
@@ -1186,7 +1253,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     // 暂停游戏 ->回主页
     func pauseGoHome() {
         // 退出游戏 回到主场景
-        print("暂停游戏 ->回主页", appendNewline: true)
+        println("暂停游戏 ->回主页", appendNewline: true)
         closePauseUI()
         
         self.paused = false
@@ -1208,7 +1275,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     
     // 暂停游戏 ->继续
     func pauseContinue() {
-        print("暂停游戏 ->继续", appendNewline: true)
+        println("暂停游戏 ->继续", appendNewline: true)
         
         self.paused = false
         closePauseUI()
@@ -1247,7 +1314,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     //  碰撞检查的委托方法 检测到碰撞敌人， 结束游戏
     func gameSateControll() {
         
-        print("gameSateControll >>>>>", appendNewline: true)
+        println("gameSateControll >>>>>", appendNewline: true)
 
         gameOver()
 
@@ -1256,7 +1323,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
     //MARK: 点击事件
     private var state = 0
     
-    private var Player_Move_Speed = 0.5
+    private var Player_Move_Speed = 0.3
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         
@@ -1317,7 +1384,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, EnemyCollisionWithP
         if isGameBegin {
             playTime++
             movingExtent = Int(self.playTime * playerMoveSpeed)
-            scoreLabel.text = "\(Int(movingExtent))"
+            updateMovingExtent()
         }
     }
     

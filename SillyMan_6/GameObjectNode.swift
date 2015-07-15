@@ -60,19 +60,18 @@ class GameObjectNode: SKNode {
 
 }
 
-protocol EnemyCollisionWithPlayerDelegate {
-    func gameSateControll()
-}
+//protocol EnemyCollisionWithPlayerDelegate {
+//    func gameSateControll()
+//}
 
 
 class EnemyNode: GameObjectNode {
     
     var enemyType: EnemyType!
-    var delegate:EnemyCollisionWithPlayerDelegate?
+    //var delegate:EnemyCollisionWithPlayerDelegate?
     
-    let micON = GameState.sharedInstance.soundEffectState
+    let micON = GameState.sharedInstance.musicState
 
-    
     var isGetOne: Bool = false
     
     func createEnemyNode(sprite:SKSpriteNode, ofPosition position:CGPoint, ofType type:EnemyType) ->EnemyNode {
@@ -103,7 +102,7 @@ class EnemyNode: GameObjectNode {
             runAction(enemySound)
         }
         
-        self.delegate?.gameSateControll()
+        //self.delegate?.gameSateControll()
 
         return true
     }
@@ -118,7 +117,7 @@ class PlayerNode: GameObjectNode {
 class StarNode: GameObjectNode {
     
     var starType: StarType!
-    let micON = GameState.sharedInstance.soundEffectState
+    let micON = GameState.sharedInstance.musicState
     
     let starSound = SKAction.playSoundFileNamed("Get.wav", waitForCompletion: false)
     

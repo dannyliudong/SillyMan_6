@@ -14,11 +14,10 @@ class GameState {
     var highScore: Int
     var stars: Int
     
-
     
     // 用户设置的状态
     var musicState: Bool // 游戏场景背景音乐开关
-    var soundEffectState: Bool // 音效开关
+    //var soundEffectState: Bool // 音效开关
     //var iCloudState: Bool // iCloud 开关
     
     class var sharedInstance :GameState {
@@ -45,7 +44,6 @@ class GameState {
         let defaults = NSUserDefaults.standardUserDefaults()
         
         musicState = defaults.boolForKey("musicState")
-        soundEffectState = defaults.boolForKey("soundEffectState")
         //iCloudState = defaults.boolForKey("iCloudState")
         
         //movingScore = defaults.integerForKey("movingScore")
@@ -67,7 +65,6 @@ class GameState {
         
         // 保存设置状态
         defaults.setBool(musicState, forKey: "musicState")
-        defaults.setBool(soundEffectState, forKey: "soundEffectState")
         //defaults.setBool(iCloudState, forKey: "iCloudState")
         
         NSUserDefaults.standardUserDefaults().synchronize()
