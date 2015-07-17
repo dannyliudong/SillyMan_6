@@ -8,7 +8,6 @@
 import SpriteKit
 
 @objc protocol GamePlayDelegate {
-    //func gameTryAgain()
     func gameGoHome()
 }
 
@@ -39,6 +38,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     var gameSceneUINode: SKNode! // 游戏场景UINode
     var settingsUINode:SKNode! // 设置UI
     
+    // 声音
+    let starSound = SKAction.playSoundFileNamed("coin_steal_02.mp3", waitForCompletion: false)
+    let enemySound = SKAction.playSoundFileNamed("collisionSound.wav", waitForCompletion: false)
+
     var pauseButton: SKSimpleButton!
     var musicButton:SKSimpleButton!
     var soundButton:SKSimpleButton!
@@ -55,14 +58,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             //gameLeveDataControlle()
         }
     }
-    
     var guideFigerNode: SKNode! // 指引手指
     
     //MARK: Private Properties
     //  得分
-    //private var scoreTotal:Int = 0
     private var starTotal:Int = 0
-    
     private var flyAwayDistance:Int = 0
     
     // 当到某个条件时 改变等级难度
@@ -85,8 +85,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     private var staricon: SKSpriteNode!
     
     private var backgroundNode: SKNode!
-    private var background1:SKNode!
-    private var background2:SKNode!
+    private var background1:SKSpriteNode!
+    private var background2:SKSpriteNode!
     
     private var adjustmentBackgroundPosition = 0 //调整背景位置
     
@@ -98,7 +98,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         scaleFactor = self.size.width / 320.0
         self.playableRect = CGRect(x: 0, y: 0 , width: size.width, height: size.height)
         
-        self.backgroundColor = SKColor.random
+        self.backgroundColor = SKColor.purpleColor()
         
         enemyTypeLeve = EnemyType.Normal
         enemySpeedLeve = 1
@@ -142,7 +142,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         playerFirstAction() // 角色出场动画
         
-        //createBackground()
+        createBackground()
         
         //  1.游戏开始前的音乐
         SKTAudio.sharedInstance().playBackgroundMusic("night_1_v3.mp3")
@@ -233,18 +233,18 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
 
     //MARK: 创建背景层
     func createBackground() {
-        background1 = SKNode()
-        background2 = SKNode()
-        addChild(background1)
-        addChild(background2)
+        //background1 = SKSpriteNode(imageNamed: "bg")
+        //background2 = SKSpriteNode(imageNamed: "bg")
+        //addChild(background1)
+        //addChild(background2)
         
         // 生成背景
         
-        let bgsp1 = SKSpriteNode(color: SKColor.blueColor(), size: self.size)
-        let bgsp2 = SKSpriteNode(color: SKColor.blueColor(), size: self.size)
-        
-        background1.addChild(bgsp1)
-        background2.addChild(bgsp2)
+//        let bgsp1 = SKSpriteNode(color: SKColor.blueColor(), size: self.size)
+//        let bgsp2 = SKSpriteNode(color: SKColor.blueColor(), size: self.size)
+//        
+//        background1.addChild(bgsp1)
+//        background2.addChild(bgsp2)
         
         
     }
@@ -300,7 +300,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     //MARK: 碰撞效果
     func collisionWithStar(node:StarNode) {
         
-        let starSound = SKAction.playSoundFileNamed("coin_steal_02.mp3", waitForCompletion: false)
+        
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
             runAction(starSound, completion: { () -> Void in
@@ -319,7 +319,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     func collisionWithEnemy(node:EnemyNode) {
         
-        let enemySound = SKAction.playSoundFileNamed("collisionSound.wav", waitForCompletion: false)
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
             runAction(enemySound)
@@ -464,6 +463,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func createPlayer() ->SKNode {
         
         let _node = SKNode()
+        _node.zPosition = 200
         _node.xScale = 0.5
         _node.yScale = 0.5
         
@@ -477,17 +477,22 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         let smileSequence = SKAction.repeatActionForever(SKAction.sequence([smileAni]))
         smileSprite.runAction(smileSequence)
     
+        let emitter = SKEmitterNode.emitterNamed("PlayerTrail")
+        emitter.particleTexture!.filteringMode = .Nearest
+        emitter.position = CGPointMake(0, 100)
+        smileSprite.addChild(emitter)
         
-        let tentaclesSprite = SKSpriteNode(texture: atlas.tentacles_tentacles_1())
-        tentaclesSprite.yScale = 0.8
-        tentaclesSprite.xScale = 0.8
-        tentaclesSprite.position = CGPointMake(tentaclesSprite.size.width/3, -tentaclesSprite.size.height/1.5)
-        smileSprite.addChild(tentaclesSprite)
         
-        let tentacles = SKAction.animateWithTextures(atlas.tentacles_tentacles_(), timePerFrame: 0.033)
-        let tentaclesAni = SKAction.repeatAction(tentacles, count: 6)
-        let tentaclesSequence = SKAction.repeatActionForever(SKAction.sequence([tentaclesAni]))
-        tentaclesSprite.runAction(tentaclesSequence)
+//        let tentaclesSprite = SKSpriteNode(texture: atlas.tentacles_tentacles_1())
+//        tentaclesSprite.yScale = 0.8
+//        tentaclesSprite.xScale = 0.8
+//        tentaclesSprite.position = CGPointMake(tentaclesSprite.size.width/3, -tentaclesSprite.size.height/1.5)
+//        smileSprite.addChild(tentaclesSprite)
+//        
+//        let tentacles = SKAction.animateWithTextures(atlas.tentacles_tentacles_(), timePerFrame: 0.033)
+//        let tentaclesAni = SKAction.repeatAction(tentacles, count: 6)
+//        let tentaclesSequence = SKAction.repeatActionForever(SKAction.sequence([tentaclesAni]))
+//        tentaclesSprite.runAction(tentaclesSequence)
         
         _node.physicsBody = SKPhysicsBody(circleOfRadius: smileSprite.size.width/2 * 0.5)
         _node.physicsBody?.dynamic = false
@@ -505,6 +510,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func creatEnemyformPosition(position: CGPoint, ofType type: EnemyType) ->EnemyNode {
         
         let _node = EnemyNode()
+        _node.name = "enemyNode"
         
         // 随机位置
         _node.position = CGPoint(x: position.x, y: position.y )
@@ -779,7 +785,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: 开始游戏
     func starGame() {
-        println("UnionModeScene -> starGame:", appendNewline: false)
         isGameOver = false
         isGameBegin = true
         
@@ -807,10 +812,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK:  暂停游戏
     func pauseGame() {
-        println("游戏暂停", appendNewline: false)
-
         showGamePauseUI()
-        
         // 1 游戏暂停
         //gamePause = true
         
@@ -825,7 +827,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: 继续游戏
     func continueGame() {
-        println("暂停 ->继续游戏", appendNewline: false)
         self.view?.paused = false
         //gamePause = false
         
@@ -836,7 +837,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: 游戏结束
     func gameOver() {
-        println("gameOver >>>>", appendNewline: true)
         isGameBegin = false
         self.isGameOver = true
         self.pauseButton.hidden = true
@@ -844,11 +844,16 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         SKTAudio.sharedInstance().pauseBackgroundMusic()
         
         // 保存游戏状态 分数等信息
-        
         GameState.sharedInstance.movingScore = Int(movingExtent)
         GameState.sharedInstance.saveState()
         
-        self.playerNode.runAction(SKAction.moveToY(-100, duration: 0.5))
+        // 获取所有enemyNode 销毁掉
+        self.enumerateChildNodesWithName("enemyNode", usingBlock: { (node:SKNode!, _) -> Void in
+            let enemy = node as! EnemyNode
+            enemy.removeFromParent()
+        })
+        
+        //self.playerNode.runAction(SKAction.moveToY(-100, duration: 0.5))
         
         //  用dispatch_after推迟任务
         let delayInSeconds = 0.5
@@ -868,12 +873,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func openSettingsPage() {
         closeHomePageUI()
         openSettingsUI()
-        
         guideFigerNode.hidden = true
-        
         isOpenUI = true
-        
-        println("打开设置")
     }
     
     // 关闭设置
@@ -894,7 +895,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     // 显示游戏场景UI
     func showGameSceneUI() {
-        println("showGameSceneUI ->>>")
         
         gameSceneUINode = SKNode()
         addChild(gameSceneUINode)
@@ -1040,7 +1040,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         homePageUINode.addChild(logoSprite)
         
         let highScoreLabel = SKLabelNode(fontNamed: "HelveticaNeue")
-        highScoreLabel.fontSize = 26
+        highScoreLabel.fontSize = 24
         highScoreLabel.blendMode = SKBlendMode.Add
         highScoreLabel.position = CGPoint(x: 0, y: -logoSprite.size.height/5)
         highScoreLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
@@ -1055,7 +1055,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         // 金币数量
         starsLabel = SKLabelNode(fontNamed: "HelveticaNeue")
-        starsLabel.fontSize = 30
+        starsLabel.fontSize = 24
         starsLabel.fontColor = SKColor.whiteColor()
         starsLabel.position = CGPoint(x: 50, y: self.size.height-40)
         starsLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
@@ -1218,7 +1218,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     //  选择语言
     func languageButtonAction() {
-        println("选择语言", appendNewline: true)
+        println("选择语言")
     }
     
     // 音乐开关
@@ -1270,7 +1270,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     // 暂停游戏 ->回主页
     func pauseGoHome() {
         // 退出游戏 回到主场景
-        println("暂停游戏 ->回主页", appendNewline: true)
         closePauseUI()
         
         self.paused = false
@@ -1292,7 +1291,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     // 暂停游戏 ->继续
     func pauseContinue() {
-        println("暂停游戏 ->继续", appendNewline: true)
         
         self.paused = false
         closePauseUI()
@@ -1306,35 +1304,25 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         closeGameOverUI()
         
         isTryAgainGame = false
-        
-        print("GameScene ->>> goHome", appendNewline: true)
         self.gamePlaydelegate.gameGoHome()
         
     }
     
     // 游戏结束 －> 重玩
     func gameOverTryAgain() {
-        print("GameScene ->>> tryAgainGame:", appendNewline: true)
         
-        self.paused = false
-        closeGameOverUI()
-        closeHomePageUI()
+        let loadingScene = LoadingScene(size: self.size)
+        self.view?.presentScene(loadingScene)
         
-        isTryAgainGame = true
         
-        self.gamePlaydelegate.gameGoHome()
+//        self.paused = false
+//        closeGameOverUI()
+//        closeHomePageUI()
+//        
+//        isTryAgainGame = true
+//        
+//        self.gamePlaydelegate.gameGoHome()
         
-    }
-    
-    
-    //MARK: EnemyCollisionWithPlayerDelegate Method
-    //  碰撞检查的委托方法 检测到碰撞敌人， 结束游戏
-    func gameSateControll() {
-        
-        println("gameSateControll >>>>>", appendNewline: true)
-
-        gameOver()
-
     }
     
     //MARK: 点击事件
@@ -1342,9 +1330,15 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     private var Player_Move_Speed = 0.3
     
+//    var moveTime:CGFloat {
+//        get {
+//            var time:CGFloat = 0
+//            time = sqrt(<#Double#>)
+//            return time
+//        }
+//    }
+    
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        
-        // tapToStartNode.removeFromParent()
         // 游戏开始前的设置
         // && isNoOpenUI
         
@@ -1354,38 +1348,55 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             let touch: AnyObject? = (touches as NSSet).anyObject()
             let locationInNode = touch?.locationInNode(self)
             
+            
+            
             if let location = locationInNode {
-                // 
-                if isFristRuning {
-                    print("首次点击", appendNewline: false)
-                    starGame()
-                    
-                    // 平移
-                    // 首次点击 根据左右位置进行判断 移动的方向
-                    
-                    if (location.x <= self.size.width / 2 && state != -1){
-                        playerNode.runAction(SKAction.moveToX(CGRectGetMinX(playableRect) + 30 , duration: Player_Move_Speed))
-                        state = -1
-                    }
-                    else if (location.x >= self.size.width / 2 && state != 1) {
-                        playerNode.runAction(SKAction.moveToX(CGRectGetMaxX(playableRect) - 30, duration: Player_Move_Speed))
-                        state = 1
-                    }
-                    
-                    isFristRuning = false
-                } else {
-                    
-                    // 不是第一次点击 无需根据点击位置判断 移动的方向
-                    if (playerNode.position.x >= self.size.width / 2  && state != -1){
-                        playerNode.runAction(SKAction.moveToX(CGRectGetMinX(playableRect) + 30 , duration: Player_Move_Speed))
-                        state = -1
-                    }
-                    else if (playerNode.position.x <= self.size.width / 2 && state != 1) {
-                        playerNode.runAction(SKAction.moveToX(CGRectGetMaxX(playableRect) - 30 , duration: Player_Move_Speed))
-                        state = 1
-                    }
-                }
+//                if isFristRuning {
+//                    print("首次点击")
+//                    starGame()
+//                    
+//                    // 平移
+//                    // 首次点击 根据左右位置进行判断 移动的方向
+//                    
+//                    if (location.x <= self.size.width / 2 && state != -1){
+//                        playerNode.runAction(SKAction.moveToX(CGRectGetMinX(playableRect) + 30 , duration: Player_Move_Speed))
+//                        state = -1
+//                    }
+//                    else if (location.x >= self.size.width / 2 && state != 1) {
+//                        playerNode.runAction(SKAction.moveToX(CGRectGetMaxX(playableRect) - 30, duration: Player_Move_Speed))
+//                        state = 1
+//                    }
+//                    
+//                    isFristRuning = false
+//                } else {
+//                    
+//                    // 不是第一次点击 无需根据点击位置判断 移动的方向
+//                    if (playerNode.position.x >= self.size.width / 2  && state != -1){
+//                        playerNode.runAction(SKAction.moveToX(CGRectGetMinX(playableRect) + 30 , duration: Player_Move_Speed))
+//                        state = -1
+//                    }
+//                    else if (playerNode.position.x <= self.size.width / 2 && state != 1) {
+//                        playerNode.runAction(SKAction.moveToX(CGRectGetMaxX(playableRect) - 30 , duration: Player_Move_Speed))
+//                        state = 1
+//                    }
+//                }
                 
+                //starGame()
+                
+                // 平移
+                
+                if isFristRuning {
+                    starGame()
+                    isFristRuning = false
+                    
+                    playerNode.runAction(SKAction.moveTo(locationInNode!, duration: 1.5))
+                    
+
+                } else {
+                    playerNode.runAction(SKAction.moveTo(locationInNode!, duration: 1.5))
+
+                }
+                                
             }
         }
 

@@ -29,9 +29,7 @@ class UnionModeGameViewController: UIViewController, GamePlayDelegate {
         
     }
     
-
     func newGameScene() {
-        print("newGameScene .........", appendNewline: false)
         let skView = self.view as! SKView
         //skView.paused = false
         
@@ -54,7 +52,6 @@ class UnionModeGameViewController: UIViewController, GamePlayDelegate {
     //MARK: GameScene Delegate Method
     
     func gameGoHome() {
-        print("gameGoHome 1111111111", appendNewline: false)
         newGameScene()
     }
     
