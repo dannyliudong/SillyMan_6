@@ -35,6 +35,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     var homePageBottomButtonsNode:SKNode! // 主页底部按钮
     var gameOverbottomButtonNode:SKNode! // 游戏结束底部按钮
     
+    var fadeInMaskNode:SKNode!
+    var fadeOutMaskNode:SKNode!
+    
     // 声音
     let starSound = SKAction.playSoundFileNamed("coin_steal_02.mp3", waitForCompletion: false)
     let enemySound = SKAction.playSoundFileNamed("collisionSound.wav", waitForCompletion: false)
@@ -169,7 +172,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: Did Move To View
     override func didMoveToView(view: SKView) {
-        
+        self.fadeOutMask()
     }
     
     func createGameNodes() {
@@ -588,7 +591,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     //MARK: 开始游戏
     func starGame() {
         isGameOver = false
-        //isGameBegin = true
+
+        fadeOutMaskNode.removeFromParent()
         
         self.pauseButton.hidden = false
         
@@ -675,20 +679,54 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         let move = SKAction.moveToY(-100, duration: 0.2)
         let moveDone = SKAction.removeFromParent()
-        
         let seque = SKAction.sequence([move, moveDone])
-        
         gameOverbottomButtonNode.runAction(seque)
-        
         
         //  用dispatch_after推迟任务
         let delayInSeconds = 0.2
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) { () -> Void in
             
-            self.goLoadingScene()
+            self.fadeInMask()
+            
+            let delayInSeconds = 1.0
+            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+            dispatch_after(popTime, dispatch_get_main_queue()) { () -> Void in
+                
+                self.goLoadingScene()
+            }
         }
         
+    }
+    
+    //MARK: 转场遮罩
+    func fadeOutMask() {
+        // 淡出
+        
+        fadeOutMaskNode = SKNode()
+        addChild(fadeOutMaskNode)
+        
+        let maskSp = SKSpriteNode(color: SKColor.orangeColor(), size: self.size)
+        maskSp.alpha = 1
+        maskSp.zPosition = 160
+        maskSp.position = CGPointMake(self.Screen_Width/2, self.Screen_Height/2)
+        fadeOutMaskNode.addChild(maskSp)
+        
+        maskSp.runAction(SKAction.fadeAlphaTo(0, duration: 0.5))
+    }
+    
+    func fadeInMask() {
+        // 淡入
+        fadeInMaskNode = SKNode()
+        addChild(fadeInMaskNode)
+        
+        let maskSp = SKSpriteNode(color: SKColor.orangeColor(), size: self.size)
+        maskSp.alpha = 0
+        maskSp.zPosition = 160
+        maskSp.position = CGPointMake(self.Screen_Width/2, self.Screen_Height/2)
+        fadeInMaskNode.addChild(maskSp)
+        
+        maskSp.runAction(SKAction.fadeAlphaTo(1, duration: 0.5))
     }
     
     //MARK:界面控制
