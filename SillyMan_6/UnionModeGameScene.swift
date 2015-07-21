@@ -7,17 +7,12 @@
 //
 import SpriteKit
 
-@objc protocol GamePlayDelegate {
-    func gameGoHome()
-}
 
 class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
 
-    var gamePlaydelegate:GamePlayDelegate!
-    
     // MARK: Properties
     
-    // To Accommodate iPhone 6
+    // 为了适配iPhone6 缩放比例
     var scaleFactor: CGFloat!
     
     let ButtonSpaceX:CGFloat = 0.3 // 按钮 X间距
@@ -37,6 +32,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     var homePageUINode:SKNode! // 主页UINode
     var gameSceneUINode: SKNode! // 游戏场景UINode
     var settingsUINode:SKNode! // 设置UI
+    var homePageBottomButtonsNode:SKNode! // 主页底部按钮
+    var gameOverbottomButtonNode:SKNode! // 游戏结束底部按钮
     
     // 声音
     let starSound = SKAction.playSoundFileNamed("coin_steal_02.mp3", waitForCompletion: false)
@@ -100,6 +97,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         self.backgroundColor = SKColor.purpleColor()
         
+        let skybg = SKSpriteNode(imageNamed: "skybg")
+        skybg.position = CGPointMake(self.size.width/2, self.size.height/2)
+        skybg.setScale(scaleFactor)
+        addChild(skybg)
+        
         enemyTypeLeve = EnemyType.Normal
         enemySpeedLeve = 1
         
@@ -114,10 +116,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         // 引导手指
         figerNode()
-        guideFigerNode.hidden = false
         
         // 暂停控制按钮
-        pauseButton = SKSimpleButton(imageNamed: "button-pause")
+        pauseButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_pause"))
         pauseButton.zPosition = 60
         pauseButton.name = "pauseButton"
         pauseButton.targetTouchUpInside = self
@@ -129,7 +130,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         // 创建主页UI
         if !isTryAgainGame {
-            openHomePageUI()
+            showHomePageUI()
+            showHomePageBottomButtons()
         }
         
         isFristRuning = true
@@ -183,10 +185,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     func initPhysicsWorld() {
         self.physicsWorld.contactDelegate = self
-        self.physicsWorld.gravity = CGVectorMake(0, 0)
-        
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
-        //self.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Edge
 
     }
     
@@ -224,28 +223,21 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         let fingerTouchSequence = SKAction.repeatActionForever(SKAction.sequence([fingerTouchAni]))
         fingerSprite.runAction(fingerTouchSequence)
     }
-
-    
-    //var lastEnemyType = EnemyType.SpecialRotate
-    
-
     
 
     //MARK: 创建背景层
     func createBackground() {
-        //background1 = SKSpriteNode(imageNamed: "bg")
-        //background2 = SKSpriteNode(imageNamed: "bg")
-        //addChild(background1)
-        //addChild(background2)
+
+        backgroundNode = SKNode()
+        //addChild(backgroundNode)
         
-        // 生成背景
+        background1 = SKSpriteNode(imageNamed: "bg")
+        background1.setScale(scaleFactor)
+        backgroundNode.addChild(background1)
         
-//        let bgsp1 = SKSpriteNode(color: SKColor.blueColor(), size: self.size)
-//        let bgsp2 = SKSpriteNode(color: SKColor.blueColor(), size: self.size)
-//        
-//        background1.addChild(bgsp1)
-//        background2.addChild(bgsp2)
-        
+        background2 = SKSpriteNode(imageNamed: "bg")
+        background2.setScale(scaleFactor)
+        backgroundNode.addChild(background2)
         
     }
     
@@ -264,15 +256,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func didBeginContact(contact: SKPhysicsContact) {
         
         if !isGameOver {
-//            var updateHUD = false
-//            let whichNode = (contact.bodyA.node != playerNode) ? contact.bodyA.node : contact.bodyB.node
-//            let other = whichNode as! GameObjectNode
-//            updateHUD = other.collisionWithPlayer(playerNode)
-//            
-//            if updateHUD {
-//                starTotal = GameState.sharedInstance.stars
-//                starsLabel.text = "\(GameState.sharedInstance.stars)"
-//            }
             
             let other = (contact.bodyA.categoryBitMask == CollisionCategoryBitmask.Player ? contact.bodyB : contact.bodyA)
             
@@ -297,10 +280,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    //MARK: 碰撞效果
+    //MARK: 碰撞结果执行
     func collisionWithStar(node:StarNode) {
-        
-        
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
             runAction(starSound, completion: { () -> Void in
@@ -318,7 +299,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func collisionWithEnemy(node:EnemyNode) {
-        
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
             runAction(enemySound)
@@ -463,7 +443,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func createPlayer() ->SKNode {
         
         let _node = SKNode()
-        _node.zPosition = 200
         _node.xScale = 0.5
         _node.yScale = 0.5
         
@@ -477,10 +456,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         let smileSequence = SKAction.repeatActionForever(SKAction.sequence([smileAni]))
         smileSprite.runAction(smileSequence)
     
-        let emitter = SKEmitterNode.emitterNamed("PlayerTrail")
-        emitter.particleTexture!.filteringMode = .Nearest
-        emitter.position = CGPointMake(0, 100)
-        smileSprite.addChild(emitter)
+//        let emitter = SKEmitterNode.emitterNamed("PlayerTrail")
+//        emitter.particleTexture!.filteringMode = .Nearest
+//        emitter.position = CGPointMake(0, 100)
+//        smileSprite.addChild(emitter)
         
         
 //        let tentaclesSprite = SKSpriteNode(texture: atlas.tentacles_tentacles_1())
@@ -580,209 +559,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         }
         
     }
-    
-    //MARK: 难度等级控制
-    
-    let speedLeve1 = CGFloat(1.0)
-    let speedLeve2 = CGFloat(0.8)
-    let speedLeve3 = CGFloat(0.6)
-    
-    func gameLeveDataControlle() {
-        
-        //  等级选择
-        let leveOp:Int = Int(movingExtent)
-        print("leveOp : \(leveOp)")
-        
-        if leveOp < 100 {
-            if leveOp == 50 {
-                self.enemySpeedLeve = self.speedLeve2
-            }
-            
-        } else if leveOp >= 100 && leveOp < 300 {
-            switch leveOp {
-            case 100:
-                self.showSuccessMark()
-                self.enemySpeedLeve = self.speedLeve1
-            case 110:
-                self.enemyTypeLeve = EnemyType.SpecialRotate
-            case 200:
-                self.enemySpeedLeve = self.speedLeve2
-            case 300:
-                self.enemySpeedLeve = self.speedLeve3
-            default:
-                return
-            }
-            
-        } else if leveOp >= 30 && leveOp < 60 {
-            
-            switch leveOp {
-            case 20:
-                self.showSuccessMark()
-                self.enemySpeedLeve = self.speedLeve1
-            case 21:
-                self.enemyTypeLeve = EnemyType.SpecialActive
-            case 30:
-                self.enemySpeedLeve = self.speedLeve2
-            case 50:
-                self.enemySpeedLeve = self.speedLeve3
-            default:
-                return
-            }
-            
-        } else if leveOp >= 60 && leveOp < 100 {
-            
-            switch leveOp {
-            case 60:
-                self.showSuccessMark()
-                self.enemySpeedLeve = self.speedLeve1
-            case 61:
-                self.enemyTypeLeve = EnemyType.SpecialHidden
-            case 70:
-                self.enemySpeedLeve = self.speedLeve2
-            case 90:
-                self.enemySpeedLeve = self.speedLeve3
-            default:
-                return
-            }
 
-
-        } else if leveOp > 100 {
-            
-            switch leveOp {
-            case 100:
-                self.showSuccessMark()
-                self.enemySpeedLeve = self.speedLeve1
-            case 101:
-                EnemyType.randomEnemyType()
-            case 120:
-                self.enemySpeedLeve = self.speedLeve2
-            case 200:
-                self.enemySpeedLeve = self.speedLeve3
-            default:
-                return
-            }
-
-        }
-        
-    }
-    
-    func gameLeveDataControlle(distance:CGFloat, leve:Int) {
-        
-    }
-    
-    
-    // 显示达成成就
-    func showSuccessMark() {
-        
-        println("showSuccessMark xxxxxxxxxx ")
-        
-        let markNode = SKNode()
-        markNode.position = CGPointMake(self.size.width/2, self.size.height/2)
-        markNode.zPosition = 60
-        markNode.alpha = 0
-        addChild(markNode)
-        
-        let showlabel = SKLabelNode(fontNamed: "HelveticaNeue")
-        showlabel.fontSize = 24
-
-        showlabel.text = "👾怪兽来了👾"
-        markNode.addChild(showlabel)
-        
-        // 动画
-        //let palyerFistAction = SKAction.scaleTo(2.0, duration: 0.2)
-        //palyerFistAction.timingMode = SKActionTimingMode.EaseInEaseOut
-        let fadeAlpha = SKAction.fadeAlphaTo(0.5, duration: 0.2)
-        
-        //markNode.runAction(SKAction.group([palyerFistAction, fadeAlpha]))
-        
-        let wait = SKAction.waitForDuration(0.5)
-        let doneAni = SKAction.removeFromParent()
-        
-        markNode.runAction(SKAction.sequence([fadeAlpha, wait, doneAni]))
-        
-        //runAction(SKAction.sequence([fadeAlpha, wait]))
-        
-    }
-    
-    // 游戏进度控制
-//    func gameLeveControlle() ->(type:EnemyType, speed:CGFloat) {
-//        // 游戏开始 进入Leve1
-//        // 游戏一定时间后 进入Leve2
-//        // 游戏一定时间后 进入Leve3 依此类推
-//        
-//        // Leve1 普通敌人, 慢速, -> 中速 ->  快速
-//        // Leve2 旋转敌人, 慢速, -> 中速 ->  快速
-//        // Leve3 移动敌人, 慢速, -> 中速 ->  快速
-//        // Leve4 隐身敌人, 慢速, -> 中速 ->  快速
-//        // Leve5 随机敌人, 慢速, -> 中速 ->  快速
-//        
-//        let gameleve:Int = 1 // (敌人等级1-)
-//        let emenySpeed:UInt8 = 1 // (速度等级 1－3)
-//        
-//        let speedLeve1 = CGFloat(1.0)
-//        let speedLeve2 = CGFloat(0.6)
-//        let speedLeve3 = CGFloat(0.3)
-//        
-//        // Leve1
-//        if gameleve == 1 && emenySpeed == 1 {
-//            return (EnemyType.Normal, speedLeve1)
-//        }
-//        if gameleve == 1 && emenySpeed == 2 {
-//            return (EnemyType.Normal, speedLeve2)
-//        }
-//        if gameleve == 1 && emenySpeed == 3 {
-//            return (EnemyType.Normal, speedLeve3)
-//        }
-//        
-//        // Leve2
-//        if gameleve == 2 && emenySpeed == 1 {
-//            return (EnemyType.SpecialRotate, speedLeve1)
-//        }
-//        if gameleve == 2 && emenySpeed == 2 {
-//            return (EnemyType.SpecialRotate, speedLeve2)
-//        }
-//        if gameleve == 2 && emenySpeed == 3 {
-//            return (EnemyType.SpecialRotate, speedLeve3)
-//        }
-//        
-//        // Leve3
-//        if gameleve == 3 && emenySpeed == 1 {
-//            return (EnemyType.SpecialActive, speedLeve1)
-//        }
-//        if gameleve == 3 && emenySpeed == 2 {
-//            return (EnemyType.SpecialActive, speedLeve2)
-//        }
-//        if gameleve == 3 && emenySpeed == 3 {
-//            return (EnemyType.SpecialActive, speedLeve3)
-//        }
-//        
-//        // Leve4
-//        if gameleve == 4 && emenySpeed == 1 {
-//            return (EnemyType.SpecialHidden, speedLeve1)
-//        }
-//        if gameleve == 4 && emenySpeed == 2 {
-//            return (EnemyType.SpecialHidden, speedLeve2)
-//        }
-//        if gameleve == 4 && emenySpeed == 3 {
-//            return (EnemyType.SpecialHidden, speedLeve3)
-//        }
-//        
-//        // Leve5
-//        if gameleve == 5 && emenySpeed == 1 {
-//            return (EnemyType.SpecialHidden, speedLeve1)
-//        }
-//        if gameleve == 5 && emenySpeed == 2 {
-//            return (EnemyType.SpecialHidden, speedLeve2)
-//        }
-//        if gameleve == 5 && emenySpeed == 3 {
-//            return (EnemyType.SpecialHidden, speedLeve3)
-//        }
-//        
-//        return (EnemyType.Normal, speedLeve2)
-//        
-//    }
-    
-    
     //MARK: 开始游戏
     func starGame() {
         isGameOver = false
@@ -790,12 +567,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         self.pauseButton.hidden = false
         
+        homePageUINode.removeFromParent()
         guideFigerNode.removeFromParent()
+        homePageBottomButtonsNode.removeFromParent()
         
-        //playerFirstAction() // 角色出场动画
-
-        // 关闭主页UI
-        closeHomePageUI()
         showGameSceneUI()
         
         // 2. 游戏开始后的音乐
@@ -808,7 +583,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         createGameNodes()
         
     }
-    
     
     //MARK:  暂停游戏
     func pauseGame() {
@@ -839,7 +613,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func gameOver() {
         isGameBegin = false
         self.isGameOver = true
-        self.pauseButton.hidden = true
+        self.pauseButton.removeFromParent()
         
         SKTAudio.sharedInstance().pauseBackgroundMusic()
         
@@ -848,10 +622,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         GameState.sharedInstance.saveState()
         
         // 获取所有enemyNode 销毁掉
-        self.enumerateChildNodesWithName("enemyNode", usingBlock: { (node:SKNode!, _) -> Void in
-            let enemy = node as! EnemyNode
-            enemy.removeFromParent()
-        })
+//        self.enumerateChildNodesWithName("enemyNode", usingBlock: { (node:SKNode!, _) -> Void in
+//            let enemy = node as! EnemyNode
+//            enemy.removeFromParent()
+//        })
         
         //self.playerNode.runAction(SKAction.moveToY(-100, duration: 0.5))
         
@@ -859,11 +633,15 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         let delayInSeconds = 0.5
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) { () -> Void in
-            self.playerNode.removeFromParent()
-            self.showGameOverUI()
+            //self.playerNode.removeFromParent()
+            //self.showGameOverUI()
+            
+            
+            
+            self.showGameOverBottomButtons()
         }
         
-        self.gameSceneUINode.hidden = true
+        //self.gameSceneUINode.hidden = true
 
     }
     
@@ -871,7 +649,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     // 打开设置
     func openSettingsPage() {
-        closeHomePageUI()
         openSettingsUI()
         guideFigerNode.hidden = true
         isOpenUI = true
@@ -879,7 +656,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     // 关闭设置
     func closeSettingsPage() {
-        openHomePageUI()
         
         guideFigerNode.hidden = false
         
@@ -891,6 +667,16 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func openSharePage() {
         println("打开分享")
         
+    }
+    
+    //  打开排行榜
+    func openTopCharts() {
+        println("打开排行榜")
+    }
+    
+    // 开始游戏
+    func palyGame() {
+        println("开始游戏")
     }
     
     // 显示游戏场景UI
@@ -926,11 +712,16 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    // 打开设置UI
+    // 打开选角色
+    func openCharacterUI() {
+        println("选择角色💃。。。。")
+    }
+    
+    // 打开设置
     func openSettingsUI() {
         settingsUINode = SKNode()
         settingsUINode.position = CGPointMake(self.size.width/2, self.size.height/2)
-        settingsUINode.zPosition = 60
+        settingsUINode.zPosition = 150
         addChild(settingsUINode)
         
         // 遮罩
@@ -938,75 +729,108 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         maskSprite.alpha = 0.8
         settingsUINode.addChild(maskSprite)
         
-        // 关闭
-        let closeButton = SKSimpleButton(imageNamed: "button-quit-on")
+        // 关闭界面
+        let closeButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_back"))//SKSimpleButton(imageNamed: "button_back")
         closeButton.name = "gohomeButton"
         closeButton.targetTouchUpInside = self
         closeButton.actionTouchUpInside = "closeSettingsPage" // 执行方法名
-        closeButton.size = CGSize(width: 60, height: 60)
         closeButton.position = CGPointMake(-self.size.width/2 + closeButton.size.width/1.5, self.size.height/2 - closeButton.size.height/1.5)
         settingsUINode.addChild(closeButton)
         
-        // 语言
-        
-        let languageButton = SKSimpleButton(imageNamed: "setButtonbg")
+        // 选择语言
+        let languageButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_language"))//SKSimpleButton(imageNamed: "button_language")
         languageButton.name = "gohomeButton"
         languageButton.targetTouchUpInside = self
         languageButton.actionTouchUpInside = "languageButtonAction" // 执行方法名
-        //languageButton.size = setButtonbgimage.size
         languageButton.position = CGPointMake(0, 100)
         settingsUINode.addChild(languageButton)
         
         let languageLabel = SKLabelNode(fontNamed: "HelveticaNeue")
         languageLabel.fontSize = 20
-        languageLabel.position = CGPointMake(0, -8)
+        languageLabel.position = CGPointMake(100,100)
         languageLabel.text = String(format: "语言")
-        languageButton.addChild(languageLabel)
+        settingsUINode.addChild(languageLabel)
 
         // 音乐控制按钮
-        musicButton = SKSimpleButton(imageNamed: "setMusic")
+        musicButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_sound"))//SKSimpleButton(imageNamed: "button_sound")
         musicButton.name = "gohomeButton"
         musicButton.targetTouchUpInside = self
         musicButton.actionTouchUpInside = "musicButtonAction" // 执行方法名
-        //musicButton.size = setButtonbgimage.size
         musicButton.position = CGPointMake(0, 50)
         
-        let isON:Bool = GameState.sharedInstance.musicState
-        if !isON {
-            self.musicButton.alpha = 0.8
-            self.musicButton.color = SKColor.whiteColor()
-        } else {
-            self.musicButton.alpha = 1
-            self.musicButton.color = SKColor.clearColor()
-        }
+//        let isON:Bool = GameState.sharedInstance.musicState
+//        if !isON {
+//            self.musicButton.alpha = 0.8
+//            self.musicButton.color = SKColor.whiteColor()
+//        } else {
+//            self.musicButton.alpha = 1
+//            self.musicButton.color = SKColor.clearColor()
+//        }
         settingsUINode.addChild(musicButton)
         
-//        let musicLabel = SKLabelNode(fontNamed: "HelveticaNeue")
-//        musicLabel.fontSize = 20
-//        musicLabel.position = CGPointMake(0, -8)
-//        musicLabel.text = String(format: "音乐")
-//        musicButton.addChild(musicLabel)
+    }
+    
+    // 显示游戏结束主页底部按钮
+    func showGameOverBottomButtons () {
+        gameOverbottomButtonNode = SKNode()
+        gameOverbottomButtonNode.position = CGPointMake(self.size.width/2, 0)
+        addChild(gameOverbottomButtonNode)
         
-//        // 音效控制按钮
-//        soundButton = SKSimpleButton(imageNamed: "setButtonbg")
-//        soundButton.name = "gohomeButton"
-//        soundButton.targetTouchUpInside = self
-//        soundButton.actionTouchUpInside = "soundButtonAction" // 执行方法名
-//        //soundButton.size = setButtonbgimage.size
-//        soundButton.position = CGPointMake(0, 0)
-//        settingsUINode.addChild(soundButton)
-//        
-//        let soundLabel = SKLabelNode(fontNamed: "HelveticaNeue")
-//        soundLabel.fontSize = 20
-//        soundLabel.position = CGPointMake(0, -8)
-//        soundLabel.text = String(format: "音效")
-//        soundButton.addChild(soundLabel)
+        // 分享按钮
+        let shareButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_share"))//SKSimpleButton(imageNamed: "button_share")
+        shareButton.name = "shareButton"
+        shareButton.targetTouchUpInside = self
+        shareButton.actionTouchUpInside = "openSharePage" // 执行方法名
+        shareButton.position = CGPointMake(-(100 * scaleFactor), 40)
+        gameOverbottomButtonNode.addChild(shareButton)
+        
+        // 开始按钮
+        let palyButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_play"))//SKSimpleButton(imageNamed: "button_play")
+        palyButton.name = "palyButton"
+        palyButton.targetTouchUpInside = self
+        palyButton.actionTouchUpInside = "goLoadingScene" // 执行方法名
+        palyButton.position = CGPointMake(0, 40)
+        gameOverbottomButtonNode.addChild(palyButton)
+        
+        // 排行按钮
+        let topChartsButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_topCharts"))//SKSimpleButton(imageNamed: "button_topCharts")
+        topChartsButton.name = "topChartsButton"
+        topChartsButton.targetTouchUpInside = self
+        topChartsButton.actionTouchUpInside = "openTopCharts" // 执行方法名
+        topChartsButton.position = CGPointMake(100 * scaleFactor, 40)
+        gameOverbottomButtonNode.addChild(topChartsButton)
+        
         
         // 界面动画
-//        let palyerFistAction = SKAction.moveToY(self.size.height/1.5, duration: 0.3)
-//        palyerFistAction.timingMode = SKActionTimingMode.EaseInEaseOut
-//        let fadeAlpha = SKAction.fadeAlphaTo(1, duration: 0.2)
-//        settingsUINode.runAction(SKAction.group([palyerFistAction, fadeAlpha]))
+        let palyerFistAction = SKAction.moveToY(40 * scaleFactor, duration: 0.3)
+        palyerFistAction.timingMode = SKActionTimingMode.EaseInEaseOut
+        let fadeAlpha = SKAction.fadeAlphaTo(1, duration: 0.2)
+        gameOverbottomButtonNode.runAction(SKAction.group([palyerFistAction, fadeAlpha]))
+        
+    }
+    
+    // 显示主页底部按钮
+    func showHomePageBottomButtons() {
+        
+        homePageBottomButtonsNode = SKNode()
+        homePageBottomButtonsNode.position = CGPointMake(self.size.width/2, 0)
+        addChild(homePageBottomButtonsNode)
+        
+        // 选择角色按钮
+        let characterButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "homeButton_Character"))//SKSimpleButton(imageNamed: "button_settings")
+        characterButton.name = "characterButton"
+        characterButton.targetTouchUpInside = self
+        characterButton.actionTouchUpInside = "openCharacterUI" // 执行方法名
+        characterButton.position = CGPointMake(-(120 * scaleFactor), 40)
+        homePageBottomButtonsNode.addChild(characterButton)
+        
+        // 设置按钮
+        let settingsButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_settings"))//SKSimpleButton(imageNamed: "button_topCharts")
+        settingsButton.name = "settingsButton"
+        settingsButton.targetTouchUpInside = self
+        settingsButton.actionTouchUpInside = "openSettingsPage" // 执行方法名
+        settingsButton.position = CGPointMake(120 * scaleFactor, 40)
+        homePageBottomButtonsNode.addChild(settingsButton)
     }
     
     //  显示主页UI
@@ -1015,24 +839,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         homePageUINode = SKNode()
         homePageUINode.zPosition = 50
         addChild(homePageUINode)
-        
-        // 设置按钮
-        let settingsButton = SKSimpleButton(imageNamed: "button-settings-on")
-        settingsButton.name = "settingsButton"
-        settingsButton.targetTouchUpInside = self
-        settingsButton.actionTouchUpInside = "openSettingsPage" // 执行方法名
-        settingsButton.size = CGSize(width: Button_Width, height: Button_Width)
-        settingsButton.position = CGPointMake(Button_Width/1.5, 40)
-        homePageUINode.addChild(settingsButton)
-        
-        // 分享按钮
-        let shareButton = SKSimpleButton(imageNamed: "button-share-on")
-        shareButton.name = "shareButton"
-        shareButton.targetTouchUpInside = self
-        shareButton.actionTouchUpInside = "openSharePage" // 执行方法名
-        shareButton.size = CGSize(width: Button_Width, height: Button_Width)
-        shareButton.position = CGPointMake(self.size.width - Button_Width/1.5, 40)
-        homePageUINode.addChild(shareButton)
         
         // 分数榜
         let logoSprite = SKSpriteNode(imageNamed: "logoTitleSp")
@@ -1062,13 +868,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         starsLabel.text = String(format: "%d", GameState.sharedInstance.stars)
         homePageUINode.addChild(starsLabel)
         
-//        let wordLabel = SKLabelNode(fontNamed: "HelveticaNeue")
-//        wordLabel.fontSize = 26
-//        wordLabel.position = CGPoint(x: self.size.width/2, y: self.size.height/16)
-//        wordLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
-//        wordLabel.text = "轻按来开始"
-//        homePageUINode.addChild(wordLabel)
-        
     }
     
     // 显示暂停界面
@@ -1085,31 +884,20 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         pauseUINode.addChild(maskSprite)
         
         // 回主页按钮
-        let gohomeButton = SKSimpleButton(imageNamed: "button-quit-on")
+        let gohomeButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_quit")) //SKSimpleButton(imageNamed: "button_quit")
         gohomeButton.name = "gohomeButton"
         gohomeButton.targetTouchUpInside = self
         gohomeButton.actionTouchUpInside = "pauseGoHome" // 执行方法名
-        gohomeButton.size = CGSize(width: Button_Width, height: Button_Width)
         gohomeButton.position = CGPointMake(-self.size.width/4, -self.size.height/5)
         pauseUINode.addChild(gohomeButton)
         
         // 继续按钮
-        let continueButton = SKSimpleButton(imageNamed: "button-continue")
+        let continueButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_play")) //SKSimpleButton(imageNamed: "button_play")
         continueButton.name = "continueButton"
         continueButton.targetTouchUpInside = self
         continueButton.actionTouchUpInside = "pauseContinue" // 执行方法名
-        continueButton.size = CGSize(width: Button_Width, height: Button_Width)
         continueButton.position = CGPointMake(self.size.width/4, -self.size.height/5)
         pauseUINode.addChild(continueButton)
-        
-        // 重玩按钮
-//        let tryAgainButton = SKSimpleButton(imageNamed: "button-retry-on")
-//        tryAgainButton.name = "tryAgainButton"
-//        tryAgainButton.targetTouchUpInside = self
-//        tryAgainButton.actionTouchUpInside = "pauseTryAgain" // 执行方法名
-//        tryAgainButton.size = CGSize(width: Button_Width, height: Button_Width)
-//        tryAgainButton.position = CGPointMake(self.size.width/3, -self.size.height/5)
-//        pauseUINode.addChild(tryAgainButton)
         
     }
     
@@ -1152,24 +940,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         scoreHigthLabel.text = String(format: "最高纪录: %d", GameState.sharedInstance.highScore)
         overUINode.addChild(scoreHigthLabel)
         
-        // 回主页按钮
-        let gohomeButton = SKSimpleButton(imageNamed: "button-home-on")
-        gohomeButton.name = "gohomeButton"
-        gohomeButton.targetTouchUpInside = self
-        gohomeButton.actionTouchUpInside = "gameOverGoHome" // 执行方法名
-        gohomeButton.size = CGSize(width: Button_Width, height: Button_Width)
-        gohomeButton.position = CGPointMake(-80, -200)
-        overUINode.addChild(gohomeButton)
-
-        // 重试按钮
-        let tryAgainButton = SKSimpleButton(imageNamed: "button-retry-on")
-        tryAgainButton.name = "gohomeButton"
-        tryAgainButton.targetTouchUpInside = self
-        tryAgainButton.actionTouchUpInside = "gameOverTryAgain" // 执行方法名
-        tryAgainButton.size = CGSize(width: Button_Width, height: Button_Width)
-        tryAgainButton.position = CGPointMake(80, -200)
-        overUINode.addChild(tryAgainButton)
-        
         // 界面动画
         let palyerFistAction = SKAction.moveToY(self.size.height/1.5, duration: 0.3)
         palyerFistAction.timingMode = SKActionTimingMode.EaseInEaseOut
@@ -1177,17 +947,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         overUINode.runAction(SKAction.group([palyerFistAction, fadeAlpha]))
         
     }
-    
-    // 打开主页UI
-    func openHomePageUI() {
-        showHomePageUI()
-    }
-    
-    // 关闭主页UI
-    func closeHomePageUI() {
-        homePageUINode.hidden = true
-        
-    }
+
     
     // 关闭暂停游戏界面
     func closePauseUI() {
@@ -1211,9 +971,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-
-    
-    
     // MARK: 按钮事件
     
     //  选择语言
@@ -1227,18 +984,14 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         println(music)
 
         if music {
-            // 如果是开的 就暂停音乐
-            self.musicButton.alpha = 0.5
-            self.musicButton.color = SKColor.whiteColor()
-            
+            // 如果是开的 就暂停音乐            
             SKTAudio.sharedInstance().pauseBackgroundMusic()
             GameState.sharedInstance.musicState = false
             GameState.sharedInstance.saveState()
             
         } else {
             // 恢复音乐播放
-            self.musicButton.alpha = 1
-            self.musicButton.color = SKColor.clearColor()
+            //self.musicButton = SKSimpleButton(imageNamed: "button_sound_off")
             
             SKTAudio.sharedInstance().resumeBackgroundMusic()
             GameState.sharedInstance.musicState = true
@@ -1248,25 +1001,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    // 音效
-//    func soundButtonAction() {
-//        print("音效开关", appendNewline: true)
-//        
-//        let isON:Bool = GameState.sharedInstance.soundEffectState
-//        if isON {
-//            // 如果是开的 就暂停音乐
-//            GameState.sharedInstance.soundEffectState = false
-//            GameState.sharedInstance.saveState()
-//            
-//            
-//            
-//        } else {
-//            // 恢复音乐播放
-//            GameState.sharedInstance.soundEffectState = true
-//            GameState.sharedInstance.saveState()
-//        }
-//    }
-    
     // 暂停游戏 ->回主页
     func pauseGoHome() {
         // 退出游戏 回到主场景
@@ -1275,20 +1009,16 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         self.paused = false
         isTryAgainGame = false
         
-        self.gamePlaydelegate.gameGoHome()
+        goLoadingScene()
     }
     
-    // 暂停游戏 ->重玩
-//    func pauseTryAgain() {
-//        print("暂停游戏 ->重玩", appendNewline: true)
-//        closePauseUI()
-//        closeHomePageUI()
-//        
-//        self.paused = false
-//        
-//        self.gamePlaydelegate.gameTryAgain()
-//    }
+    // 跳转场景
+    func goLoadingScene() {
+        let loadingScene = LoadingScene(size: self.size)
+        self.view?.presentScene(loadingScene)
+    }
     
+
     // 暂停游戏 ->继续
     func pauseContinue() {
         
@@ -1303,26 +1033,15 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         closeGameOverUI()
         
-        isTryAgainGame = false
-        self.gamePlaydelegate.gameGoHome()
+        goLoadingScene()
+        
+        //isTryAgainGame = false
         
     }
     
     // 游戏结束 －> 重玩
     func gameOverTryAgain() {
-        
-        let loadingScene = LoadingScene(size: self.size)
-        self.view?.presentScene(loadingScene)
-        
-        
-//        self.paused = false
-//        closeGameOverUI()
-//        closeHomePageUI()
-//        
-//        isTryAgainGame = true
-//        
-//        self.gamePlaydelegate.gameGoHome()
-        
+        goLoadingScene()
     }
     
     //MARK: 点击事件
@@ -1409,11 +1128,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         //print("当前时间:\(currentTime)")
         //scrollBackground()
         
-        if isGameBegin {
-            playTime++
-            movingExtent = Int(self.playTime * playerMoveSpeed)
-            updateMovingExtent()
-        }
+//        if isGameBegin {
+//            playTime++
+//            movingExtent = Int(self.playTime * playerMoveSpeed)
+//            updateMovingExtent()
+//        }
     }
     
     func randomStarMoon() -> SKTexture{

@@ -18,7 +18,7 @@
 		A01411F21B550DA900238667 /* GameObjectNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01411EF1B550DA900238667 /* GameObjectNode.swift */; };
 		A01411F31B550DA900238667 /* EndGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01411F01B550DA900238667 /* EndGameScene.swift */; };
 		A01411F91B550DC100238667 /* SKEmitterNode+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01411F51B550DC100238667 /* SKEmitterNode+Extras.swift */; };
-		A01411FA1B550DC100238667 /* SKSimpleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01411F61B550DC100238667 /* SKSimpleButton.swift */; };
+		A01411FA1B550DC100238667 /* LDSKSimpleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01411F61B550DC100238667 /* LDSKSimpleButton.swift */; };
 		A01411FC1B550DC100238667 /* MyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01411F81B550DC100238667 /* MyUtils.swift */; };
 		A01411FE1B550E0100238667 /* SKTAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01411FD1B550E0100238667 /* SKTAudio.swift */; };
 		A01412061B550E8D00238667 /* GameSpriteAtlas.1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A01412021B550E8D00238667 /* GameSpriteAtlas.1@2x.png */; };
@@ -51,9 +51,12 @@
 		A0365CA01B58FF03009C9443 /* PlayerTrail.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0365C9F1B58FF03009C9443 /* PlayerTrail.sks */; };
 		A06178F01B59049A00EFCACB /* SKColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06178EF1B59049A00EFCACB /* SKColor+Extensions.swift */; };
 		A06178F21B591ECD00EFCACB /* LoadingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06178F11B591ECD00EFCACB /* LoadingScene.swift */; };
-		A06178F81B592E0100EFCACB /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = A06178F71B592E0100EFCACB /* bg.png */; };
 		A08D7B661B565555008E90AE /* glodPart.png in Resources */ = {isa = PBXBuildFile; fileRef = A08D7B651B565555008E90AE /* glodPart.png */; };
 		A08D7B691B56563D008E90AE /* coin_steal_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A08D7B681B56563D008E90AE /* coin_steal_02.mp3 */; };
+		A09B6B9A1B5C850500918A48 /* skybg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A09B6B991B5C850500918A48 /* skybg@2x.png */; };
+		A09B6B9C1B5CE60200918A48 /* SKSimpleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B6B9B1B5CE60200918A48 /* SKSimpleButton.swift */; };
+		A09B6B9E1B5CE7AE00918A48 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = A09B6B9D1B5CE7AE00918A48 /* README.md */; };
+		A09B6BA01B5CE88500918A48 /* SpriteKit-Spring.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B6B9F1B5CE88500918A48 /* SpriteKit-Spring.swift */; };
 		A0A2F4481B56645A00FE5E6B /* EnemySplatter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0A2F4471B56645A00FE5E6B /* EnemySplatter.sks */; };
 		A0A2F44C1B56658E00FE5E6B /* AnimatingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */; };
 		A0B238BE1B57877A003594FE /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B238BD1B57877A003594FE /* HomeScene.swift */; };
@@ -88,7 +91,7 @@
 		A01411EF1B550DA900238667 /* GameObjectNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameObjectNode.swift; sourceTree = "<group>"; };
 		A01411F01B550DA900238667 /* EndGameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndGameScene.swift; sourceTree = "<group>"; };
 		A01411F51B550DC100238667 /* SKEmitterNode+Extras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKEmitterNode+Extras.swift"; sourceTree = "<group>"; };
-		A01411F61B550DC100238667 /* SKSimpleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSimpleButton.swift; sourceTree = "<group>"; };
+		A01411F61B550DC100238667 /* LDSKSimpleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LDSKSimpleButton.swift; sourceTree = "<group>"; };
 		A01411F81B550DC100238667 /* MyUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyUtils.swift; sourceTree = "<group>"; };
 		A01411FD1B550E0100238667 /* SKTAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTAudio.swift; sourceTree = "<group>"; };
 		A01412021B550E8D00238667 /* GameSpriteAtlas.1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GameSpriteAtlas.1@2x.png"; sourceTree = "<group>"; };
@@ -121,9 +124,12 @@
 		A0365C9F1B58FF03009C9443 /* PlayerTrail.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PlayerTrail.sks; sourceTree = "<group>"; };
 		A06178EF1B59049A00EFCACB /* SKColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKColor+Extensions.swift"; sourceTree = "<group>"; };
 		A06178F11B591ECD00EFCACB /* LoadingScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingScene.swift; sourceTree = "<group>"; };
-		A06178F71B592E0100EFCACB /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
 		A08D7B651B565555008E90AE /* glodPart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glodPart.png; sourceTree = "<group>"; };
 		A08D7B681B56563D008E90AE /* coin_steal_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = coin_steal_02.mp3; sourceTree = "<group>"; };
+		A09B6B991B5C850500918A48 /* skybg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skybg@2x.png"; sourceTree = "<group>"; };
+		A09B6B9B1B5CE60200918A48 /* SKSimpleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSimpleButton.swift; sourceTree = "<group>"; };
+		A09B6B9D1B5CE7AE00918A48 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A09B6B9F1B5CE88500918A48 /* SpriteKit-Spring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SpriteKit-Spring.swift"; sourceTree = "<group>"; };
 		A0A2F4471B56645A00FE5E6B /* EnemySplatter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EnemySplatter.sks; sourceTree = "<group>"; };
 		A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingSprite.swift; sourceTree = "<group>"; };
 		A0B238BD1B57877A003594FE /* HomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
@@ -236,7 +242,10 @@
 				A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */,
 				A01411FD1B550E0100238667 /* SKTAudio.swift */,
 				A01411F51B550DC100238667 /* SKEmitterNode+Extras.swift */,
-				A01411F61B550DC100238667 /* SKSimpleButton.swift */,
+				A09B6B9F1B5CE88500918A48 /* SpriteKit-Spring.swift */,
+				A09B6B9B1B5CE60200918A48 /* SKSimpleButton.swift */,
+				A09B6B9D1B5CE7AE00918A48 /* README.md */,
+				A01411F61B550DC100238667 /* LDSKSimpleButton.swift */,
 				A01411F81B550DC100238667 /* MyUtils.swift */,
 			);
 			name = SKTUtils;
@@ -275,7 +284,7 @@
 		A014120A1B550E9E00238667 /* OtherImages */ = {
 			isa = PBXGroup;
 			children = (
-				A06178F71B592E0100EFCACB /* bg.png */,
+				A09B6B991B5C850500918A48 /* skybg@2x.png */,
 				A014120B1B550EBE00238667 /* face_1 */,
 			);
 			name = OtherImages;
@@ -424,7 +433,6 @@
 			files = (
 				A014122A1B550EBE00238667 /* face_1_008@2x.png in Resources */,
 				A01412361B550ED400238667 /* game_music2.mp3 in Resources */,
-				A06178F81B592E0100EFCACB /* bg.png in Resources */,
 				A01412261B550EBE00238667 /* face_1_006@2x.png in Resources */,
 				A01412381B550ED400238667 /* game_music4.mp3 in Resources */,
 				A01412351B550ED400238667 /* bgMusic.mp3 in Resources */,
@@ -451,6 +459,7 @@
 				A01411CC1B550B7900238667 /* Main.storyboard in Resources */,
 				A014122B1B550EBE00238667 /* face_1_008@3x.png in Resources */,
 				A01412371B550ED400238667 /* collisionSound.wav in Resources */,
+				A09B6B9A1B5C850500918A48 /* skybg@2x.png in Resources */,
 				A01412201B550EBE00238667 /* face_1_003@2x.png in Resources */,
 				A01412211B550EBE00238667 /* face_1_003@3x.png in Resources */,
 				A014121D1B550EBE00238667 /* face_1_001@3x.png in Resources */,
@@ -475,14 +484,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A09B6BA01B5CE88500918A48 /* SpriteKit-Spring.swift in Sources */,
 				A01411F21B550DA900238667 /* GameObjectNode.swift in Sources */,
 				A01411FE1B550E0100238667 /* SKTAudio.swift in Sources */,
 				A01411FC1B550DC100238667 /* MyUtils.swift in Sources */,
 				A0B238BE1B57877A003594FE /* HomeScene.swift in Sources */,
 				A0C909B11B560B6D00684831 /* SKAction+Extensions.swift in Sources */,
 				A01411F91B550DC100238667 /* SKEmitterNode+Extras.swift in Sources */,
+				A09B6B9E1B5CE7AE00918A48 /* README.md in Sources */,
 				A01411EB1B550D2B00238667 /* UnionModeGameViewController.swift in Sources */,
-				A01411FA1B550DC100238667 /* SKSimpleButton.swift in Sources */,
+				A09B6B9C1B5CE60200918A48 /* SKSimpleButton.swift in Sources */,
+				A01411FA1B550DC100238667 /* LDSKSimpleButton.swift in Sources */,
 				A01411F11B550DA900238667 /* GameState.swift in Sources */,
 				A06178F21B591ECD00EFCACB /* LoadingScene.swift in Sources */,
 				A01411C31B550B7900238667 /* AppDelegate.swift in Sources */,
@@ -620,10 +632,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = SillyMan_6/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -632,10 +647,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = SillyMan_6/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
 		};

@@ -67,11 +67,10 @@ class LoadingScene: SKScene {
         
         
         
-        let transition = SKTransition.crossFadeWithDuration(2)
+        let transition = SKTransition.crossFadeWithDuration(0.5)
         
         let gameScene = UnionModeGameScene(size: self.size)
         self.view?.presentScene(gameScene, transition: transition)
-        //self.view?.presentScene(gameScene)
         
         //  用dispatch_after推迟任务
 //        let delayInSeconds = 0.5

@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 
-class UnionModeGameViewController: UIViewController, GamePlayDelegate {
+class UnionModeGameViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,47 +19,16 @@ class UnionModeGameViewController: UIViewController, GamePlayDelegate {
         let scene = UnionModeGameScene(size:skView.bounds.size)
         skView.showsFPS = true
         skView.showsNodeCount = true
-        skView.showsPhysics = true
+        //skView.showsPhysics = true
         
         skView.ignoresSiblingOrder = true
         scene.scaleMode = .AspectFill
         skView.presentScene(scene)
         
-        scene.gamePlaydelegate = self
-        
     }
-    
-    func newGameScene() {
-        let skView = self.view as! SKView
-        //skView.paused = false
-        
-        let scene = UnionModeGameScene(size:skView.bounds.size)
-        skView.showsFPS = true
-        skView.showsNodeCount = true
-        //skView.showsPhysics = true
-        
-        skView.ignoresSiblingOrder = true
-        
-        scene.scaleMode = .AspectFill
-        
-        let outTr = SKTransition.fadeWithDuration(0.5)
-        skView.presentScene(scene, transition: outTr)
-        
-        scene.gamePlaydelegate = self
-    }
-    
-    
-    //MARK: GameScene Delegate Method
-    
-    func gameGoHome() {
-        newGameScene()
-    }
-    
+
     //MARK: GameCenter 游戏中心
     // 三大功能 1.成就 achievements, 2. 排行榜 leaderboards 3. 实时多人游戏  real-time multiplayer gaming
-    
-    
-    //MARK:
     
     override func shouldAutorotate() -> Bool {
         return true
