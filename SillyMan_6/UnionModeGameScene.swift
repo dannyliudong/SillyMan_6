@@ -172,7 +172,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: Did Move To View
     override func didMoveToView(view: SKView) {
-        self.fadeOutMask()
+        //self.fadeOutMask()
+
     }
     
     func createGameNodes() {
@@ -348,7 +349,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         shapeNode.strokeColor = SKColorWithRGBA(255, 255, 255, 196)
         shapeNode.lineWidth = 1
         shapeNode.antialiased = false
-        shapeNode.zPosition = 90
+        shapeNode.zPosition = 100
         addChild(shapeNode)
         // 3
         let duration = 0.6
@@ -489,18 +490,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
 //        emitter.position = CGPointMake(0, 100)
 //        smileSprite.addChild(emitter)
         
-        
-//        let tentaclesSprite = SKSpriteNode(texture: atlas.tentacles_tentacles_1())
-//        tentaclesSprite.yScale = 0.8
-//        tentaclesSprite.xScale = 0.8
-//        tentaclesSprite.position = CGPointMake(tentaclesSprite.size.width/3, -tentaclesSprite.size.height/1.5)
-//        smileSprite.addChild(tentaclesSprite)
-//        
-//        let tentacles = SKAction.animateWithTextures(atlas.tentacles_tentacles_(), timePerFrame: 0.033)
-//        let tentaclesAni = SKAction.repeatAction(tentacles, count: 6)
-//        let tentaclesSequence = SKAction.repeatActionForever(SKAction.sequence([tentaclesAni]))
-//        tentaclesSprite.runAction(tentaclesSequence)
-        
         _node.physicsBody = SKPhysicsBody(circleOfRadius: smileSprite.size.width/2 * 0.5)
         _node.physicsBody?.dynamic = false
         _node.physicsBody?.allowsRotation = false
@@ -527,7 +516,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         _node.addChild(sprite)
         
-        _node.zPosition = 1
+        //_node.zPosition = 1
         
         _node.physicsBody = SKPhysicsBody(rectangleOfSize: sprite.size)
         _node.physicsBody?.dynamic = true
@@ -563,7 +552,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             let sprite = SKSpriteNode(imageNamed: "Star")
             _node.addChild(sprite)
             
-            _node.zPosition = 1
+            //_node.zPosition = 1
             
             _node.physicsBody = SKPhysicsBody(circleOfRadius: sprite.size.width/2)
             
@@ -592,7 +581,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func starGame() {
         isGameOver = false
 
-        fadeOutMaskNode.removeFromParent()
         
         self.pauseButton.hidden = false
         
@@ -609,7 +597,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             SKTAudio.sharedInstance().playBackgroundMusic("game_music2.mp3")
         }
         
-        createGameNodes()
+        //createGameNodes()
         
     }
     
@@ -712,7 +700,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         maskSp.position = CGPointMake(self.Screen_Width/2, self.Screen_Height/2)
         fadeOutMaskNode.addChild(maskSp)
         
-        maskSp.runAction(SKAction.fadeAlphaTo(0, duration: 0.5))
+        let fadeAlphaAction = SKAction.fadeAlphaTo(0, duration: 0.5)
+        let wait = SKAction.waitForDuration(0.5)
+        let done = SKAction.removeFromParent()
+        
+        maskSp.runAction(SKAction.sequence([fadeAlphaAction, wait, done]))
     }
     
     func fadeInMask() {
@@ -726,23 +718,25 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         maskSp.position = CGPointMake(self.Screen_Width/2, self.Screen_Height/2)
         fadeInMaskNode.addChild(maskSp)
         
-        maskSp.runAction(SKAction.fadeAlphaTo(1, duration: 0.5))
+        let fadeAlphaAction = SKAction.fadeAlphaTo(1, duration: 0.5)
+        let wait = SKAction.waitForDuration(0.5)
+        let done = SKAction.removeFromParent()
+        
+        maskSp.runAction(SKAction.sequence([fadeAlphaAction, wait, done]))
     }
     
     //MARK:界面控制
     
     // 打开设置
     func openSettingsPage() {
-        openSettingsUI()
         guideFigerNode.hidden = true
+        openSettingsUI()
         isOpenUI = true
     }
     
     // 关闭设置
     func closeSettingsPage() {
-        
         guideFigerNode.hidden = false
-        
         settingsUINode.removeFromParent()
         isOpenUI = false
     }
@@ -809,6 +803,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         // 遮罩
         let maskSprite = SKSpriteNode(color: UIColor.blackColor(), size: self.size)
         maskSprite.alpha = 0.8
+        maskSprite.zPosition = -10
         settingsUINode.addChild(maskSprite)
         
         // 关闭界面
@@ -896,37 +891,26 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func showHomePageBottomButtons() {
         
         homePageBottomButtonsNode = SKNode()
+        homePageBottomButtonsNode.zPosition = 100
         homePageBottomButtonsNode.position = CGPointMake(Screen_Width/2, 0)
         addChild(homePageBottomButtonsNode)
         
         // 选择角色按钮
-        let characterButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "homeButton_Character1"))//SKSimpleButton(imageNamed: "button_settings")
+        let characterButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "homeButton_Character1"))
         characterButton.name = "characterButton"
         characterButton.targetTouchUpInside = self
         characterButton.actionTouchUpInside = "openCharacterUI" // 执行方法名
         characterButton.position = CGPointMake(-(120 * scaleFactor), 40)
         homePageBottomButtonsNode.addChild(characterButton)
         
-//        var textures = [SKTexture]()
-//        for (var i = 0;  i <= 1; i++) {
-//            let imageName = String(format: "homeButton_Character%d", i)
-//            println(imageName)
-//            let tx = SKTexture(imageNamed: imageName)
-//            textures.append(tx)
-//        }
-//        
-//        
-//        //let fingerSprite = SKSpriteNode(texture: SKTexture(imageNamed: "homeButton_Character1"))
-//       // characterButton.addChild(fingerSprite)
-//        
-//        let chart = SKAction.animateWithTextures(textures, timePerFrame: 0.3)
-//        let chartAni = SKAction.repeatAction(chart, count: 6)
-//        let chartSequence = SKAction.repeatActionForever(SKAction.sequence([chartAni]))
-//        characterButton.runAction(chartSequence)
+        let rot1 = SKAction.rotateToAngle(CGFloat(M_PI * 0.6), duration: 0.2)
+        let rot2 = SKAction.rotateToAngle(-CGFloat(M_PI * 0.6), duration: 0.2)
+        let wait = SKAction.waitForDuration(0.5)
         
+        //characterButton.runAction(SKAction.repeatActionForever(SKAction.sequence([rot1, rot2, wait])))
         
         // 设置按钮
-        let settingsButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_settings"))//SKSimpleButton(imageNamed: "button_topCharts")
+        let settingsButton = SKSimpleButton(normalTexture: SKTexture(imageNamed: "button_settings"))
         settingsButton.name = "settingsButton"
         settingsButton.targetTouchUpInside = self
         settingsButton.actionTouchUpInside = "openSettingsPage" // 执行方法名
@@ -1164,11 +1148,25 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    // 求角色移动所需的时间
+    func playMovingTime(p1:CGPoint, p2:CGPoint, speed:CGFloat) ->CGFloat{
+        var time:CGFloat = 0
+        
+        // 移动时间 = 距离/速度
+        // 距离 = sqrt( (p1.x - p0.x) * (p1.x - p0.x) +  (p1.y - p0.y) * (p1.y - p0.y) )
+        
+        let juli:CGFloat! = sqrt((p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y))
+        let moveSpeed:CGFloat! = speed
+        
+        time = juli / moveSpeed
+        
+        return time
+    }
     
     //MARK: 点击事件
     private var state = 0
     
-    private var Player_Move_Speed:CGFloat = 0.3
+    private var Player_Move_Speed:CGFloat = 300
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         // 游戏开始前的设置
@@ -1177,14 +1175,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             
             let touch = touches.first as! UITouch
             let locationInNode = touch.locationInNode(self)
+
+            let tagetPoint:CGPoint = locationInNode
+            let playerPoint:CGPoint = playerNode.position
             
-            // 移动时间 = 距离/速度
-            // 距离
-            let juli:CGFloat! = 10
-            let moveSpeed:CGFloat! = 4.6
-            
-            Player_Move_Speed = juli / moveSpeed
-            sqrt(10.0)
+            let moveTime = playMovingTime(playerPoint, p2: tagetPoint, speed: Player_Move_Speed)
             
             println("Player_Move_Speed :\(Player_Move_Speed)")
             
@@ -1193,25 +1188,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
                 isFristRuning = false
             }
             
-            playerNode.runAction(SKAction.moveTo(locationInNode, duration: 0.1))
+            playerNode.runAction(SKAction.moveTo(locationInNode, duration: Double(moveTime)))
             tapEffectsForTouchAtLocation(locationInNode)
         }
         
     }
-    
-    
-    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
-        println("touchesCancelled")
-    }
-    
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
-        println("touchesEnded")
-    }
-    
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
-        println("touchesMoved")
-    }
-    
+
     
     var lastSpawnTimeInterval:NSTimeInterval  = 0// 上次更新时间
     var lastUpdateTimeInterval: NSTimeInterval = 0
