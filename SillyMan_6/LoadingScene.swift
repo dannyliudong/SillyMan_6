@@ -23,8 +23,6 @@ class LoadingScene: SKScene {
     override func didMoveToView(view: SKView) {
         // 放切换动画
         // 切换场景
-
-        let transition = SKTransition.crossFadeWithDuration(0.5)
         
         let gameScene = UnionModeGameScene(size: self.size)
         self.view?.presentScene(gameScene)

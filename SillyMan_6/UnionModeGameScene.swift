@@ -111,7 +111,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         scaleFactor = Screen_Width / 320.0
         self.playableRect = CGRect(x: 0, y: 0 , width: Screen_Width, height: Screen_Height)
         
-        
         // 引导手指
         figerNode()
         
@@ -131,11 +130,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         isFristRuning = true
         isGameOver = false
         
-        
         self.playerNode = createPlayer()
         addChild(playerNode)
-        
-        
         
         createBackground()
         
@@ -494,7 +490,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         let randomEnemyY = CGFloat.random(Int(self.size.height) +  20 )
         
-        
         let node = SKNode()
         node.position = CGPointMake(Screen_Width * 1.5, randomEnemyY)
         node.zPosition = 50
@@ -561,17 +556,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         _node.enemyType = type
         
         let sprite = SKSpriteNode(imageNamed: "enemy")
-        
         _node.addChild(sprite)
         
-        //_node.zPosition = 1
-        
         _node.physicsBody = SKPhysicsBody(rectangleOfSize: sprite.size)
-        _node.physicsBody?.dynamic = true
-        
         _node.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Enemy
-        _node.physicsBody?.collisionBitMask = 0//CollisionCategoryBitmask.Player
-        _node.physicsBody?.contactTestBitMask = 0//CollisionCategoryBitmask.Player
         
         return _node
         
@@ -588,7 +576,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             // 随机位置
             _node.position = CGPoint(x: randomEnemyX, y: playableRect.size.height + 50)
             
-            
             if _node.position.x < CGRectGetMinX(playableRect) {
                 _node.position.x = randomEnemyX + 20
             }
@@ -600,13 +587,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             let sprite = SKSpriteNode(imageNamed: "Star")
             _node.addChild(sprite)
             
-            //_node.zPosition = 1
             
             _node.physicsBody = SKPhysicsBody(circleOfRadius: sprite.size.width/2)
-            
             _node.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Star
-            _node.physicsBody?.collisionBitMask = 0//CollisionCategoryBitmask.Player
-            _node.physicsBody?.contactTestBitMask = 0//CollisionCategoryBitmask.Player
             
             addChild(_node)
             
@@ -725,14 +708,15 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) { () -> Void in
             
-            self.fadeInMask()
+            //self.fadeInMask()
+            self.goLoadingScene()
             
-            let delayInSeconds = 1.0
-            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
-            dispatch_after(popTime, dispatch_get_main_queue()) { () -> Void in
-                
-                self.goLoadingScene()
-            }
+//            let delayInSeconds = 1.0
+//            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+//            dispatch_after(popTime, dispatch_get_main_queue()) { () -> Void in
+//                
+//                self.goLoadingScene()
+//            }
         }
         
     }
