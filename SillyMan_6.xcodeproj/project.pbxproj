@@ -59,10 +59,11 @@
 		A09B6BA01B5CE88500918A48 /* SpriteKit-Spring.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B6B9F1B5CE88500918A48 /* SpriteKit-Spring.swift */; };
 		A0A2F4481B56645A00FE5E6B /* EnemySplatter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0A2F4471B56645A00FE5E6B /* EnemySplatter.sks */; };
 		A0A2F44C1B56658E00FE5E6B /* AnimatingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */; };
-		A0B238BE1B57877A003594FE /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B238BD1B57877A003594FE /* HomeScene.swift */; };
 		A0B5AD9C1B56352C005C4FD3 /* Splat.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B5AD9B1B56352C005C4FD3 /* Splat.png */; };
 		A0C909B11B560B6D00684831 /* SKAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */; };
 		A0C909B41B5634C600684831 /* GoldSplatter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0C909B31B5634C600684831 /* GoldSplatter.sks */; };
+		A0F9942B1B67185B002557DB /* BG1.png in Resources */ = {isa = PBXBuildFile; fileRef = A0F9942A1B67185B002557DB /* BG1.png */; };
+		A0FC70841B6724E20034C8F0 /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FC70831B6724E20034C8F0 /* HomeScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,10 +133,11 @@
 		A09B6B9F1B5CE88500918A48 /* SpriteKit-Spring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SpriteKit-Spring.swift"; sourceTree = "<group>"; };
 		A0A2F4471B56645A00FE5E6B /* EnemySplatter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EnemySplatter.sks; sourceTree = "<group>"; };
 		A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingSprite.swift; sourceTree = "<group>"; };
-		A0B238BD1B57877A003594FE /* HomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
 		A0B5AD9B1B56352C005C4FD3 /* Splat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Splat.png; sourceTree = "<group>"; };
 		A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKAction+Extensions.swift"; sourceTree = "<group>"; };
 		A0C909B31B5634C600684831 /* GoldSplatter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GoldSplatter.sks; sourceTree = "<group>"; };
+		A0F9942A1B67185B002557DB /* BG1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BG1.png; sourceTree = "<group>"; };
+		A0FC70831B6724E20034C8F0 /* HomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,10 +218,10 @@
 		A01411E61B550C7900238667 /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				A06178F11B591ECD00EFCACB /* LoadingScene.swift */,
 				A01411E91B550D2B00238667 /* UnionModeGameViewController.swift */,
+				A06178F11B591ECD00EFCACB /* LoadingScene.swift */,
+				A0FC70831B6724E20034C8F0 /* HomeScene.swift */,
 				A01411EA1B550D2B00238667 /* UnionModeGameScene.swift */,
-				A0B238BD1B57877A003594FE /* HomeScene.swift */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -284,6 +286,7 @@
 		A014120A1B550E9E00238667 /* OtherImages */ = {
 			isa = PBXGroup;
 			children = (
+				A0F9942A1B67185B002557DB /* BG1.png */,
 				A09B6B991B5C850500918A48 /* skybg@2x.png */,
 				A014120B1B550EBE00238667 /* face_1 */,
 			);
@@ -462,6 +465,7 @@
 				A09B6B9A1B5C850500918A48 /* skybg@2x.png in Resources */,
 				A01412201B550EBE00238667 /* face_1_003@2x.png in Resources */,
 				A01412211B550EBE00238667 /* face_1_003@3x.png in Resources */,
+				A0F9942B1B67185B002557DB /* BG1.png in Resources */,
 				A014121D1B550EBE00238667 /* face_1_001@3x.png in Resources */,
 				A01412231B550EBE00238667 /* face_1_004@3x.png in Resources */,
 				A014121E1B550EBE00238667 /* face_1_002@2x.png in Resources */,
@@ -488,7 +492,6 @@
 				A01411F21B550DA900238667 /* GameObjectNode.swift in Sources */,
 				A01411FE1B550E0100238667 /* SKTAudio.swift in Sources */,
 				A01411FC1B550DC100238667 /* MyUtils.swift in Sources */,
-				A0B238BE1B57877A003594FE /* HomeScene.swift in Sources */,
 				A0C909B11B560B6D00684831 /* SKAction+Extensions.swift in Sources */,
 				A01411F91B550DC100238667 /* SKEmitterNode+Extras.swift in Sources */,
 				A09B6B9E1B5CE7AE00918A48 /* README.md in Sources */,
@@ -499,6 +502,7 @@
 				A06178F21B591ECD00EFCACB /* LoadingScene.swift in Sources */,
 				A01411C31B550B7900238667 /* AppDelegate.swift in Sources */,
 				A06178F01B59049A00EFCACB /* SKColor+Extensions.swift in Sources */,
+				A0FC70841B6724E20034C8F0 /* HomeScene.swift in Sources */,
 				A01411F31B550DA900238667 /* EndGameScene.swift in Sources */,
 				A01411EC1B550D2B00238667 /* UnionModeGameScene.swift in Sources */,
 				A01412091B550E8D00238667 /* GameSpriteAtlas.swift in Sources */,
