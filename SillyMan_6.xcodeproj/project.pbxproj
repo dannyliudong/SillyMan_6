@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A00EE1B61B6772C000BC7BBC /* blackStone.png in Resources */ = {isa = PBXBuildFile; fileRef = A00EE1B51B6772C000BC7BBC /* blackStone.png */; };
 		A01411C31B550B7900238667 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01411C21B550B7900238667 /* AppDelegate.swift */; };
 		A01411CC1B550B7900238667 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A01411CA1B550B7900238667 /* Main.storyboard */; };
 		A01411CE1B550B7900238667 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A01411CD1B550B7900238667 /* Images.xcassets */; };
@@ -77,6 +78,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A00EE1B51B6772C000BC7BBC /* blackStone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackStone.png; sourceTree = "<group>"; };
 		A01411BD1B550B7900238667 /* SillyMan_6.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SillyMan_6.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A01411C11B550B7900238667 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A01411C21B550B7900238667 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 		A014120A1B550E9E00238667 /* OtherImages */ = {
 			isa = PBXGroup;
 			children = (
+				A00EE1B51B6772C000BC7BBC /* blackStone.png */,
 				A0F9942A1B67185B002557DB /* BG1.png */,
 				A09B6B991B5C850500918A48 /* skybg@2x.png */,
 				A014120B1B550EBE00238667 /* face_1 */,
@@ -459,6 +462,7 @@
 				A0365C9E1B58E5E5009C9443 /* Star.png in Resources */,
 				A01412281B550EBE00238667 /* face_1_007@2x.png in Resources */,
 				A01412291B550EBE00238667 /* face_1_007@3x.png in Resources */,
+				A00EE1B61B6772C000BC7BBC /* blackStone.png in Resources */,
 				A01411CC1B550B7900238667 /* Main.storyboard in Resources */,
 				A014122B1B550EBE00238667 /* face_1_008@3x.png in Resources */,
 				A01412371B550ED400238667 /* collisionSound.wav in Resources */,
@@ -637,12 +641,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Liu Yue (6322775JM4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Liu Yue (3QAMG746Y7)";
 				INFOPLIST_FILE = SillyMan_6/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "329ac7bc-aae3-4523-87ef-5bf1586c4051";
+				PROVISIONING_PROFILE = "d6594dbe-8a64-4b3f-8641-0f300ad485ca";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -654,12 +658,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Liu Yue (6322775JM4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Liu Yue (3QAMG746Y7)";
 				INFOPLIST_FILE = SillyMan_6/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "329ac7bc-aae3-4523-87ef-5bf1586c4051";
+				PROVISIONING_PROFILE = "d6594dbe-8a64-4b3f-8641-0f300ad485ca";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;

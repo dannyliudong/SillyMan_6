@@ -13,6 +13,7 @@ struct CollisionCategoryBitmask {
     static let Player: UInt32 = 0x00
     static let Star: UInt32 = 0x01 // 1 吃到加成
     static let Enemy: UInt32 = 0x02 // 2 吃到敌人 game over
+    static let SeaBottom: UInt32 = 0x04 // 碰撞海底
 }
 
 enum EnemyType: Int {

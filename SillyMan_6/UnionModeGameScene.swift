@@ -93,10 +93,17 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     private var adjustmentBackgroundPosition:CGFloat = 0 //调整背景位置
     
-    //MARK: 初始化
-    override init(size: CGSize) {
+    
+    //MARK: Did Move To View
+    override func didMoveToView(view: SKView) {
         
-        super.init(size: size)
+        // setup physics
+        self.physicsWorld.gravity = CGVectorMake( 0.0, -5.0 )
+        self.physicsWorld.contactDelegate = self
+        
+        // setup background color
+        let skyColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
+        self.backgroundColor = skyColor
         
         Screen_Width = self.size.width
         Screen_Height = self.size.height
@@ -104,24 +111,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         scaleFactor = Screen_Width / 320.0
         self.playableRect = CGRect(x: 0, y: 0 , width: Screen_Width, height: Screen_Height)
         
-        self.backgroundColor = SKColor.purpleColor()
-        
-//        let skybg = SKSpriteNode(imageNamed: "skybg")
-//        skybg.position = CGPointMake(Screen_Width/2, Screen_Height/2)
-//        skybg.setScale(scaleFactor)
-//        addChild(skybg)
-        
-        enemyTypeLeve = EnemyType.Normal
-        enemySpeedLeve = 1
-        
-        
-        // 粒子背景
-//        let particlePath = NSBundle.mainBundle().pathForResource("Bokeh", ofType: "sks")
-//        let emitterNode = NSKeyedUnarchiver.unarchiveObjectWithFile(particlePath!) as! SKEmitterNode
-//        emitterNode.position = CGPointMake(self.size.width/2, self.size.height/2)
-//        emitterNode.alpha = 0.5
-//        addChild(emitterNode)
-//        emitterNode.hidden = true
         
         // 引导手指
         figerNode()
@@ -139,41 +128,26 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         showHomePageUI()
         showHomePageBottomButtons()
         
-        // 创建主页UI
-//        if !isTryAgainGame {
-//            showHomePageUI()
-//            showHomePageBottomButtons()
-//        }
-        
         isFristRuning = true
         isGameOver = false
         
-        initPhysicsWorld()
         
         self.playerNode = createPlayer()
         addChild(playerNode)
+        
+        
         
         createBackground()
         
         //  1.游戏开始前的音乐
         SKTAudio.sharedInstance().playBackgroundMusic("night_1_v3.mp3")
-
+        
         let music = GameState.sharedInstance.musicState
         
         if !music {
             // 暂停音乐
             SKTAudio.sharedInstance().pauseBackgroundMusic()
         }
-
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: Did Move To View
-    override func didMoveToView(view: SKView) {
-        //self.fadeOutMask()
 
     }
     
@@ -186,18 +160,13 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
                 ])
             ))
         
-        runAction(SKAction.repeatActionForever(
-            SKAction.sequence([
-                SKAction.waitForDuration(5.0),
-                SKAction.runBlock(createStar)])
-            ))
+//        runAction(SKAction.repeatActionForever(
+//            SKAction.sequence([
+//                SKAction.waitForDuration(5.0),
+//                SKAction.runBlock(createStar)])
+//            ))
     }
     
-    func initPhysicsWorld() {
-        self.physicsWorld.contactDelegate = self
-        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
-
-    }
     
     var rotateFlag:Bool = true // 旋转方向 true: 逆时针方向， false:  顺时针方向
     
@@ -245,9 +214,31 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         backgroundNode.addChild(background1)
         backgroundNode.addChild(background2)
         
+        //  碰撞的部分
+        let stone1 = SKSpriteNode(imageNamed: "blackStone")
+        stone1.position = CGPointMake(0, -self.size.height/2)
+        background1.addChild(stone1)
+        
+        let stone2 = SKSpriteNode(imageNamed: "blackStone")
+        stone2.physicsBody = SKPhysicsBody(rectangleOfSize: stone1.size)
+        stone2.position = CGPointMake(0, -self.size.height/2)
+        background2.addChild(stone2)
+        
+        stone1.physicsBody = SKPhysicsBody(rectangleOfSize: stone1.size)
+        stone1.physicsBody?.dynamic = false
+        stone1.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+        stone2.physicsBody = SKPhysicsBody(rectangleOfSize: stone1.size)
+        stone2.physicsBody?.dynamic = false
+        stone2.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
     }
     
-    //MARK: 滚动背景
+    // 滚动Enemy 层
+    
+    
+    
+    //MARK: 滚动背景层
     func scrollBackground() {
         adjustmentBackgroundPosition--
         if (adjustmentBackgroundPosition <= 0) {
@@ -271,8 +262,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
                 collisionWithStar(starNode)
                 
             case CollisionCategoryBitmask.Enemy:
-                let enemyNode = other.node as! EnemyNode
-                collisionWithEnemy(enemyNode)
+                let enemyNode = other.node
+                collisionWithEnemy(enemyNode!)
+                
+            case CollisionCategoryBitmask.SeaBottom :
+                collisionSeaBottom(playerNode)
                 
             default:
                 break;
@@ -304,7 +298,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
        
     }
     
-    func collisionWithEnemy(node:EnemyNode) {
+    func collisionWithEnemy(node:SKNode) {
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
             runAction(enemySound)
@@ -318,14 +312,31 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    //  碰撞海底
+    
+    func collisionSeaBottom(node:SKNode) {
+        let musicOn = GameState.sharedInstance.musicState
+        if musicOn {
+            runAction(enemySound)
+            gameOver()
+        } else {
+            gameOver()
+        }
+        
+        showParticlesForEnemy(node)
+        //self.playerNode.removeFromParent()
+        self.playerNode.physicsBody?.dynamic = false
+    }
+    
     //MARK: 粒子特效
     
     // 撞击敌人 死亡特效
-    func showParticlesForEnemy(node: EnemyNode) {
+    func showParticlesForEnemy(node: SKNode) {
         
         let emitter = SKEmitterNode.emitterNamed("EnemySplatter")
         emitter.particleTexture!.filteringMode = .Nearest
         emitter.position = node.position
+        emitter.zPosition = 100
         
         emitter.runAction(SKAction.removeFromParentAfterDelay(0.4))
         addChild(emitter)
@@ -344,9 +355,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     // 点击特效
     func tapEffectsForTouchAtLocation(location: CGPoint) {
-        //stretchPlayerWhenMoved()
         showTapAtLocation(location)
-        //player.runAction(playerMoveSound)
     }
     
     
@@ -482,19 +491,29 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     // 构建障碍物
     func createBarrier() {
+        
+        let randomEnemyY = CGFloat.random(Int(self.size.height) +  20 )
+        
+        
         let node = SKNode()
+        node.position = CGPointMake(Screen_Width * 1.5, randomEnemyY)
+        node.zPosition = 50
         addChild(node)
         
-        let bow = SKSpriteNode(color: SKColorWithRGBA(200, 200, 200, 1), size: CGSizeMake(100, 40))
+        let bow = SKSpriteNode(imageNamed: "enemy")
         node.addChild(bow)
         
         node.physicsBody = SKPhysicsBody(rectangleOfSize: bow.size)
-        node.physicsBody?.dynamic = true
+        node.physicsBody?.dynamic = false
         node.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Enemy
         node.physicsBody?.collisionBitMask = 0
         node.physicsBody?.contactTestBitMask = 0
         
-        backgroundNode.addChild(node)
+        
+        let move = SKAction.moveToX(-Screen_Width/2, duration: 3)
+        let movedone = SKAction.removeFromParent()
+        node.runAction(SKAction.sequence([move, movedone]))
+        
     }
     
     
@@ -502,7 +521,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func createPlayer() ->SKNode {
         
         let node = SKNode()
-        node.position = CGPoint(x: Screen_Width/2, y: self.size.height/3)
+        node.position = CGPoint(x: Screen_Width/3, y: self.size.height/2)
         
         let submarineSp = SKSpriteNode(imageNamed: "submarine")
         node.addChild(submarineSp)
@@ -523,11 +542,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         node.physicsBody = SKPhysicsBody(rectangleOfSize: submarineSp.size)
         node.physicsBody?.dynamic = false
         node.physicsBody?.allowsRotation = false
-        node.physicsBody?.usesPreciseCollisionDetection = true
         
         node.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Player
-        node.physicsBody?.collisionBitMask = 0//CollisionCategoryBitmask.Star
-        node.physicsBody?.contactTestBitMask = CollisionCategoryBitmask.Star | CollisionCategoryBitmask.Enemy
+        node.physicsBody?.collisionBitMask = 0
+        node.physicsBody?.contactTestBitMask = CollisionCategoryBitmask.Star | CollisionCategoryBitmask.Enemy | CollisionCategoryBitmask.SeaBottom
         
         return node
     }
@@ -612,6 +630,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         isGameOver = false
         isGameBegin = true
         
+        playerNode.physicsBody?.dynamic = true
+        
         self.pauseButton.hidden = false
         
         homePageUINode.removeFromParent()
@@ -627,7 +647,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             SKTAudio.sharedInstance().playBackgroundMusic("game_music2.mp3")
         }
         
-        //createGameNodes()
+        createGameNodes()
         
     }
     
@@ -865,14 +885,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         musicButton.actionTouchUpInside = "musicButtonAction" // 执行方法名
         musicButton.position = CGPointMake(0, 50)
         
-//        let isON:Bool = GameState.sharedInstance.musicState
-//        if !isON {
-//            self.musicButton.alpha = 0.8
-//            self.musicButton.color = SKColor.whiteColor()
-//        } else {
-//            self.musicButton.alpha = 1
-//            self.musicButton.color = SKColor.clearColor()
-//        }
         settingsUINode.addChild(musicButton)
         
     }
@@ -1218,8 +1230,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
                 isFristRuning = false
             }
             
-            playerNode.runAction(SKAction.moveTo(locationInNode, duration: Double(moveTime)))
+            
+            //playerNode.runAction(SKAction.moveTo(locationInNode, duration: Double(moveTime)))
             tapEffectsForTouchAtLocation(locationInNode)
+            
+            playerNode.physicsBody?.velocity = CGVectorMake(0, 0)
+            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 100))
         }
         
     }
