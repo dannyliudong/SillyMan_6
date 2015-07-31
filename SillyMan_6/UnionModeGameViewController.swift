@@ -19,13 +19,14 @@ class UnionModeGameViewController: UIViewController{
         let scene = UnionModeGameScene(size:skView.bounds.size)
         skView.showsFPS = true
         skView.showsNodeCount = true
-        //skView.showsPhysics = true
+        skView.showsPhysics = true
         
         skView.ignoresSiblingOrder = true
         scene.scaleMode = .AspectFill
         skView.presentScene(scene)
         
     }
+    
 
     //MARK: GameCenter 游戏中心
     // 三大功能 1.成就 achievements, 2. 排行榜 leaderboards 3. 实时多人游戏  real-time multiplayer gaming

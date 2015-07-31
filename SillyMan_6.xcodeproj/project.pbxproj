@@ -54,7 +54,6 @@
 		A06178F21B591ECD00EFCACB /* LoadingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06178F11B591ECD00EFCACB /* LoadingScene.swift */; };
 		A08D7B661B565555008E90AE /* glodPart.png in Resources */ = {isa = PBXBuildFile; fileRef = A08D7B651B565555008E90AE /* glodPart.png */; };
 		A08D7B691B56563D008E90AE /* coin_steal_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A08D7B681B56563D008E90AE /* coin_steal_02.mp3 */; };
-		A09B6B9A1B5C850500918A48 /* skybg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A09B6B991B5C850500918A48 /* skybg@2x.png */; };
 		A09B6B9C1B5CE60200918A48 /* SKSimpleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B6B9B1B5CE60200918A48 /* SKSimpleButton.swift */; };
 		A09B6B9E1B5CE7AE00918A48 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = A09B6B9D1B5CE7AE00918A48 /* README.md */; };
 		A09B6BA01B5CE88500918A48 /* SpriteKit-Spring.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B6B9F1B5CE88500918A48 /* SpriteKit-Spring.swift */; };
@@ -129,7 +128,6 @@
 		A06178F11B591ECD00EFCACB /* LoadingScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingScene.swift; sourceTree = "<group>"; };
 		A08D7B651B565555008E90AE /* glodPart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glodPart.png; sourceTree = "<group>"; };
 		A08D7B681B56563D008E90AE /* coin_steal_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = coin_steal_02.mp3; sourceTree = "<group>"; };
-		A09B6B991B5C850500918A48 /* skybg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skybg@2x.png"; sourceTree = "<group>"; };
 		A09B6B9B1B5CE60200918A48 /* SKSimpleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSimpleButton.swift; sourceTree = "<group>"; };
 		A09B6B9D1B5CE7AE00918A48 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A09B6B9F1B5CE88500918A48 /* SpriteKit-Spring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SpriteKit-Spring.swift"; sourceTree = "<group>"; };
@@ -290,7 +288,6 @@
 			children = (
 				A00EE1B51B6772C000BC7BBC /* blackStone.png */,
 				A0F9942A1B67185B002557DB /* BG1.png */,
-				A09B6B991B5C850500918A48 /* skybg@2x.png */,
 				A014120B1B550EBE00238667 /* face_1 */,
 			);
 			name = OtherImages;
@@ -466,7 +463,6 @@
 				A01411CC1B550B7900238667 /* Main.storyboard in Resources */,
 				A014122B1B550EBE00238667 /* face_1_008@3x.png in Resources */,
 				A01412371B550ED400238667 /* collisionSound.wav in Resources */,
-				A09B6B9A1B5C850500918A48 /* skybg@2x.png in Resources */,
 				A01412201B550EBE00238667 /* face_1_003@2x.png in Resources */,
 				A01412211B550EBE00238667 /* face_1_003@3x.png in Resources */,
 				A0F9942B1B67185B002557DB /* BG1.png in Resources */,

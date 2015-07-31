@@ -228,6 +228,23 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         stone2.physicsBody?.dynamic = false
         stone2.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
         
+        
+        let stone3 = SKSpriteNode(imageNamed: "blackStone")
+        stone3.position = CGPointMake(100, 200)
+        background1.addChild(stone3)
+        
+        let stone4 = SKSpriteNode(imageNamed: "blackStone")
+        stone4.physicsBody = SKPhysicsBody(rectangleOfSize: stone4.size)
+        stone4.position = CGPointMake(100, 200)
+        background2.addChild(stone4)
+        
+        stone3.physicsBody = SKPhysicsBody(rectangleOfSize: stone3.size)
+        stone3.physicsBody?.dynamic = false
+        stone3.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+        stone4.physicsBody = SKPhysicsBody(rectangleOfSize: stone4.size)
+        stone4.physicsBody?.dynamic = false
+        stone4.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
     }
     
     // 滚动Enemy 层
@@ -304,12 +321,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         showParticlesForEnemy(node)
-        self.playerNode.removeFromParent()
+        //self.playerNode.removeFromParent()
         
     }
     
     //  碰撞海底
-    
     func collisionSeaBottom(node:SKNode) {
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
@@ -321,7 +337,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         showParticlesForEnemy(node)
         //self.playerNode.removeFromParent()
-        self.playerNode.physicsBody?.dynamic = false
+        //self.playerNode.physicsBody?.dynamic = false
     }
     
     //MARK: 粒子特效
@@ -504,7 +520,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         node.physicsBody?.collisionBitMask = 0
         node.physicsBody?.contactTestBitMask = 0
         
-        
         let move = SKAction.moveToX(-Screen_Width/2, duration: 3)
         let movedone = SKAction.removeFromParent()
         node.runAction(SKAction.sequence([move, movedone]))
@@ -519,6 +534,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         node.position = CGPoint(x: Screen_Width/3, y: self.size.height/2)
         
         let submarineSp = SKSpriteNode(imageNamed: "submarine")
+        submarineSp.setScale(0.8)
         node.addChild(submarineSp)
 
 //        let smileSprite = SKSpriteNode(texture: atlas.face_1_face_1_001())
@@ -541,8 +557,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         node.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Player
         node.physicsBody?.collisionBitMask = 0
         node.physicsBody?.contactTestBitMask = CollisionCategoryBitmask.Star | CollisionCategoryBitmask.Enemy | CollisionCategoryBitmask.SeaBottom
-        
-        return node
+                 return node
     }
     
     // 创建敌人
@@ -1155,7 +1170,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             GameState.sharedInstance.saveState()
         }
         
-        
     }
     
     // 跳转场景
@@ -1207,23 +1221,19 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             
             let moveTime = playMovingTime(playerPoint, p2: tagetPoint, speed: Player_Move_Speed)
             
-            println("Player_Move_Speed :\(Player_Move_Speed)")
-            
             if isFristRuning {
                 starGame()
                 isFristRuning = false
             }
             
-            
             //playerNode.runAction(SKAction.moveTo(locationInNode, duration: Double(moveTime)))
             tapEffectsForTouchAtLocation(locationInNode)
             
             playerNode.physicsBody?.velocity = CGVectorMake(0, 0)
-            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 100))
+            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 50))
         }
         
     }
-
     
     var lastSpawnTimeInterval:NSTimeInterval  = 0// 上次更新时间
     var lastUpdateTimeInterval: NSTimeInterval = 0
