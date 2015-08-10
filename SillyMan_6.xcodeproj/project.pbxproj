@@ -181,7 +181,7 @@
 		A01411BF1B550B7900238667 /* SillyMan_6 */ = {
 			isa = PBXGroup;
 			children = (
-				A0C83DEE1B78C10300214B11 /* UITextField-Shake */,
+				A0C83DEE1B78C10300214B11 /* ViewEffect */,
 				A0EF88991B55145100CEB65A /* Other */,
 				A01411FF1B550E7300238667 /* Resouce */,
 				A01411F41B550DB900238667 /* SKTUtils */,
@@ -333,12 +333,12 @@
 			name = Sound;
 			sourceTree = "<group>";
 		};
-		A0C83DEE1B78C10300214B11 /* UITextField-Shake */ = {
+		A0C83DEE1B78C10300214B11 /* ViewEffect */ = {
 			isa = PBXGroup;
 			children = (
 				A0C83DF31B78C1C100214B11 /* Shake.swift */,
 			);
-			name = "UITextField-Shake";
+			name = ViewEffect;
 			sourceTree = "<group>";
 		};
 		A0C909B21B5634BC00684831 /* Particles */ = {
