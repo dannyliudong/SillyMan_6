@@ -124,7 +124,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         pauseButton.hidden = true
         addChild(pauseButton)
         
-        showHomePageUI()
+        //showHomePageUI()
         showHomePageBottomButtons()
         
         isFristRuning = true
@@ -311,12 +311,24 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
        
     }
     
+    // 撞到敌人
     func collisionWithEnemy(node:SKNode) {
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
+            
+            //  震屏
+            shakeCarema()
+            
+            
             runAction(enemySound)
+            
             gameOver()
         } else {
+            
+            //  震屏
+            shakeCarema()
+            
+            
             gameOver()
         }
         
@@ -329,9 +341,16 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func collisionSeaBottom(node:SKNode) {
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
+            //  震屏
+            shakeCarema()
+            
+            
             runAction(enemySound)
             gameOver()
         } else {
+            //  震屏
+            shakeCarema()
+            
             gameOver()
         }
         
@@ -341,6 +360,14 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     //MARK: 粒子特效
+    
+    //  撞击震屏
+    func shakeCarema() {
+        let sceneView = self.view
+        if let view = sceneView {
+            view.shakeC(10, delta: 5, interval: 0.04, shakeDirection: ShakeDirection.ShakeDirectionVertical)
+        }
+    }
     
     // 撞击敌人 死亡特效
     func showParticlesForEnemy(node: SKNode) {
@@ -632,7 +659,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         self.pauseButton.hidden = false
         
-        homePageUINode.removeFromParent()
+        //homePageUINode.removeFromParent()
         guideFigerNode.removeFromParent()
         homePageBottomButtonsNode.removeFromParent()
         
