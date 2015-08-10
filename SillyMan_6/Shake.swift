@@ -36,7 +36,6 @@ extension UIView {
             
             self.transform = transformCG
             
-            
             }) { (finished:Bool) -> Void in
             //
                 if current >= times {

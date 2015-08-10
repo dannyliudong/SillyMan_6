@@ -211,11 +211,30 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         backgroundNode.addChild(background2)
         
         //  碰撞的部分
-        let stone1 = SKSpriteNode(imageNamed: "blackStone")
+        // 顶部石头
+        let stone3 = SKSpriteNode(imageNamed: "blackStone2")
+        stone3.position = CGPointMake(0, self.size.height/2)
+        background1.addChild(stone3)
+        
+        let stone4 = SKSpriteNode(imageNamed: "blackStone2")
+        stone4.position = CGPointMake(0, self.size.height/2)
+        background2.addChild(stone4)
+        
+        stone3.physicsBody = SKPhysicsBody(rectangleOfSize: stone3.size)
+        stone3.physicsBody?.dynamic = false
+        stone3.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+        stone4.physicsBody = SKPhysicsBody(rectangleOfSize: stone4.size)
+        stone4.physicsBody?.dynamic = false
+        stone4.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+        
+        // 底部石头
+        let stone1 = SKSpriteNode(imageNamed: "blackStone1")
         stone1.position = CGPointMake(0, -self.size.height/2)
         background1.addChild(stone1)
         
-        let stone2 = SKSpriteNode(imageNamed: "blackStone")
+        let stone2 = SKSpriteNode(imageNamed: "blackStone1")
         stone2.physicsBody = SKPhysicsBody(rectangleOfSize: stone1.size)
         stone2.position = CGPointMake(0, -self.size.height/2)
         background2.addChild(stone2)
@@ -228,23 +247,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         stone2.physicsBody?.dynamic = false
         stone2.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
         
-        
-        let stone3 = SKSpriteNode(imageNamed: "blackStone")
-        stone3.position = CGPointMake(100, 200)
-        background1.addChild(stone3)
-        
-        let stone4 = SKSpriteNode(imageNamed: "blackStone")
-        stone4.physicsBody = SKPhysicsBody(rectangleOfSize: stone4.size)
-        stone4.position = CGPointMake(100, 200)
-        background2.addChild(stone4)
-        
-        stone3.physicsBody = SKPhysicsBody(rectangleOfSize: stone3.size)
-        stone3.physicsBody?.dynamic = false
-        stone3.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
-        
-        stone4.physicsBody = SKPhysicsBody(rectangleOfSize: stone4.size)
-        stone4.physicsBody?.dynamic = false
-        stone4.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
     }
     
     // 滚动Enemy 层
@@ -319,7 +321,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             //  震屏
             shakeCarema()
             
-            
             runAction(enemySound)
             
             gameOver()
@@ -327,7 +328,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             
             //  震屏
             shakeCarema()
-            
             
             gameOver()
         }
@@ -396,7 +396,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func tapEffectsForTouchAtLocation(location: CGPoint) {
         showTapAtLocation(location)
     }
-    
     
     func showTapAtLocation(point: CGPoint) {
         let shapeNode = SKShapeNode()

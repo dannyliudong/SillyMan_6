@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A00EE1B61B6772C000BC7BBC /* blackStone.png in Resources */ = {isa = PBXBuildFile; fileRef = A00EE1B51B6772C000BC7BBC /* blackStone.png */; };
+		A00EE1B61B6772C000BC7BBC /* blackStone1.png in Resources */ = {isa = PBXBuildFile; fileRef = A00EE1B51B6772C000BC7BBC /* blackStone1.png */; };
 		A01411C31B550B7900238667 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01411C21B550B7900238667 /* AppDelegate.swift */; };
 		A01411CC1B550B7900238667 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A01411CA1B550B7900238667 /* Main.storyboard */; };
 		A01411CE1B550B7900238667 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A01411CD1B550B7900238667 /* Images.xcassets */; };
@@ -61,6 +61,7 @@
 		A0A2F44C1B56658E00FE5E6B /* AnimatingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */; };
 		A0B5AD9C1B56352C005C4FD3 /* Splat.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B5AD9B1B56352C005C4FD3 /* Splat.png */; };
 		A0C83DF41B78C1C100214B11 /* Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C83DF31B78C1C100214B11 /* Shake.swift */; };
+		A0C83DF61B78D67100214B11 /* blackStone2.png in Resources */ = {isa = PBXBuildFile; fileRef = A0C83DF51B78D67100214B11 /* blackStone2.png */; };
 		A0C909B11B560B6D00684831 /* SKAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */; };
 		A0C909B41B5634C600684831 /* GoldSplatter.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0C909B31B5634C600684831 /* GoldSplatter.sks */; };
 		A0F9942B1B67185B002557DB /* BG1.png in Resources */ = {isa = PBXBuildFile; fileRef = A0F9942A1B67185B002557DB /* BG1.png */; };
@@ -78,7 +79,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A00EE1B51B6772C000BC7BBC /* blackStone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackStone.png; sourceTree = "<group>"; };
+		A00EE1B51B6772C000BC7BBC /* blackStone1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackStone1.png; sourceTree = "<group>"; };
 		A01411BD1B550B7900238667 /* SillyMan_6.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SillyMan_6.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A01411C11B550B7900238667 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A01411C21B550B7900238667 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -136,6 +137,7 @@
 		A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingSprite.swift; sourceTree = "<group>"; };
 		A0B5AD9B1B56352C005C4FD3 /* Splat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Splat.png; sourceTree = "<group>"; };
 		A0C83DF31B78C1C100214B11 /* Shake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shake.swift; sourceTree = "<group>"; };
+		A0C83DF51B78D67100214B11 /* blackStone2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackStone2.png; sourceTree = "<group>"; };
 		A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKAction+Extensions.swift"; sourceTree = "<group>"; };
 		A0C909B31B5634C600684831 /* GoldSplatter.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GoldSplatter.sks; sourceTree = "<group>"; };
 		A0F9942A1B67185B002557DB /* BG1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BG1.png; sourceTree = "<group>"; };
@@ -289,7 +291,8 @@
 		A014120A1B550E9E00238667 /* OtherImages */ = {
 			isa = PBXGroup;
 			children = (
-				A00EE1B51B6772C000BC7BBC /* blackStone.png */,
+				A00EE1B51B6772C000BC7BBC /* blackStone1.png */,
+				A0C83DF51B78D67100214B11 /* blackStone2.png */,
 				A0F9942A1B67185B002557DB /* BG1.png */,
 				A014120B1B550EBE00238667 /* face_1 */,
 			);
@@ -463,6 +466,7 @@
 				A01412241B550EBE00238667 /* face_1_005@2x.png in Resources */,
 				A014121F1B550EBE00238667 /* face_1_002@3x.png in Resources */,
 				A0A2F4481B56645A00FE5E6B /* EnemySplatter.sks in Resources */,
+				A0C83DF61B78D67100214B11 /* blackStone2.png in Resources */,
 				A08D7B691B56563D008E90AE /* coin_steal_02.mp3 in Resources */,
 				A0365CA01B58FF03009C9443 /* PlayerTrail.sks in Resources */,
 				A01412061B550E8D00238667 /* GameSpriteAtlas.1@2x.png in Resources */,
@@ -470,7 +474,7 @@
 				A0365C9E1B58E5E5009C9443 /* Star.png in Resources */,
 				A01412281B550EBE00238667 /* face_1_007@2x.png in Resources */,
 				A01412291B550EBE00238667 /* face_1_007@3x.png in Resources */,
-				A00EE1B61B6772C000BC7BBC /* blackStone.png in Resources */,
+				A00EE1B61B6772C000BC7BBC /* blackStone1.png in Resources */,
 				A01411CC1B550B7900238667 /* Main.storyboard in Resources */,
 				A014122B1B550EBE00238667 /* face_1_008@3x.png in Resources */,
 				A01412371B550ED400238667 /* collisionSound.wav in Resources */,
