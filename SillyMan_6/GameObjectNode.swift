@@ -16,6 +16,7 @@ struct CollisionCategoryBitmask {
     static let SeaBottom: UInt32 = 0x04 // 碰撞海底
 }
 
+
 enum EnemyType: Int {
     case Normal = 0
     case SpecialRotate // 旋转的
@@ -81,4 +82,5 @@ class EnemyNode: GameObjectNode {
 class StarNode: GameObjectNode {
 
 }
+
 

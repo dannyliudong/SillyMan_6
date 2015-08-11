@@ -40,7 +40,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     // 声音
     let starSound = SKAction.playSoundFileNamed("coin_steal_02.mp3", waitForCompletion: false)
-    let enemySound = SKAction.playSoundFileNamed("collisionSound.wav", waitForCompletion: false)
+    let enemySound = SKAction.playSoundFileNamed("crash.mp3", waitForCompletion: false)
 
     var pauseButton: SKSimpleButton!
     var musicButton:SKSimpleButton!
@@ -103,7 +103,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         // setup background color
         let skyColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
-        self.backgroundColor = skyColor
+        //self.backgroundColor = skyColor
         
         Screen_Width = self.size.width
         Screen_Height = self.size.height
@@ -135,15 +135,15 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         
         createBackground()
         
-        //  1.游戏开始前的音乐
-        SKTAudio.sharedInstance().playBackgroundMusic("night_1_v3.mp3")
-        
-        let music = GameState.sharedInstance.musicState
-        
-        if !music {
-            // 暂停音乐
-            SKTAudio.sharedInstance().pauseBackgroundMusic()
-        }
+//        //  1.游戏开始前的音乐
+//        SKTAudio.sharedInstance().playBackgroundMusic("night_1_v3.mp3")
+//        
+//        let music = GameState.sharedInstance.musicState
+//        
+//        if !music {
+//            // 暂停音乐
+//            SKTAudio.sharedInstance().pauseBackgroundMusic()
+//        }
 
     }
     
@@ -152,7 +152,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         runAction(SKAction.repeatActionForever(
             SKAction.sequence([
                 SKAction.runBlock(createBarrier),
-                SKAction.waitForDuration(1.0)
+                SKAction.waitForDuration(1.5)
                 ])
             ))
         
@@ -184,6 +184,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         let fingerTouchSequence = SKAction.repeatActionForever(SKAction.sequence([fingerTouchAni]))
         fingerSprite.runAction(fingerTouchSequence)
     }
+    
     
 
     //MARK: 创建背景层
@@ -318,6 +319,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
             
+            showParticlesForEnemy(node)
+            node.removeFromParent()
+
             //  震屏
             shakeCarema()
             
@@ -326,14 +330,15 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             gameOver()
         } else {
             
+            showParticlesForEnemy(node)
+            node.removeFromParent()
+            
             //  震屏
             shakeCarema()
             
             gameOver()
         }
-        
-        showParticlesForEnemy(node)
-        //self.playerNode.removeFromParent()
+
         
     }
     
@@ -372,7 +377,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     // 撞击敌人 死亡特效
     func showParticlesForEnemy(node: SKNode) {
         
-        let emitter = SKEmitterNode.emitterNamed("EnemySplatter")
+        let emitter = SKEmitterNode.emitterNamed("Bow")
         emitter.particleTexture!.filteringMode = .Nearest
         emitter.position = node.position
         emitter.zPosition = 100
@@ -527,7 +532,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    // 构建障碍物
+    // 构建导弹
     func createBarrier() {
         
         let randomEnemyY = CGFloat.random(Int(self.size.height) +  20 )
@@ -537,8 +542,13 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         node.zPosition = 50
         addChild(node)
         
-        let bow = SKSpriteNode(imageNamed: "enemy")
+        let bow = SKSpriteNode(imageNamed: "missile")
         node.addChild(bow)
+        
+        let emitFire = SKEmitterNode(fileNamed: "missileFire")
+        emitFire.position = CGPointMake(bow.size.width/2, 0)
+        emitFire.particleTexture!.filteringMode = .Nearest
+        bow.addChild(emitFire)
         
         node.physicsBody = SKPhysicsBody(rectangleOfSize: bow.size)
         node.physicsBody?.dynamic = false
@@ -546,7 +556,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         node.physicsBody?.collisionBitMask = 0
         node.physicsBody?.contactTestBitMask = 0
         
-        let move = SKAction.moveToX(-Screen_Width/2, duration: 3)
+        let move = SKAction.moveToX(-100, duration: 4)
         let movedone = SKAction.removeFromParent()
         node.runAction(SKAction.sequence([move, movedone]))
         
@@ -596,7 +606,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         _node.position = CGPoint(x: position.x, y: position.y )
         _node.enemyType = type
         
-        let sprite = SKSpriteNode(imageNamed: "enemy")
+        let sprite = SKSpriteNode(imageNamed: "missile")
         _node.addChild(sprite)
         
         _node.physicsBody = SKPhysicsBody(rectangleOfSize: sprite.size)
@@ -668,7 +678,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         let music = GameState.sharedInstance.musicState
         if music {
             // 播放音乐
-            SKTAudio.sharedInstance().playBackgroundMusic("game_music2.mp3")
+            SKTAudio.sharedInstance().playBackgroundMusic("game_music.mp3")
         }
         
         createGameNodes()
