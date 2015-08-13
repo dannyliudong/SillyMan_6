@@ -8,7 +8,7 @@
 import SpriteKit
 
 
-class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
+class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizerDelegate {
 
     // MARK: Properties
     
@@ -37,6 +37,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     var fadeInMaskNode:SKNode!
     var fadeOutMaskNode:SKNode!
+    
+    // 手势
+    var longPressGesture:UILongPressGestureRecognizer!
     
     // 声音
     let starSound = SKAction.playSoundFileNamed("coin_steal_02.mp3", waitForCompletion: false)
@@ -98,7 +101,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     override func didMoveToView(view: SKView) {
         
         // setup physics
-        self.physicsWorld.gravity = CGVectorMake( 0.0, -5.0 )
+        self.physicsWorld.gravity = CGVectorMake( 0.0, -3.0 )
         self.physicsWorld.contactDelegate = self
         
         // setup background color
@@ -164,7 +167,17 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
 //        }
         
         
-        //createbot()
+        // 长按手势操作
+        longPressGesture = UILongPressGestureRecognizer(target: self, action: "longPressGestureAction")
+        
+        self.view?.addGestureRecognizer(longPressGesture)
+
+    }
+    
+    func longPressGestureAction() {
+
+        // 长按添加一个向上的力 并且越来越强
+        print("长按操作")
 
     }
     
@@ -178,16 +191,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    func createbot () {
-        
-        let sand: SKSpriteNode = SKSpriteNode(imageNamed: "submarine")
-        sand.position = CGPointMake( CGFloat(arc4random() % UInt32(size.width)) , size.height)
-        sand.physicsBody = SKPhysicsBody(texture: sand.texture, size: sand.size)
-        sand.name = "sand"
-        sand.physicsBody!.restitution = 0.5
-        sand.physicsBody!.density = 20.0
-        addChild(sand)
-    }
     
     func spawnSand() {
         let sand: SKSpriteNode = SKSpriteNode(imageNamed: "sand")
@@ -209,11 +212,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
                 ])
             ))
         
-//        runAction(SKAction.repeatActionForever(
-//            SKAction.sequence([
-//                SKAction.waitForDuration(5.0),
-//                SKAction.runBlock(createStar)])
-//            ))
+        runAction(SKAction.repeatActionForever(
+            SKAction.sequence([
+                SKAction.waitForDuration(3.0),
+                SKAction.runBlock(createStar)])
+            ))
     }
     
     
@@ -284,9 +287,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         stone4.physicsBody?.dynamic = false
         stone4.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
         
-        
         // 底部石头
-        
         let stone1 = SKSpriteNode(imageNamed: "blackStoneDown")
         //stone1.setScale(2)
         stone1.position = CGPointMake(Screen_Width/2 , -(Screen_Height/2 - stone1.size.height/2))
@@ -335,8 +336,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             
             switch other.categoryBitMask {
             case CollisionCategoryBitmask.Star:
-                let starNode = other.node as! StarNode
-                collisionWithStar(starNode)
+                let starNode = other.node
+                collisionWithStar(starNode!)
                 
             case CollisionCategoryBitmask.Enemy:
                 let enemyNode = other.node
@@ -358,7 +359,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     
     //MARK: 碰撞结果执行
-    func collisionWithStar(node:StarNode) {
+    func collisionWithStar(node:SKNode) {
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
             runAction(starSound, completion: { () -> Void in
@@ -367,8 +368,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         } else {
             node.removeFromParent()
         }
-        
-        showParticlesForGold(node)
         
         GameState.sharedInstance.stars += 1
         updateHUD()
@@ -388,7 +387,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             
             boatCrash()
             
-            node.removeFromParent()
+            playerNode.removeFromParent()
             
             runAction(enemySound)
             
@@ -401,7 +400,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             
             boatCrash()
             
-            node.removeFromParent()
+            playerNode.removeFromParent()
             
             gameOver()
         }
@@ -410,7 +409,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     // 撞到敌人
     func collisionWithEnemy(node:SKNode) {
         
-        collisionByBoat(playerNode)
+        collisionByBoat(node)
+        
+        node.removeFromParent()
         
 //        let musicOn = GameState.sharedInstance.musicState
 //        if musicOn {
@@ -518,7 +519,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func shakeCarema() {
         let sceneView = self.view
         if let view = sceneView {
-            view.shakeC(10, delta: 5, interval: 0.04, shakeDirection: ShakeDirection.ShakeDirectionVertical)
+            view.shakeC(10, delta: 10, interval: 0.02, shakeDirection: ShakeDirection.ShakeDirectionVertical)
         }
     }
     
@@ -764,29 +765,18 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     func createStar() {
         if !isGameOver {
             
-            let _node = StarNode()
-            
-            let randomEnemyX = CGFloat.random(Int(Screen_Width) + 20)
+            let sprite = SKSpriteNode(imageNamed: "Star")
+            addChild(sprite)
             
             // 随机位置
-            _node.position = CGPoint(x: randomEnemyX, y: playableRect.size.height + 50)
+            let randomEnemyY = CGFloat.random(Int(self.size.height) +  20 )
+            sprite.position = CGPointMake(Screen_Width * 1.1, randomEnemyY)
             
-            if _node.position.x < CGRectGetMinX(playableRect) {
-                _node.position.x = randomEnemyX + 20
-            }
-            
-            if _node.position.x > CGRectGetMinX(playableRect) {
-                _node.position.x = randomEnemyX - 20
-            }
-            
-            let sprite = SKSpriteNode(imageNamed: "Star")
-            _node.addChild(sprite)
-            
-            
-            _node.physicsBody = SKPhysicsBody(circleOfRadius: sprite.size.width/2)
-            _node.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Star
-            
-            addChild(_node)
+            sprite.physicsBody = SKPhysicsBody(circleOfRadius: sprite.size.width/2)
+            sprite.physicsBody?.dynamic = false
+            sprite.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Star
+            sprite.physicsBody?.collisionBitMask = 0
+            sprite.physicsBody?.contactTestBitMask = 0
             
             //
             let targetPostion = -self.playableRect.size.height + 50
@@ -794,11 +784,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             
             // 移动的速度
             let totaltime:NSTimeInterval = NSTimeInterval((bornPostion - targetPostion) / starSpeed)
-            
-            let actionMove = SKAction.moveToY(-playableRect.size.height + 50, duration: totaltime)
-            let actionMoveDone = SKAction.removeFromParent()
-            
-            _node.runAction(SKAction.sequence([actionMove, actionMoveDone]))
+
+            let move = SKAction.moveToX(-100, duration: 4)
+            let movedone = SKAction.removeFromParent()
+            sprite.runAction(SKAction.sequence([move, movedone]))
         }
         
     }
@@ -826,6 +815,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         createGameNodes()
+        
+
         
     }
     
@@ -856,9 +847,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: 游戏结束
     func gameOver() {
+        
         isGameBegin = false
         self.isGameOver = true
         self.pauseButton.removeFromParent()
+
+        self.view?.removeGestureRecognizer(longPressGesture)
         
         SKTAudio.sharedInstance().pauseBackgroundMusic()
         
@@ -1158,8 +1152,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
         belt.runAction(scaleAction)
         
         let label = SKLabelNode(fontNamed: font_Name)
-        label.text = "SHOW iAd"
-        label.position = CGPointMake(-Screen_Width/2, 0)
+        label.text = "WOW 玩砸了!"
+        label.position = CGPointMake(-Screen_Width/2, -5)
         iAdNode.addChild(label)
         
         let moveAction = SKAction.moveToX(0, duration: 0.3)
@@ -1408,8 +1402,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate {
             //playerNode.runAction(SKAction.moveTo(locationInNode, duration: Double(moveTime)))
             tapEffectsForTouchAtLocation(locationInNode)
             
-            playerNode.physicsBody?.velocity = CGVectorMake(0, 10)
-            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 30))
+            playerNode.physicsBody?.velocity = CGVectorMake(0, 0)
+            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 20))
         }
         
     }

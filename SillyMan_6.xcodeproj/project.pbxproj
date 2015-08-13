@@ -61,7 +61,6 @@
 		A0E85D7B1B79D4FD00A5E4D9 /* game_music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0E85D7A1B79D4FD00A5E4D9 /* game_music.mp3 */; };
 		A0E85D7E1B79DAE400A5E4D9 /* missileFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0E85D7C1B79DAE400A5E4D9 /* missileFire.sks */; };
 		A0E85D7F1B79DAE400A5E4D9 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = A0E85D7D1B79DAE400A5E4D9 /* spark.png */; };
-		A0F9942B1B67185B002557DB /* BG1.png in Resources */ = {isa = PBXBuildFile; fileRef = A0F9942A1B67185B002557DB /* BG1.png */; };
 		A0FC70841B6724E20034C8F0 /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FC70831B6724E20034C8F0 /* HomeScene.swift */; };
 /* End PBXBuildFile section */
 
@@ -134,7 +133,6 @@
 		A0E85D7A1B79D4FD00A5E4D9 /* game_music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_music.mp3; sourceTree = "<group>"; };
 		A0E85D7C1B79DAE400A5E4D9 /* missileFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = missileFire.sks; sourceTree = "<group>"; };
 		A0E85D7D1B79DAE400A5E4D9 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
-		A0F9942A1B67185B002557DB /* BG1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BG1.png; sourceTree = "<group>"; };
 		A0FC70831B6724E20034C8F0 /* HomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -284,7 +282,6 @@
 		A014120A1B550E9E00238667 /* OtherImages */ = {
 			isa = PBXGroup;
 			children = (
-				A0F9942A1B67185B002557DB /* BG1.png */,
 				A06BB5BA1B7B41A400C1FEF7 /* sand.png */,
 				A014120B1B550EBE00238667 /* face_1 */,
 			);
@@ -338,9 +335,9 @@
 			children = (
 				A0365C9F1B58FF03009C9443 /* PlayerTrail.sks */,
 				A0E85D7C1B79DAE400A5E4D9 /* missileFire.sks */,
-				A0E85D7D1B79DAE400A5E4D9 /* spark.png */,
 				A0C909B31B5634C600684831 /* GoldSplatter.sks */,
 				A0A2F4471B56645A00FE5E6B /* Bow.sks */,
+				A0E85D7D1B79DAE400A5E4D9 /* spark.png */,
 				A08D7B651B565555008E90AE /* glodPart.png */,
 				A0365C9D1B58E5E5009C9443 /* Star.png */,
 				A0B5AD9B1B56352C005C4FD3 /* Splat.png */,
@@ -469,7 +466,6 @@
 				A01412201B550EBE00238667 /* face_1_003@2x.png in Resources */,
 				A01412211B550EBE00238667 /* face_1_003@3x.png in Resources */,
 				A06BB5BB1B7B41A400C1FEF7 /* sand.png in Resources */,
-				A0F9942B1B67185B002557DB /* BG1.png in Resources */,
 				A014121D1B550EBE00238667 /* face_1_001@3x.png in Resources */,
 				A01412231B550EBE00238667 /* face_1_004@3x.png in Resources */,
 				A014121E1B550EBE00238667 /* face_1_002@2x.png in Resources */,

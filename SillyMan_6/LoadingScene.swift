@@ -19,14 +19,12 @@ class LoadingScene: SKScene {
         super.init(coder: aDecoder)
     }
     
-    
     override func didMoveToView(view: SKView) {
         // 放切换动画
         // 切换场景
         
         let gameScene = UnionModeGameScene(size: self.size)
         self.view?.presentScene(gameScene)
-        
 
         
     }
