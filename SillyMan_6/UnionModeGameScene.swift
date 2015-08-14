@@ -177,7 +177,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
 
     }
     
-    var isLongPress:Bool = false
+    var isLongPress:Bool = false // 是否在长按屏幕
     var impulse_dy:CGFloat = 0
     
     func longPressGestureAction(sender:UILongPressGestureRecognizer) {
@@ -196,6 +196,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         if sender.state == UIGestureRecognizerState.Ended {
             println("长按结束")
             isLongPress = false
+            impulse_dy = 0.0
             
         }
 
@@ -397,6 +398,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
             
+            impulse_dy = 0.0
+            isLongPress = false
+            
+            
             //  震屏
             shakeCarema()
             
@@ -410,6 +415,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             
             gameOver()
         } else {
+            
+            impulse_dy = 0.0
+            isLongPress = false
+            
+            
             //  震屏
             shakeCarema()
             
@@ -731,8 +741,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         playerNode = SKSpriteNode(imageNamed: "submarine")
         playerNode.position = CGPoint(x: Screen_Width/3, y: self.size.height/2)
+        //playerNode.anchorPoint = CGPointMake(1, 0.5)
         //submarineSp.setScale(1)
         addChild(playerNode)
+        
+        
 
 //        let smileSprite = SKSpriteNode(texture: atlas.face_1_face_1_001())
 //        _node.addChild(smileSprite)
@@ -751,6 +764,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         playerNode.physicsBody?.dynamic = false
         playerNode.physicsBody?.allowsRotation = false
         playerNode.physicsBody?.affectedByGravity = true
+        
+        playerNode.physicsBody?.friction = CGFloat(0.01) // 摩擦力
         
         playerNode.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Player
         //playerNode.physicsBody?.collisionBitMask = 0 //  默认与所有物体发生碰撞
@@ -815,6 +830,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         isGameBegin = true
         
         playerNode.physicsBody?.dynamic = true
+        playerNode.physicsBody?.allowsRotation = true
         
         self.pauseButton.hidden = false
         
@@ -865,6 +881,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     //MARK: 游戏结束
     func gameOver() {
         
+
+
         isGameBegin = false
         self.isGameOver = true
         self.pauseButton.removeFromParent()

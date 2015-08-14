@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>116C325C-EB92-46E9-A943-7F0B126201F2</string>
 	<key>IDESourceControlProjectName</key>
-	<string>SillyMan_6</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>EDCFDA998B11DF927A2AB317CBC7D15242CFE617</key>
 		<string>https://github.com/dannyliudong/SillyMan_6.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>SillyMan_6.xcodeproj</string>
+	<string>SillyMan_6.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>EDCFDA998B11DF927A2AB317CBC7D15242CFE617</key>
