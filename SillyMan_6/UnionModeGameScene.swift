@@ -101,7 +101,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     override func didMoveToView(view: SKView) {
         
         // setup physics
-        self.physicsWorld.gravity = CGVectorMake( 0.0, -3.0 )
+        self.physicsWorld.gravity = CGVectorMake( 0.0, -2.0 )
         self.physicsWorld.contactDelegate = self
         
         // setup background color
@@ -168,16 +168,36 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         
         // 长按手势操作
-        longPressGesture = UILongPressGestureRecognizer(target: self, action: "longPressGestureAction")
+        longPressGesture = UILongPressGestureRecognizer(target: self, action: "longPressGestureAction:")
+        longPressGesture.minimumPressDuration = 0.05 // 最少按住时间
         
         self.view?.addGestureRecognizer(longPressGesture)
+        
+        
 
     }
     
-    func longPressGestureAction() {
+    var isLongPress:Bool = false
+    var impulse_dy:CGFloat = 0
+    
+    func longPressGestureAction(sender:UILongPressGestureRecognizer) {
 
         // 长按添加一个向上的力 并且越来越强
-        print("长按操作")
+        // 如果手指一直按着 ， 就会一直执行，并且数值不断增加
+
+        if sender.state == UIGestureRecognizerState.Began {
+            
+            isLongPress = true
+            
+            println("长按")
+
+        }
+        
+        if sender.state == UIGestureRecognizerState.Ended {
+            println("长按结束")
+            isLongPress = false
+            
+        }
 
     }
     
@@ -191,7 +211,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     }
     
     
-    
     func spawnSand() {
         let sand: SKSpriteNode = SKSpriteNode(imageNamed: "sand")
         sand.position = CGPointMake( CGFloat(arc4random() % UInt32(size.width)) , size.height)
@@ -201,7 +220,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         sand.physicsBody!.density = 20.0
         addChild(sand)
     }
-    
     
     func createGameNodes() {
         //  游戏开始后, 等待1秒开始生成敌人和星
@@ -240,7 +258,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         let fingerTouchSequence = SKAction.repeatActionForever(SKAction.sequence([fingerTouchAni]))
         fingerSprite.runAction(fingerTouchSequence)
     }
-    
     
 
     //MARK: 创建背景层
@@ -1137,8 +1154,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     func showiAd() {
         //  进行控制出现广告，有时候出现看广告赚金币按钮，有时候其它 参考天天过马路
         
-        println("showiAd")
-        
         let iAdNode = SKNode()
         iAdNode.zPosition = 150
         iAdNode.position = CGPointMake(Screen_Width/2, Screen_Height/2)
@@ -1403,9 +1418,18 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             tapEffectsForTouchAtLocation(locationInNode)
             
             playerNode.physicsBody?.velocity = CGVectorMake(0, 0)
-            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 20))
+            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 10))
         }
         
+    }
+    
+    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+        // 
+        //isLongPress = false
+    }
+    
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        isLongPress = false
     }
     
     var lastSpawnTimeInterval:NSTimeInterval  = 0// 上次更新时间
@@ -1415,6 +1439,17 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         if isGameBegin {
             scrollBackground()
         }
+        
+        if isLongPress {
+            
+            let up =  impulse_dy++ * 0.05
+            
+            println("impulse_dy:  \(impulse_dy++)")
+            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, up))
+        }
+        
+
+        
         
 //        if isGameBegin {
 //            playTime++
