@@ -201,27 +201,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         }
 
     }
-    
 
-    func delay(#seconds: Double, completion:()->()) {
-        let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64( Double(NSEC_PER_SEC) * seconds ))
-        
-        dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)) {
-            completion()
-        }
-    }
-    
-    
-    func spawnSand() {
-        let sand: SKSpriteNode = SKSpriteNode(imageNamed: "sand")
-        sand.position = CGPointMake( CGFloat(arc4random() % UInt32(size.width)) , size.height)
-        sand.physicsBody = SKPhysicsBody(circleOfRadius: sand.size.width/2)
-        sand.name = "sand"
-        sand.physicsBody!.restitution = 0.5
-        sand.physicsBody!.density = 20.0
-        addChild(sand)
-    }
-    
     func createGameNodes() {
         //  游戏开始后, 等待1秒开始生成敌人和星
         runAction(SKAction.repeatActionForever(
@@ -231,11 +211,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                 ])
             ))
         
-        runAction(SKAction.repeatActionForever(
-            SKAction.sequence([
-                SKAction.waitForDuration(3.0),
-                SKAction.runBlock(createStar)])
-            ))
+//        runAction(SKAction.repeatActionForever(
+//            SKAction.sequence([
+//                SKAction.waitForDuration(1.0),
+//                SKAction.runBlock(cut01)])
+//            ))
     }
     
     
@@ -331,7 +311,73 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     }
     
     // 滚动Enemy 层
-    
+    func createEnemyLayer() {
+        
+        adjustmentBackgroundPosition = self.size.width
+        
+        //backgroundNode = SKNode()
+        //backgroundNode.setScale(scaleFactor)
+        //backgroundNode.zPosition = -10
+        //addChild(backgroundNode)
+        
+        var emenyLayer1 = SKSpriteNode()
+        background1.position = CGPointMake(0, Screen_Height/2)
+        background1.anchorPoint = CGPointMake(0, 0.5)
+        background1.zPosition = -10
+        
+        var emenyLayer2 = SKSpriteNode()
+        background2.anchorPoint = CGPointMake(0, 0.5)
+        background2.zPosition = -10
+        background2.position = CGPointMake(adjustmentBackgroundPosition - 1, self.size.height/2);
+        
+        //background1.setScale(scaleFactor)
+        //background2.setScale(scaleFactor)
+        
+        addChild(background1)
+        addChild(background2)
+        
+        //  碰撞的部分
+        // 顶部石头
+        let stone3 = SKSpriteNode(imageNamed: "blackStoneUp")
+        stone3.position = CGPointMake(Screen_Width/2, (Screen_Height/2 - stone3.size.height/2))
+        background1.addChild(stone3)
+        
+        let stone4 = SKSpriteNode(imageNamed: "blackStoneUp")
+        stone4.position = CGPointMake(Screen_Width/2, (Screen_Height/2 - stone3.size.height/2))
+        background2.addChild(stone4)
+        
+        stone3.physicsBody = SKPhysicsBody(texture: stone3.texture, size: stone3.size)
+        stone3.physicsBody?.dynamic = false
+        stone3.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+        stone4.physicsBody = SKPhysicsBody(texture: stone3.texture, size: stone3.size)
+        stone4.physicsBody?.dynamic = false
+        stone4.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+        // 底部石头
+        let stone1 = SKSpriteNode(imageNamed: "blackStoneDown")
+        //stone1.setScale(2)
+        stone1.position = CGPointMake(Screen_Width/2 , -(Screen_Height/2 - stone1.size.height/2))
+        background1.addChild(stone1)
+        
+        let stone2 = SKSpriteNode(imageNamed: "blackStoneDown")
+        //stone2.setScale(2)
+        stone2.position = CGPointMake(Screen_Width/2,  -(Screen_Height/2 - stone1.size.height/2))
+        background2.addChild(stone2)
+        
+        stone1.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
+        stone1.physicsBody?.dynamic = false
+        stone1.physicsBody?.allowsRotation = false
+        stone1.physicsBody?.affectedByGravity = true
+        stone1.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+        stone2.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
+        stone2.physicsBody?.dynamic = false
+        stone2.physicsBody?.allowsRotation = false
+        stone2.physicsBody?.affectedByGravity = true
+        stone2.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+    }
     
     
     //MARK: 滚动背景层
@@ -735,12 +781,36 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
     }
     
+    // 构建导弹
+    func cut01() {
+        
+        let randomEnemyY = CGFloat.random(Int(self.size.height) +  20 )
+        
+        let bow = SKSpriteNode(imageNamed: "cut01")
+        bow.position = CGPointMake(Screen_Width * 1.5, randomEnemyY)
+        bow.zPosition = 50
+        background1.addChild(bow)
+        
+        bow.physicsBody = SKPhysicsBody(texture: bow.texture, size: bow.size)
+        bow.physicsBody?.dynamic = false
+        bow.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Enemy
+        bow.physicsBody?.collisionBitMask = 0
+        bow.physicsBody?.contactTestBitMask = 0
+        
+//        let move = SKAction.moveToX(-100, duration: 4)
+//        let movedone = SKAction.removeFromParent()
+//        bow.runAction(SKAction.sequence([move, movedone]))
+        
+    }
+    
     
     //构建player
     func createPlayer(){
         
         playerNode = SKSpriteNode(imageNamed: "submarine")
         playerNode.position = CGPoint(x: Screen_Width/3, y: self.size.height/2)
+        
+        //playerNode.zRotation = CGFloat(M_PI)
         //playerNode.anchorPoint = CGPointMake(1, 0.5)
         //submarineSp.setScale(1)
         addChild(playerNode)
@@ -770,6 +840,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         playerNode.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Player
         //playerNode.physicsBody?.collisionBitMask = 0 //  默认与所有物体发生碰撞
         playerNode.physicsBody?.contactTestBitMask = CollisionCategoryBitmask.Star | CollisionCategoryBitmask.Enemy | CollisionCategoryBitmask.SeaBottom
+        
         
     }
     
@@ -830,7 +901,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         isGameBegin = true
         
         playerNode.physicsBody?.dynamic = true
-        playerNode.physicsBody?.allowsRotation = true
         
         self.pauseButton.hidden = false
         
@@ -1461,14 +1531,16 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         if isLongPress {
             
-            let up =  impulse_dy++ * 0.05
+            //let up =  impulse_dy++ * 0.01
             
-            println("impulse_dy:  \(impulse_dy++)")
-            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, up))
+            //println("impulse_dy:  \(impulse_dy++)")
+            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 0.5))
         }
         
-
         
+        
+
+
         
 //        if isGameBegin {
 //            playTime++
