@@ -169,7 +169,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         // 长按手势操作
         longPressGesture = UILongPressGestureRecognizer(target: self, action: "longPressGestureAction:")
-        longPressGesture.minimumPressDuration = 0.05 // 最少按住时间
+        longPressGesture.minimumPressDuration = 0.2 // 最少按住时间
         
         self.view?.addGestureRecognizer(longPressGesture)
         
@@ -202,6 +202,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
 
     }
 
+    //MARK: 随机生成
     func createGameNodes() {
         //  游戏开始后, 等待1秒开始生成敌人和星
         runAction(SKAction.repeatActionForever(
@@ -211,13 +212,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                 ])
             ))
         
-//        runAction(SKAction.repeatActionForever(
-//            SKAction.sequence([
-//                SKAction.waitForDuration(1.0),
-//                SKAction.runBlock(cut01)])
-//            ))
+        runAction(SKAction.repeatActionForever(
+            SKAction.sequence([
+                SKAction.waitForDuration(1.0),
+                SKAction.runBlock(cut01)])
+            ))
     }
-    
     
     var rotateFlag:Bool = true // 旋转方向 true: 逆时针方向， false:  顺时针方向
     
@@ -592,7 +592,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     func shakeCarema() {
         let sceneView = self.view
         if let view = sceneView {
-            view.shakeC(10, delta: 10, interval: 0.02, shakeDirection: ShakeDirection.ShakeDirectionVertical)
+            view.shakeC(10, delta: 10, interval: 0.03, shakeDirection: ShakeDirection.ShakeDirectionVertical)
         }
     }
     
@@ -753,7 +753,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
     }
     
-    
     // 构建导弹
     func createBarrier() {
         
@@ -764,10 +763,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         bow.zPosition = 50
         addChild(bow)
         
-        let emitFire = SKEmitterNode(fileNamed: "missileFire")
-        emitFire.position = CGPointMake(bow.size.width/2, 0)
-        emitFire.particleTexture!.filteringMode = .Nearest
-        bow.addChild(emitFire)
+//        let emitFire = SKEmitterNode(fileNamed: "missileFire")
+//        emitFire.position = CGPointMake(bow.size.width/2, 0)
+//        emitFire.particleTexture!.filteringMode = .Nearest
+//        bow.addChild(emitFire)
         
         bow.physicsBody = SKPhysicsBody(texture: bow.texture, size: bow.size)
         bow.physicsBody?.dynamic = false
@@ -1527,6 +1526,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     override func update(currentTime: CFTimeInterval) {
         if isGameBegin {
             scrollBackground()
+            
+            //playerNode.physicsBody?.applyImpulse(CGVectorMake(0.1, 0))
         }
         
         if isLongPress {
@@ -1534,7 +1535,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             //let up =  impulse_dy++ * 0.01
             
             //println("impulse_dy:  \(impulse_dy++)")
-            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 0.5))
+            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 0.7))
         }
         
         

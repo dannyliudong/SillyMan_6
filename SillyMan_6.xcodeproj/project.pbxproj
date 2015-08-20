@@ -51,6 +51,8 @@
 		A09B6B9C1B5CE60200918A48 /* SKSimpleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B6B9B1B5CE60200918A48 /* SKSimpleButton.swift */; };
 		A09B6BA01B5CE88500918A48 /* SpriteKit-Spring.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B6B9F1B5CE88500918A48 /* SpriteKit-Spring.swift */; };
 		A09C2CCE1B79E6AC007F68B1 /* crash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A09C2CCD1B79E6AC007F68B1 /* crash.mp3 */; };
+		A0A0DC681B85C68A00BCF81F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A0DC671B85C68A00BCF81F /* GameScene.swift */; };
+		A0A0DC6A1B85C6F200BCF81F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A0DC691B85C6F200BCF81F /* GameViewController.swift */; };
 		A0A2F4481B56645A00FE5E6B /* Bow.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0A2F4471B56645A00FE5E6B /* Bow.sks */; };
 		A0A2F44C1B56658E00FE5E6B /* AnimatingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */; };
 		A0B16ED61B7B293500C7C976 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0B16ED51B7B293500C7C976 /* Images.xcassets */; };
@@ -123,6 +125,8 @@
 		A09B6B9B1B5CE60200918A48 /* SKSimpleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSimpleButton.swift; sourceTree = "<group>"; };
 		A09B6B9F1B5CE88500918A48 /* SpriteKit-Spring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SpriteKit-Spring.swift"; sourceTree = "<group>"; };
 		A09C2CCD1B79E6AC007F68B1 /* crash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = crash.mp3; sourceTree = "<group>"; };
+		A0A0DC671B85C68A00BCF81F /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		A0A0DC691B85C6F200BCF81F /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		A0A2F4471B56645A00FE5E6B /* Bow.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Bow.sks; sourceTree = "<group>"; };
 		A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingSprite.swift; sourceTree = "<group>"; };
 		A0B16ED51B7B293500C7C976 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -215,6 +219,7 @@
 		A01411E61B550C7900238667 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				A0A0DC6B1B85C6F400BCF81F /* Test */,
 				A01411E91B550D2B00238667 /* UnionModeGameViewController.swift */,
 				A06178F11B591ECD00EFCACB /* LoadingScene.swift */,
 				A0FC70831B6724E20034C8F0 /* HomeScene.swift */,
@@ -320,6 +325,15 @@
 				A014122E1B550ED400238667 /* Get.wav */,
 			);
 			name = Sound;
+			sourceTree = "<group>";
+		};
+		A0A0DC6B1B85C6F400BCF81F /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				A0A0DC691B85C6F200BCF81F /* GameViewController.swift */,
+				A0A0DC671B85C68A00BCF81F /* GameScene.swift */,
+			);
+			name = Test;
 			sourceTree = "<group>";
 		};
 		A0C83DEE1B78C10300214B11 /* ViewEffect */ = {
@@ -495,9 +509,11 @@
 				A0C909B11B560B6D00684831 /* SKAction+Extensions.swift in Sources */,
 				A01411F91B550DC100238667 /* SKEmitterNode+Extras.swift in Sources */,
 				A0C83DF41B78C1C100214B11 /* Shake.swift in Sources */,
+				A0A0DC6A1B85C6F200BCF81F /* GameViewController.swift in Sources */,
 				A01411EB1B550D2B00238667 /* UnionModeGameViewController.swift in Sources */,
 				A09B6B9C1B5CE60200918A48 /* SKSimpleButton.swift in Sources */,
 				A01411FA1B550DC100238667 /* LDSKSimpleButton.swift in Sources */,
+				A0A0DC681B85C68A00BCF81F /* GameScene.swift in Sources */,
 				A01411F11B550DA900238667 /* GameState.swift in Sources */,
 				A06178F21B591ECD00EFCACB /* LoadingScene.swift in Sources */,
 				A01411C31B550B7900238667 /* AppDelegate.swift in Sources */,
