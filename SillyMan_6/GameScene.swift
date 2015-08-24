@@ -158,8 +158,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        player.physicsBody?.applyImpulse(CGVectorMake(0, 5))
-        player.physicsBody?.applyImpulse(CGVectorMake(3, 0))
+        player.physicsBody?.applyImpulse(CGVectorMake(3, 5))
     }
     
     override func update(currentTime: CFTimeInterval) {

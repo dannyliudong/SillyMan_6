@@ -24,7 +24,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     //var playableRect: CGRect! //游戏区域
     
-    var rootSceneNode:SKNode! // 根场景 所有元素的父节点 ，控制次节点移动模拟摄像机追踪
+    var rootSceneNode:SKNode! // 根场景 所有元素的父节点 ，控制此节点移动模拟摄像机追踪
     
     var player: SKSpriteNode!
     var enemyNode: SKNode!
@@ -58,12 +58,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     var playerMoveSpeed: CGFloat = 0.15/1
     // 游戏时间
     var playTime: CGFloat = 0
-    // 飞行距离
-    var movingExtent:Int = 0 {
-        didSet{
-            //gameLeveDataControlle()
-        }
-    }
+
     var guideFigerNode: SKNode! // 指引手指
     
     //MARK: Private Properties
@@ -280,7 +275,76 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         stone2.physicsBody?.affectedByGravity = true
         stone2.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
         
+        
+        let starfieldNode = SKNode()
+        starfieldNode.name = "starfieldNode"
+        starfieldNode.addChild(starfieldEmitterNode(
+            speed: -18, lifetime: size.height / 23, scale: 0.6,
+            birthRate: 1, color: SKColor.lightGrayColor()))
+        background1.addChild(starfieldNode)
+        
+        let starfieldNode1 = SKNode()
+        starfieldNode1.name = "starfieldNode1"
+        starfieldNode1.addChild(starfieldEmitterNode(
+            speed: -18, lifetime: size.height / 23, scale: 0.6,
+            birthRate: 1, color: SKColor.lightGrayColor()))
+        background2.addChild(starfieldNode1)
+        
     }
+    
+    func starfieldEmitterNode(#speed: CGFloat, lifetime: CGFloat, scale: CGFloat, birthRate: CGFloat, color: SKColor) -> SKEmitterNode {
+        
+        //        let star = SKLabelNode(fontNamed: "Helvetica")
+        //        star.fontSize = 80.0
+        //        star.text = "✦"
+        
+        let sk = SKSpriteNode(imageNamed: "starEm")
+        sk.alpha = 0.5
+        
+        let textureView = SKView()
+        let texture = textureView.textureFromNode(sk)
+        texture.filteringMode = .Nearest
+        
+        let emitterNode = SKEmitterNode()
+        emitterNode.particleTexture = texture
+        emitterNode.particleBirthRate = birthRate
+        emitterNode.particleColor = color
+        emitterNode.particleLifetime = lifetime
+        emitterNode.particleSpeed = speed
+        emitterNode.particleScale = scale
+        emitterNode.particleColorBlendFactor = 1
+        emitterNode.position =
+            CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMaxY(frame))
+        emitterNode.particlePositionRange =
+            CGVector(dx: CGRectGetMaxX(frame), dy: 0)
+        
+        emitterNode.particleAction =
+            SKAction.repeatActionForever(SKAction.sequence([
+                SKAction.rotateByAngle(CGFloat(-M_PI_4), duration: 1),
+                SKAction.rotateByAngle(CGFloat(M_PI_4), duration: 1)]))
+        
+        emitterNode.particleSpeedRange = 16.0
+        
+        //1
+        let twinkles = 20
+        let colorSequence = SKKeyframeSequence(capacity: twinkles*2)
+        //2
+        let twinkleTime = 1.0/CGFloat(twinkles)
+        for i in 0..<twinkles {
+            //3
+            colorSequence.addKeyframeValue(
+                SKColor.whiteColor(),time: CGFloat(i)*2 * twinkleTime/2)
+            colorSequence.addKeyframeValue(
+                SKColor.yellowColor(), time: (CGFloat(i)*2+1)*twinkleTime/2)
+        }
+        //4
+        emitterNode.particleColorSequence = colorSequence
+        
+        emitterNode.advanceSimulationTime(NSTimeInterval(lifetime))
+        
+        return emitterNode
+    }
+    
     
 
     var moveCount:Int = 0
@@ -306,6 +370,15 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             }
             
         }
+        
+        // 角色高度超过一定高度 缩放根场景 达到远景效果
+        if player.position.y >= Screen_Height * 0.8 {
+            rootSceneNode.runAction(SKAction.scaleTo(0.8, duration: 0.5))
+        }
+        if player.position.y <= Screen_Height * 0.8  {
+            rootSceneNode.runAction(SKAction.scaleTo(1, duration: 0.5))
+        }
+        
     }
     
     //MARK: 碰撞检测
@@ -871,7 +944,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         SKTAudio.sharedInstance().pauseBackgroundMusic()
         
         // 保存游戏状态 分数等信息
-        GameState.sharedInstance.movingScore = Int(movingExtent)
+        GameState.sharedInstance.movingScore = Int(score)
         GameState.sharedInstance.saveState()
         
         // 获取所有enemyNode 销毁掉
@@ -1004,25 +1077,25 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         // 飞行米数
         scoreLabel = SKLabelNode(fontNamed: font_Name)
         scoreLabel.fontSize = 24
-        scoreLabel.position = CGPoint(x:10 , y: self.size.height-80)
+        scoreLabel.position = CGPoint(x:25 , y: Screen_Height-30)
         scoreLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-        scoreLabel.text = "\(Int(movingExtent))" //"0 M"
+        scoreLabel.text = "\(Int(score))" //"0 M"
         gameSceneUINode.addChild(scoreLabel)
         
-        // 金币图标
-        let staricon = SKSpriteNode(imageNamed: "Star")
-        staricon.position = CGPoint(x: 25, y: self.size.height-30)
-        staricon.setScale(0.8)
-        gameSceneUINode.addChild(staricon)
-        
-        // 金币数量
-        starsLabel = SKLabelNode(fontNamed: font_Name)
-        starsLabel.fontSize = 24
-        starsLabel.fontColor = SKColor.whiteColor()
-        starsLabel.position = CGPoint(x: 50, y: self.size.height-40)
-        starsLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-        starsLabel.text = String(format: "%d", GameState.sharedInstance.stars)
-        gameSceneUINode.addChild(starsLabel)
+//        // 金币图标
+//        let staricon = SKSpriteNode(imageNamed: "Star")
+//        staricon.position = CGPoint(x: 25, y: self.size.height-30)
+//        staricon.setScale(0.8)
+//        gameSceneUINode.addChild(staricon)
+//        
+//        // 金币数量
+//        starsLabel = SKLabelNode(fontNamed: font_Name)
+//        starsLabel.fontSize = 24
+//        starsLabel.fontColor = SKColor.whiteColor()
+//        starsLabel.position = CGPoint(x: 50, y: self.size.height-40)
+//        starsLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
+//        starsLabel.text = String(format: "%d", GameState.sharedInstance.stars)
+//        gameSceneUINode.addChild(starsLabel)
         
     }
     
@@ -1417,7 +1490,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             
             player.physicsBody?.velocity = CGVectorMake(0, 0)
             player.physicsBody?.applyImpulse(CGVectorMake(0, 10))
-            player.physicsBody?.applyImpulse(CGVectorMake(3, 0))
         }
         
     }
