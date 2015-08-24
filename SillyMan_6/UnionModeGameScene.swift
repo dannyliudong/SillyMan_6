@@ -22,8 +22,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     let atlas = GameSpriteAtlas()
     
-    var playableRect: CGRect! //游戏区域
-    var playerNode: SKSpriteNode!
+    //var playableRect: CGRect! //游戏区域
+    
+    var rootSceneNode:SKNode! // 根场景 所有元素的父节点 ，控制次节点移动模拟摄像机追踪
+    
+    var player: SKSpriteNode!
     var enemyNode: SKNode!
     var starNode: SKNode!
     
@@ -85,7 +88,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     private var starsLabel: SKLabelNode!
     private var staricon: SKSpriteNode!
     
-    //private var backgroundNode: SKNode!
+    private var score: Int = 0
+    
     private var background1:SKSpriteNode!
     private var background2:SKSpriteNode!
     
@@ -93,8 +97,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     private var Screen_Height:CGFloat!
     
     private var font_Name:String = "HelveticaNeue"
-    
-    private var adjustmentBackgroundPosition:CGFloat = 0 //调整背景位置
     
     
     //MARK: Did Move To View
@@ -112,7 +114,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         Screen_Height = self.size.height
         
         scaleFactor = Screen_Width / 320.0
-        self.playableRect = CGRect(x: 0, y: 0 , width: Screen_Width, height: Screen_Height)
+        //self.playableRect = CGRect(x: 0, y: 0 , width: Screen_Width, height: Screen_Height)
         
         // 引导手指
         figerNode()
@@ -132,6 +134,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         isFristRuning = true
         isGameOver = false
+        
+        rootSceneNode = SKNode()
+        addChild(rootSceneNode)
         
         createPlayer()
         
@@ -243,152 +248,64 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
 
     //MARK: 创建背景层
     func createBackground() {
-        
-        adjustmentBackgroundPosition = self.size.width
-        
-        //backgroundNode = SKNode()
-        //backgroundNode.setScale(scaleFactor)
-        //backgroundNode.zPosition = -10
-        //addChild(backgroundNode)
-        
         background1 = SKSpriteNode(imageNamed: "BG1")
-        background1.position = CGPointMake(0, Screen_Height/2)
-        background1.anchorPoint = CGPointMake(0, 0.5)
+        background1.position = CGPointMake(background1.size.width/2, Screen_Height/2)
         background1.zPosition = -10
+        rootSceneNode.addChild(background1)
         
         background2 = SKSpriteNode(imageNamed: "BG1")
-        background2.anchorPoint = CGPointMake(0, 0.5)
         background2.zPosition = -10
-        background2.position = CGPointMake(adjustmentBackgroundPosition - 1, self.size.height/2);
+        background2.position = CGPointMake((background1.position.x + background1.size.width), Screen_Height/2);
+        rootSceneNode.addChild(background2)
         
-        //background1.setScale(scaleFactor)
-        //background2.setScale(scaleFactor)
+        // 底部石头
+        let stone1 = SKSpriteNode(imageNamed: "blackStoneDown1")
+        stone1.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
+        background1.addChild(stone1)
+        
+        let stone2 = SKSpriteNode(imageNamed: "blackStoneDown1")
+        stone2.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
+        background2.addChild(stone2)
+        
+        stone1.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
+        stone1.physicsBody?.angularVelocity
+        stone1.physicsBody?.dynamic = false
+        stone1.physicsBody?.allowsRotation = false
+        stone1.physicsBody?.affectedByGravity = true
+        stone1.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+        stone2.physicsBody = SKPhysicsBody(texture: stone2.texture, size: stone2.size)
+        stone2.physicsBody?.dynamic = false
+        stone2.physicsBody?.allowsRotation = false
+        stone2.physicsBody?.affectedByGravity = true
+        stone2.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+    }
+    
 
-        addChild(background1)
-        addChild(background2)
-        
-        //  碰撞的部分
-        // 顶部石头
-        let stone3 = SKSpriteNode(imageNamed: "blackStoneUp")
-        stone3.position = CGPointMake(Screen_Width/2, (Screen_Height/2 - stone3.size.height/2))
-        background1.addChild(stone3)
-        
-        let stone4 = SKSpriteNode(imageNamed: "blackStoneUp")
-        stone4.position = CGPointMake(Screen_Width/2, (Screen_Height/2 - stone3.size.height/2))
-        background2.addChild(stone4)
-        
-        stone3.physicsBody = SKPhysicsBody(texture: stone3.texture, size: stone3.size)
-        stone3.physicsBody?.dynamic = false
-        stone3.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
-        
-        stone4.physicsBody = SKPhysicsBody(texture: stone3.texture, size: stone3.size)
-        stone4.physicsBody?.dynamic = false
-        stone4.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
-        
-        // 底部石头
-        let stone1 = SKSpriteNode(imageNamed: "blackStoneDown")
-        //stone1.setScale(2)
-        stone1.position = CGPointMake(Screen_Width/2 , -(Screen_Height/2 - stone1.size.height/2))
-        background1.addChild(stone1)
-        
-        let stone2 = SKSpriteNode(imageNamed: "blackStoneDown")
-        //stone2.setScale(2)
-        stone2.position = CGPointMake(Screen_Width/2,  -(Screen_Height/2 - stone1.size.height/2))
-        background2.addChild(stone2)
-        
-        stone1.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
-        stone1.physicsBody?.dynamic = false
-        stone1.physicsBody?.allowsRotation = false
-        stone1.physicsBody?.affectedByGravity = true
-        stone1.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
-        
-        stone2.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
-        stone2.physicsBody?.dynamic = false
-        stone2.physicsBody?.allowsRotation = false
-        stone2.physicsBody?.affectedByGravity = true
-        stone2.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
-        
-    }
-    
-    // 滚动Enemy 层
-    func createEnemyLayer() {
-        
-        adjustmentBackgroundPosition = self.size.width
-        
-        //backgroundNode = SKNode()
-        //backgroundNode.setScale(scaleFactor)
-        //backgroundNode.zPosition = -10
-        //addChild(backgroundNode)
-        
-        var emenyLayer1 = SKSpriteNode()
-        background1.position = CGPointMake(0, Screen_Height/2)
-        background1.anchorPoint = CGPointMake(0, 0.5)
-        background1.zPosition = -10
-        
-        var emenyLayer2 = SKSpriteNode()
-        background2.anchorPoint = CGPointMake(0, 0.5)
-        background2.zPosition = -10
-        background2.position = CGPointMake(adjustmentBackgroundPosition - 1, self.size.height/2);
-        
-        //background1.setScale(scaleFactor)
-        //background2.setScale(scaleFactor)
-        
-        addChild(background1)
-        addChild(background2)
-        
-        //  碰撞的部分
-        // 顶部石头
-        let stone3 = SKSpriteNode(imageNamed: "blackStoneUp")
-        stone3.position = CGPointMake(Screen_Width/2, (Screen_Height/2 - stone3.size.height/2))
-        background1.addChild(stone3)
-        
-        let stone4 = SKSpriteNode(imageNamed: "blackStoneUp")
-        stone4.position = CGPointMake(Screen_Width/2, (Screen_Height/2 - stone3.size.height/2))
-        background2.addChild(stone4)
-        
-        stone3.physicsBody = SKPhysicsBody(texture: stone3.texture, size: stone3.size)
-        stone3.physicsBody?.dynamic = false
-        stone3.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
-        
-        stone4.physicsBody = SKPhysicsBody(texture: stone3.texture, size: stone3.size)
-        stone4.physicsBody?.dynamic = false
-        stone4.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
-        
-        // 底部石头
-        let stone1 = SKSpriteNode(imageNamed: "blackStoneDown")
-        //stone1.setScale(2)
-        stone1.position = CGPointMake(Screen_Width/2 , -(Screen_Height/2 - stone1.size.height/2))
-        background1.addChild(stone1)
-        
-        let stone2 = SKSpriteNode(imageNamed: "blackStoneDown")
-        //stone2.setScale(2)
-        stone2.position = CGPointMake(Screen_Width/2,  -(Screen_Height/2 - stone1.size.height/2))
-        background2.addChild(stone2)
-        
-        stone1.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
-        stone1.physicsBody?.dynamic = false
-        stone1.physicsBody?.allowsRotation = false
-        stone1.physicsBody?.affectedByGravity = true
-        stone1.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
-        
-        stone2.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
-        stone2.physicsBody?.dynamic = false
-        stone2.physicsBody?.allowsRotation = false
-        stone2.physicsBody?.affectedByGravity = true
-        stone2.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
-        
-    }
-    
-    
+    var moveCount:Int = 0
+
     //MARK: 滚动背景层
     func scrollBackground() {
-        adjustmentBackgroundPosition--
-        if (adjustmentBackgroundPosition <= 0) {
-            adjustmentBackgroundPosition = CGFloat(Screen_Width)
-        }
+        player.position.x++
         
-        background1.position = CGPointMake(CGFloat(adjustmentBackgroundPosition - CGFloat(self.size.width)), Screen_Height/2)
-        background2.position = CGPointMake(CGFloat(adjustmentBackgroundPosition - 1), Screen_Height/2)
+        score = max(score, Int(player.position.x))  //score : Int(player.position.x)
+        
+        let ptX = player.position.x
+        rootSceneNode.position.x = -ptX + 150
+        
+        var count = Int(abs(rootSceneNode.position.x ) / background1.size.width)
+        if  count != moveCount {
+            moveCount = count
+            
+            if moveCount % 2 != 0 {
+                background1.position.x = background2.position.x + background2.size.width
+            }
+            if moveCount % 2 == 0 {
+                background2.position.x = background1.position.x + background1.size.width
+            }
+            
+        }
     }
     
     //MARK: 碰撞检测
@@ -408,7 +325,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                 collisionWithEnemy(enemyNode!)
                 
             case CollisionCategoryBitmask.SeaBottom :
-                collisionSeaBottom(playerNode)
+                collisionSeaBottom(player)
                 
             default:
                 break;
@@ -455,7 +372,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             
             boatCrash()
             
-            playerNode.removeFromParent()
+            player.removeFromParent()
             
             runAction(enemySound)
             
@@ -473,7 +390,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             
             boatCrash()
             
-            playerNode.removeFromParent()
+            player.removeFromParent()
             
             gameOver()
         }
@@ -516,7 +433,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     //  碰撞海底
     func collisionSeaBottom(node:SKNode) {
         
-        collisionByBoat(playerNode)
+        collisionByBoat(player)
         
         
 //        let musicOn = GameState.sharedInstance.musicState
@@ -544,8 +461,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     func boatCrash() {
         
         var node = SKNode()
-        node.position = playerNode.position
-        addChild(node)
+        node.position = player.position
+        rootSceneNode.addChild(node)
         
         var boatNode1 = SKSpriteNode(imageNamed: "submarineNode01")
         var boatNode2 = SKSpriteNode(imageNamed: "submarineNode02")
@@ -605,7 +522,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         emitter.zPosition = 100
         
         emitter.runAction(SKAction.removeFromParentAfterDelay(0.4))
-        addChild(emitter)
+        rootSceneNode.addChild(emitter)
     }
     
     // 金币特效
@@ -616,7 +533,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         emitter.position = node.position
         
         emitter.runAction(SKAction.removeFromParentAfterDelay(0.4))
-        addChild(emitter)
+        rootSceneNode.addChild(emitter)
     }
     
     // 点击特效
@@ -635,7 +552,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         shapeNode.lineWidth = 1
         shapeNode.antialiased = false
         shapeNode.zPosition = 100
-        addChild(shapeNode)
+        rootSceneNode.addChild(shapeNode)
         // 3
         let duration = 0.6
         let scaleAction = SKAction.scaleTo(6.0, duration: duration)
@@ -658,100 +575,100 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
     }
 
-    func updateMovingExtent() {
-        // 更新移动距离
-        scoreLabel.text = "\(Int(movingExtent))"
-    }
+//    func updateMovingExtent() {
+//        // 更新移动距离
+//        scoreLabel.text = "\(Int(movingExtent))"
+//    }
     
     
     //MARK: 构建游戏Node
     //  动态创建敌人
-    func createEnemy() {
-        
-        if !isGameOver {
-            
-            let randomEnemyX = CGFloat.random(Int(self.size.width) +  20 )
-            
-            self.enemyNode = self.creatEnemyformPosition(CGPointMake(randomEnemyX, self.playableRect.size.height + 50), ofType: self.enemyTypeLeve)
-            
-            let node = self.enemyNode as! EnemyNode
-            self.addChild(node)
-            
-            let targetPostion = -self.playableRect.size.height + 50
-            let bornPostion = self.playableRect.size.height + 50
-            
-            let totaltime:NSTimeInterval = NSTimeInterval((bornPostion - targetPostion) / enemySpeed)
-            
-            if node.enemyType == EnemyType.Normal {
-                // 普通敌人
-                let actionMove = SKAction.moveToY(-self.playableRect.size.height + 50, duration: totaltime * NSTimeInterval(enemySpeedLeve))
-                let actionMoveDone = SKAction.removeFromParent()
-                
-                node.runAction(SKAction.sequence([actionMove, actionMoveDone]))
-                
-            } else if node.enemyType == EnemyType.SpecialRotate {
-                // 旋转敌人
-                let actionMove = SKAction.moveToY(-self.playableRect.size.height + 50, duration: totaltime * NSTimeInterval(enemySpeedLeve))
-                let actionMoveDone = SKAction.removeFromParent()
-                
-                var actionRotate: SKAction!
-                
-                if self.rotateFlag {
-                    // 逆时针旋转
-                    actionRotate = SKAction.rotateByAngle(CGFloat(M_PI), duration: 0.5)
-                    
-                } else {
-                    // 顺时针旋转
-                    actionRotate = SKAction.rotateByAngle(CGFloat(-M_PI), duration: 0.5)
-                }
-                
-                let rotateAni = SKAction.repeatActionForever(actionRotate)
-                
-                let groupAni = SKAction.group([rotateAni, actionMove])
-                
-                node.runAction(SKAction.sequence([groupAni, actionMoveDone]))
-                
-                
-                
-            } else if node.enemyType == EnemyType.SpecialActive {
-                // 移动敌人
-                let actionMove = SKAction.moveToY(-self.playableRect.size.height + 50, duration: totaltime * NSTimeInterval(enemySpeedLeve))
-                
-                let actionMoveDone = SKAction.removeFromParent()
-                var actionMoveByself = SKAction()
-                
-                if node.position.x <= self.playableRect.size.width/2 {
-                    actionMoveByself = SKAction.moveToX(CGRectGetMaxX(self.playableRect), duration: totaltime * NSTimeInterval(enemySpeedLeve))
-                    node.runAction(actionMove)
-                } else if node.position.x >= self.playableRect.size.width/2 {
-                    actionMoveByself = SKAction.moveToX(CGRectGetMinX(self.playableRect), duration: totaltime * NSTimeInterval(enemySpeedLeve))
-                    node.runAction(actionMove)
-                }
-                
-                let moveAni = SKAction.repeatActionForever(actionMoveByself)
-                
-                let groupAni = SKAction.group([moveAni, actionMove])
-                
-                node.runAction(SKAction.sequence([groupAni, actionMoveDone]))
-                
-                
-            } else if node.enemyType == EnemyType.SpecialHidden {
-                // 隐身敌人
-                let actionMove = SKAction.moveToY(-self.playableRect.size.height + 50, duration: totaltime * NSTimeInterval(enemySpeedLeve))
-                
-                let actionMoveDone = SKAction.removeFromParent()
-                
-                let actionHidden = SKAction.fadeAlphaTo(CGFloat(0.2), duration: 0.5)
-                
-                let groupAni = SKAction.group([actionHidden, actionMove])
-                
-                node.runAction(SKAction.sequence([groupAni, actionMoveDone]))
-                
-            }
-            
-        }
-        
-    }
+//    func createEnemy() {
+//        
+//        if !isGameOver {
+//            
+//            let randomEnemyX = CGFloat.random(Int(self.size.width) +  20 )
+//            
+//            self.enemyNode = self.creatEnemyformPosition(CGPointMake(randomEnemyX, self.playableRect.size.height + 50), ofType: self.enemyTypeLeve)
+//            
+//            let node = self.enemyNode as! EnemyNode
+//            self.addChild(node)
+//            
+//            let targetPostion = -self.playableRect.size.height + 50
+//            let bornPostion = self.playableRect.size.height + 50
+//            
+//            let totaltime:NSTimeInterval = NSTimeInterval((bornPostion - targetPostion) / enemySpeed)
+//            
+//            if node.enemyType == EnemyType.Normal {
+//                // 普通敌人
+//                let actionMove = SKAction.moveToY(-self.playableRect.size.height + 50, duration: totaltime * NSTimeInterval(enemySpeedLeve))
+//                let actionMoveDone = SKAction.removeFromParent()
+//                
+//                node.runAction(SKAction.sequence([actionMove, actionMoveDone]))
+//                
+//            } else if node.enemyType == EnemyType.SpecialRotate {
+//                // 旋转敌人
+//                let actionMove = SKAction.moveToY(-self.playableRect.size.height + 50, duration: totaltime * NSTimeInterval(enemySpeedLeve))
+//                let actionMoveDone = SKAction.removeFromParent()
+//                
+//                var actionRotate: SKAction!
+//                
+//                if self.rotateFlag {
+//                    // 逆时针旋转
+//                    actionRotate = SKAction.rotateByAngle(CGFloat(M_PI), duration: 0.5)
+//                    
+//                } else {
+//                    // 顺时针旋转
+//                    actionRotate = SKAction.rotateByAngle(CGFloat(-M_PI), duration: 0.5)
+//                }
+//                
+//                let rotateAni = SKAction.repeatActionForever(actionRotate)
+//                
+//                let groupAni = SKAction.group([rotateAni, actionMove])
+//                
+//                node.runAction(SKAction.sequence([groupAni, actionMoveDone]))
+//                
+//                
+//                
+//            } else if node.enemyType == EnemyType.SpecialActive {
+//                // 移动敌人
+//                let actionMove = SKAction.moveToY(-self.playableRect.size.height + 50, duration: totaltime * NSTimeInterval(enemySpeedLeve))
+//                
+//                let actionMoveDone = SKAction.removeFromParent()
+//                var actionMoveByself = SKAction()
+//                
+//                if node.position.x <= self.playableRect.size.width/2 {
+//                    actionMoveByself = SKAction.moveToX(CGRectGetMaxX(self.playableRect), duration: totaltime * NSTimeInterval(enemySpeedLeve))
+//                    node.runAction(actionMove)
+//                } else if node.position.x >= self.playableRect.size.width/2 {
+//                    actionMoveByself = SKAction.moveToX(CGRectGetMinX(self.playableRect), duration: totaltime * NSTimeInterval(enemySpeedLeve))
+//                    node.runAction(actionMove)
+//                }
+//                
+//                let moveAni = SKAction.repeatActionForever(actionMoveByself)
+//                
+//                let groupAni = SKAction.group([moveAni, actionMove])
+//                
+//                node.runAction(SKAction.sequence([groupAni, actionMoveDone]))
+//                
+//                
+//            } else if node.enemyType == EnemyType.SpecialHidden {
+//                // 隐身敌人
+//                let actionMove = SKAction.moveToY(-self.playableRect.size.height + 50, duration: totaltime * NSTimeInterval(enemySpeedLeve))
+//                
+//                let actionMoveDone = SKAction.removeFromParent()
+//                
+//                let actionHidden = SKAction.fadeAlphaTo(CGFloat(0.2), duration: 0.5)
+//                
+//                let groupAni = SKAction.group([actionHidden, actionMove])
+//                
+//                node.runAction(SKAction.sequence([groupAni, actionMoveDone]))
+//                
+//            }
+//            
+//        }
+//        
+//    }
     
     // 构建导弹
     func createBarrier() {
@@ -806,41 +723,34 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     //构建player
     func createPlayer(){
         
-        playerNode = SKSpriteNode(imageNamed: "submarine")
-        playerNode.position = CGPoint(x: Screen_Width/3, y: self.size.height/2)
+        player = SKSpriteNode (imageNamed: "submarine")
+        player.position = CGPointMake(150, 200)
         
-        //playerNode.zRotation = CGFloat(M_PI)
-        //playerNode.anchorPoint = CGPointMake(1, 0.5)
-        //submarineSp.setScale(1)
-        addChild(playerNode)
+        rootSceneNode.addChild(player)
         
+        player.physicsBody = SKPhysicsBody(texture: player.texture, size: player.size)
+        player.physicsBody?.dynamic = false
+        player.physicsBody?.allowsRotation = false
+        player.physicsBody?.affectedByGravity = true
         
-
-//        let smileSprite = SKSpriteNode(texture: atlas.face_1_face_1_001())
-//        _node.addChild(smileSprite)
-//        
-//        let smile = SKAction.animateWithTextures(atlas.face_1_face_1_(), timePerFrame: 0.1)
-//        let smileAni = SKAction.repeatAction(smile, count: 6)
-//        let smileSequence = SKAction.repeatActionForever(SKAction.sequence([smileAni]))
-//        smileSprite.runAction(smileSequence)
-    
-//        let emitter = SKEmitterNode.emitterNamed("PlayerTrail")
-//        emitter.particleTexture!.filteringMode = .Nearest
-//        emitter.position = CGPointMake(0, 100)
-//        smileSprite.addChild(emitter)
+        //player.physicsBody?.friction = CGFloat(0.01) // 摩擦力
         
-        playerNode.physicsBody = SKPhysicsBody(texture: playerNode.texture, size: playerNode.size)
-        playerNode.physicsBody?.dynamic = false
-        playerNode.physicsBody?.allowsRotation = false
-        playerNode.physicsBody?.affectedByGravity = true
-        
-        playerNode.physicsBody?.friction = CGFloat(0.01) // 摩擦力
-        
-        playerNode.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Player
-        //playerNode.physicsBody?.collisionBitMask = 0 //  默认与所有物体发生碰撞
-        playerNode.physicsBody?.contactTestBitMask = CollisionCategoryBitmask.Star | CollisionCategoryBitmask.Enemy | CollisionCategoryBitmask.SeaBottom
+        player.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Player
+        player.physicsBody?.contactTestBitMask = CollisionCategoryBitmask.Star | CollisionCategoryBitmask.Enemy | CollisionCategoryBitmask.SeaBottom
         
         
+        //        let smileSprite = SKSpriteNode(texture: atlas.face_1_face_1_001())
+        //        _node.addChild(smileSprite)
+        //
+        //        let smile = SKAction.animateWithTextures(atlas.face_1_face_1_(), timePerFrame: 0.1)
+        //        let smileAni = SKAction.repeatAction(smile, count: 6)
+        //        let smileSequence = SKAction.repeatActionForever(SKAction.sequence([smileAni]))
+        //        smileSprite.runAction(smileSequence)
+        
+        //        let emitter = SKEmitterNode.emitterNamed("PlayerTrail")
+        //        emitter.particleTexture!.filteringMode = .Nearest
+        //        emitter.position = CGPointMake(0, 100)
+        //        smileSprite.addChild(emitter)
     }
     
     // 创建敌人
@@ -864,42 +774,42 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     }
     
     // 创建星星
-    func createStar() {
-        if !isGameOver {
-            
-            let sprite = SKSpriteNode(imageNamed: "Star")
-            addChild(sprite)
-            
-            // 随机位置
-            let randomEnemyY = CGFloat.random(Int(self.size.height) +  20 )
-            sprite.position = CGPointMake(Screen_Width * 1.1, randomEnemyY)
-            
-            sprite.physicsBody = SKPhysicsBody(circleOfRadius: sprite.size.width/2)
-            sprite.physicsBody?.dynamic = false
-            sprite.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Star
-            sprite.physicsBody?.collisionBitMask = 0
-            sprite.physicsBody?.contactTestBitMask = 0
-            
-            //
-            let targetPostion = -self.playableRect.size.height + 50
-            let bornPostion = self.playableRect.size.height + 50
-            
-            // 移动的速度
-            let totaltime:NSTimeInterval = NSTimeInterval((bornPostion - targetPostion) / starSpeed)
-
-            let move = SKAction.moveToX(-100, duration: 4)
-            let movedone = SKAction.removeFromParent()
-            sprite.runAction(SKAction.sequence([move, movedone]))
-        }
-        
-    }
+//    func createStar() {
+//        if !isGameOver {
+//            
+//            let sprite = SKSpriteNode(imageNamed: "Star")
+//            addChild(sprite)
+//            
+//            // 随机位置
+//            let randomEnemyY = CGFloat.random(Int(self.size.height) +  20 )
+//            sprite.position = CGPointMake(Screen_Width * 1.1, randomEnemyY)
+//            
+//            sprite.physicsBody = SKPhysicsBody(circleOfRadius: sprite.size.width/2)
+//            sprite.physicsBody?.dynamic = false
+//            sprite.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Star
+//            sprite.physicsBody?.collisionBitMask = 0
+//            sprite.physicsBody?.contactTestBitMask = 0
+//            
+//            //
+//            let targetPostion = -self.playableRect.size.height + 50
+//            let bornPostion = self.playableRect.size.height + 50
+//            
+//            // 移动的速度
+//            let totaltime:NSTimeInterval = NSTimeInterval((bornPostion - targetPostion) / starSpeed)
+//
+//            let move = SKAction.moveToX(-100, duration: 4)
+//            let movedone = SKAction.removeFromParent()
+//            sprite.runAction(SKAction.sequence([move, movedone]))
+//        }
+//        
+//    }
 
     //MARK: 开始游戏
     func starGame() {
         isGameOver = false
         isGameBegin = true
         
-        playerNode.physicsBody?.dynamic = true
+        player.physicsBody?.dynamic = true
         
         self.pauseButton.hidden = false
         
@@ -916,7 +826,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             SKTAudio.sharedInstance().playBackgroundMusic("game_music.mp3")
         }
         
-        createGameNodes()
+        //createGameNodes()
         
 
         
@@ -1493,7 +1403,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             let locationInNode = touch.locationInNode(self)
 
             let tagetPoint:CGPoint = locationInNode
-            let playerPoint:CGPoint = playerNode.position
+            let playerPoint:CGPoint = player.position
             
             let moveTime = playMovingTime(playerPoint, p2: tagetPoint, speed: Player_Move_Speed)
             
@@ -1502,11 +1412,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                 isFristRuning = false
             }
             
-            //playerNode.runAction(SKAction.moveTo(locationInNode, duration: Double(moveTime)))
+            //player.runAction(SKAction.moveTo(locationInNode, duration: Double(moveTime)))
             tapEffectsForTouchAtLocation(locationInNode)
             
-            playerNode.physicsBody?.velocity = CGVectorMake(0, 0)
-            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 10))
+            player.physicsBody?.velocity = CGVectorMake(0, 0)
+            player.physicsBody?.applyImpulse(CGVectorMake(0, 10))
+            player.physicsBody?.applyImpulse(CGVectorMake(3, 0))
         }
         
     }
@@ -1527,27 +1438,18 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         if isGameBegin {
             scrollBackground()
             
+            let displayScore = Double(score - 150) * 0.1
+            scoreLabel.text = "\(Int(displayScore))"
+            
             //playerNode.physicsBody?.applyImpulse(CGVectorMake(0.1, 0))
         }
         
         if isLongPress {
-            
-            //let up =  impulse_dy++ * 0.01
-            
-            //println("impulse_dy:  \(impulse_dy++)")
-            playerNode.physicsBody?.applyImpulse(CGVectorMake(0, 0.7))
+            player.physicsBody?.applyImpulse(CGVectorMake(0, 0.7))
         }
         
-        
-        
 
-
-        
-//        if isGameBegin {
-//            playTime++
-//            movingExtent = Int(self.playTime * playerMoveSpeed)
-//            updateMovingExtent()
-//        }
+    
         
     }
     

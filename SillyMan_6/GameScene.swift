@@ -16,7 +16,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var rootSceneNode:SKNode!
     var player:SKSpriteNode!
     
-    private var adjustmentBackgroundPosition:CGFloat = 0 //调整背景位置
+    //private var adjustmentBackgroundPosition:CGFloat = 0 //调整背景位置
     
     private var background1:SKSpriteNode!
     private var background2:SKSpriteNode!
@@ -34,7 +34,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.gravity = CGVectorMake(0, -2)
 
         rootSceneNode = SKNode()
-        //rootSceneNode.position = CGPointMake(0.5, 0)
         addChild(rootSceneNode)
         
         player = SKSpriteNode (imageNamed: "submarine1")
@@ -57,29 +56,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //MARK: 创建背景层
     func createBackground() {
         
-        adjustmentBackgroundPosition = self.size.width
-        
         background1 = SKSpriteNode(imageNamed: "BG1")
-        background1.anchorPoint = CGPointMake(0, 0)
-        
+        background1.position = CGPointMake(background1.size.width/2, Screen_Height/2)
         background1.zPosition = -10
         rootSceneNode.addChild(background1)
         
         background2 = SKSpriteNode(imageNamed: "BG1")
-        background2.anchorPoint = CGPointMake(0, 0)
         background2.zPosition = -10
-        background2.position = CGPointMake((background1.position.x + background1.size.width) - 1, 0);
+        background2.position = CGPointMake((background1.position.x + background1.size.width), Screen_Height/2);
         rootSceneNode.addChild(background2)
         
         // 底部石头
-        let stone1 = SKSpriteNode(imageNamed: "blackStoneDown")
-        stone1.anchorPoint = CGPointMake(0.5, 0.5)
-        stone1.position = CGPointMake(0 , stone1.size.height/2)
+        let stone1 = SKSpriteNode(imageNamed: "blackStoneDown1")
+        stone1.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
         background1.addChild(stone1)
 
-        let stone2 = SKSpriteNode(imageNamed: "blackStoneDown")
-        stone2.anchorPoint = CGPointMake(0.5, 0.5)
-        stone2.position = CGPointMake(0 , stone2.size.height/2)
+        let stone2 = SKSpriteNode(imageNamed: "blackStoneDown1")
+        stone2.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
         background2.addChild(stone2)
         
         stone1.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
@@ -95,29 +88,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    private var isone:Int = 2
-    private var odelta:CGFloat = 0
     
-    var lastPlayerX:CGFloat = 0
+    var moveCount:Int = 0
     
     //MARK: 滚动背景层
     func scrollBackground() {
         
         player.position.x++
         
+        score = max(score, Int(player.position.x))  //score : Int(player.position.x)
+        
         let ptX = player.position.x
         rootSceneNode.position.x = -ptX + 150
         
-        var scrollBG = background1
-        //var sp1 =
-        //var spaceX =  scrollBG.size.width - sp1 //scrollBG.position.x - (scrollBG.position.x - scrollBG.size.width)
+        var count = Int(abs(rootSceneNode.position.x ) / background1.size.width)
+        if  count != moveCount {
+            moveCount = count
+            
+            if moveCount % 2 != 0 {
+                background1.position.x = background2.position.x + background2.size.width
+            }
+            if moveCount % 2 == 0 {
+                background2.position.x = background1.position.x + background1.size.width
+            }
+
+        }
         
-        //println("spaceX :\(spaceX)")
-        
-        lastPlayerX = player.position.x
-        
-        
-        // 如果x1 >= bg1宽度 
 
 //        if spaceX >= scrollBG.size.width {
 //            
@@ -156,44 +152,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //            }
 //        }
         
-        
-        
-//        adjustmentBackgroundPosition--
-//        
-//        println("adj :\(adjustmentBackgroundPosition)")
-//        
-//        if (adjustmentBackgroundPosition <= 0) {
-//            adjustmentBackgroundPosition = CGFloat(Screen_Width)
-//        }
-//        
-//        background1.position = CGPointMake(CGFloat(adjustmentBackgroundPosition - CGFloat(self.size.width)), Screen_Height/2)
-//        background2.position = CGPointMake(CGFloat(adjustmentBackgroundPosition - 1), Screen_Height/2)
-        
-        // 如果背景1 移动了屏幕宽度的距离 即视为离开屏幕
-        
-        //println("background2.x :\(background2.position.x)")
-        
-//        if background1.position.x <= background1.size.width {
-//            background1.position.x = background2.position.x + background2.size.width
-//        }
-//        
-//        if background2.position.x >= background1.size.width {
-//            background1.position.x = background2.position.x + background2.size.width
-//        }
+
         
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
         player.physicsBody?.applyImpulse(CGVectorMake(0, 5))
-
+        player.physicsBody?.applyImpulse(CGVectorMake(3, 0))
     }
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         scrollBackground()
-
-        scoreLabel.text = "\(score)"
+        player.physicsBody?.applyImpulse(CGVector(dx: 0.1, dy: 0))
+        
+        let displayScore = Double(score - 150) * 0.1
+        scoreLabel.text = "\(Int(displayScore))"
         
     }
     
