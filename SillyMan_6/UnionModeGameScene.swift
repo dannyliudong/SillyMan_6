@@ -88,6 +88,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     private var background1:SKSpriteNode!
     private var background2:SKSpriteNode!
     
+    private var stone1:SKSpriteNode!
+    private var stone2:SKSpriteNode!
+    
+    
     private var Screen_Width:CGFloat!
     private var Screen_Height:CGFloat!
     
@@ -136,6 +140,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         createPlayer()
         
         createBackground()
+        
+        createPaoPao()
         
         //  1.游戏开始前的音乐
         SKTAudio.sharedInstance().playBackgroundMusic("night_1_v3.mp3")
@@ -203,21 +209,21 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     }
 
     //MARK: 随机生成
-    func createGameNodes() {
-        //  游戏开始后, 等待1秒开始生成敌人和星
-        runAction(SKAction.repeatActionForever(
-            SKAction.sequence([
-                SKAction.runBlock(createBarrier),
-                SKAction.waitForDuration(1.5)
-                ])
-            ))
-        
-        runAction(SKAction.repeatActionForever(
-            SKAction.sequence([
-                SKAction.waitForDuration(1.0),
-                SKAction.runBlock(cut01)])
-            ))
-    }
+//    func createGameNodes() {
+//        //  游戏开始后, 等待1秒开始生成敌人和星
+//        runAction(SKAction.repeatActionForever(
+//            SKAction.sequence([
+//                SKAction.runBlock(createBarrier),
+//                SKAction.waitForDuration(1.5)
+//                ])
+//            ))
+//        
+//        runAction(SKAction.repeatActionForever(
+//            SKAction.sequence([
+//                SKAction.waitForDuration(1.0),
+//                SKAction.runBlock(cut01)])
+//            ))
+//    }
     
     var rotateFlag:Bool = true // 旋转方向 true: 逆时针方向， false:  顺时针方向
     
@@ -254,13 +260,14 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         rootSceneNode.addChild(background2)
         
         // 底部石头
-        let stone1 = SKSpriteNode(imageNamed: "blackStoneDown1")
-        stone1.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
+        stone1 = SKSpriteNode(imageNamed: "blackStoneDown1")
+        //stone1.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
         background1.addChild(stone1)
         
-        let stone2 = SKSpriteNode(imageNamed: "blackStoneDown1")
-        stone2.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
+        stone2 = SKSpriteNode(imageNamed: "blackStoneDown1")
+        //stone2.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
         background2.addChild(stone2)
+        
         
         stone1.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
         stone1.physicsBody?.angularVelocity
@@ -275,21 +282,18 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         stone2.physicsBody?.affectedByGravity = true
         stone2.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
         
-        
+    }
+    
+    
+    func createPaoPao() {
         let starfieldNode = SKNode()
-        starfieldNode.name = "starfieldNode"
+        starfieldNode.alpha = 0.8
+        starfieldNode.zPosition = -9
+        starfieldNode.name = "paopao"
         starfieldNode.addChild(starfieldEmitterNode(
             speed: -18, lifetime: size.height / 23, scale: 0.6,
-            birthRate: 1, color: SKColor.lightGrayColor()))
-        background1.addChild(starfieldNode)
-        
-        let starfieldNode1 = SKNode()
-        starfieldNode1.name = "starfieldNode1"
-        starfieldNode1.addChild(starfieldEmitterNode(
-            speed: -18, lifetime: size.height / 23, scale: 0.6,
-            birthRate: 1, color: SKColor.lightGrayColor()))
-        background2.addChild(starfieldNode1)
-        
+            birthRate: 1, color: SKColor.orangeColor()))
+        addChild(starfieldNode)
     }
     
     func starfieldEmitterNode(#speed: CGFloat, lifetime: CGFloat, scale: CGFloat, birthRate: CGFloat, color: SKColor) -> SKEmitterNode {
@@ -298,7 +302,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         //        star.fontSize = 80.0
         //        star.text = "✦"
         
-        let sk = SKSpriteNode(imageNamed: "starEm")
+        let sk = SKSpriteNode(imageNamed: "paopao")
         sk.alpha = 0.5
         
         let textureView = SKView()
@@ -345,13 +349,45 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         return emitterNode
     }
     
+    //MARK:随机障碍物
+    func createCollisionScene() {
+        
+    }
     
+    // 随机 发射 炮弹
+    
+    // 构建导弹
+    func createBarrier() ->SKSpriteNode {
+        
+        //let randomEnemyY = CGFloat.random(Int(self.size.height) +  20 )
+        
+        let bow = SKSpriteNode(imageNamed: "zhangyu")
+        bow.name = "Bow"
+        bow.position = CGPointMake(CGFloat.random(min: 10, max: Screen_Width), CGFloat.random(min: stone1.height, max: Screen_Height))
+        bow.zPosition = 50
+        
+        bow.physicsBody = SKPhysicsBody(texture: bow.texture, size: bow.size)
+        bow.physicsBody?.dynamic = false
+        bow.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Enemy
+        bow.physicsBody?.collisionBitMask = 0
+        bow.physicsBody?.contactTestBitMask = 0
+        
+        let moveDonw = SKAction.moveToY(-50, duration: 2.0)
+        let moveUp = SKAction.moveToY(300, duration: 2.0)
+        
+        let seuqueAction = SKAction.sequence([moveDonw,moveUp])
+        
+        bow.runAction(SKAction.repeatActionForever(seuqueAction))
+
+        
+        return bow
+    }
 
     var moveCount:Int = 0
 
     //MARK: 滚动背景层
     func scrollBackground() {
-        player.position.x++
+        player.position.x = player.position.x+3
         
         score = max(score, Int(player.position.x))  //score : Int(player.position.x)
         
@@ -362,22 +398,45 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         if  count != moveCount {
             moveCount = count
             
+            var bowCount:Int = 3 
+            
             if moveCount % 2 != 0 {
                 background1.position.x = background2.position.x + background2.size.width
+                // 生成敌人和障碍 预加载进场景
+                
+                //stone1.removeAllChildren()
+                
+//                for var i = 0; i < bowCount; i++ {
+//                    let bow = createBarrier()
+//                    stone1.addChild(bow)
+//                    
+//                }
+
+                
             }
             if moveCount % 2 == 0 {
                 background2.position.x = background1.position.x + background1.size.width
+                // 生成敌人和障碍 预加载进场景
+                
+                //stone2.removeAllChildren()
+                
+//                for var i = 0; i < bowCount; i++ {
+//                    let bow = createBarrier()
+//                    stone2.addChild(bow)
+//                    
+//                }
+                
             }
             
         }
         
         // 角色高度超过一定高度 缩放根场景 达到远景效果
-        if player.position.y >= Screen_Height * 0.8 {
-            rootSceneNode.runAction(SKAction.scaleTo(0.8, duration: 0.5))
-        }
-        if player.position.y <= Screen_Height * 0.8  {
-            rootSceneNode.runAction(SKAction.scaleTo(1, duration: 0.5))
-        }
+//        if player.position.y >= Screen_Height * 0.8 {
+//            rootSceneNode.runAction(SKAction.scaleTo(0.8, duration: 0.5))
+//        }
+//        if player.position.y <= Screen_Height * 0.8  {
+//            rootSceneNode.runAction(SKAction.scaleTo(1, duration: 0.5))
+//        }
         
     }
     
@@ -473,33 +532,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     func collisionWithEnemy(node:SKNode) {
         
         collisionByBoat(node)
-        
         node.removeFromParent()
-        
-//        let musicOn = GameState.sharedInstance.musicState
-//        if musicOn {
-//            
-//            //  震屏
-//            shakeCarema()
-//            
-//            showParticlesForEnemy(node)
-//            boatCrash()
-//            node.removeFromParent()
-//            
-//            runAction(enemySound)
-//            
-//            gameOver()
-//        } else {
-//            
-//            showParticlesForEnemy(node)
-//            node.removeFromParent()
-//            
-//            //  震屏
-//            shakeCarema()
-//            
-//            gameOver()
-//        }
-
         
     }
     
@@ -508,25 +541,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         collisionByBoat(player)
         
-        
-//        let musicOn = GameState.sharedInstance.musicState
-//        if musicOn {
-//            //  震屏
-//            shakeCarema()
-//            
-//            
-//            runAction(enemySound)
-//            gameOver()
-//        } else {
-//            //  震屏
-//            shakeCarema()
-//            
-//            gameOver()
-//        }
-//        
-//        showParticlesForEnemy(node)
-//        //self.playerNode.removeFromParent()
-//        //self.playerNode.physicsBody?.dynamic = false
     }
     
     
@@ -625,7 +639,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         shapeNode.lineWidth = 1
         shapeNode.antialiased = false
         shapeNode.zPosition = 100
-        rootSceneNode.addChild(shapeNode)
+        addChild(shapeNode)
         // 3
         let duration = 0.6
         let scaleAction = SKAction.scaleTo(6.0, duration: duration)
@@ -743,32 +757,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
 //        
 //    }
     
-    // 构建导弹
-    func createBarrier() {
-        
-        let randomEnemyY = CGFloat.random(Int(self.size.height) +  20 )
-        
-        let bow = SKSpriteNode(imageNamed: "missile")
-        bow.position = CGPointMake(Screen_Width * 1.5, randomEnemyY)
-        bow.zPosition = 50
-        addChild(bow)
-        
-//        let emitFire = SKEmitterNode(fileNamed: "missileFire")
-//        emitFire.position = CGPointMake(bow.size.width/2, 0)
-//        emitFire.particleTexture!.filteringMode = .Nearest
-//        bow.addChild(emitFire)
-        
-        bow.physicsBody = SKPhysicsBody(texture: bow.texture, size: bow.size)
-        bow.physicsBody?.dynamic = false
-        bow.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Enemy
-        bow.physicsBody?.collisionBitMask = 0
-        bow.physicsBody?.contactTestBitMask = 0
-        
-        let move = SKAction.moveToX(-100, duration: 4)
-        let movedone = SKAction.removeFromParent()
-        bow.runAction(SKAction.sequence([move, movedone]))
-        
-    }
+
     
     // 构建导弹
     func cut01() {
@@ -806,7 +795,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         player.physicsBody?.allowsRotation = false
         player.physicsBody?.affectedByGravity = true
         
-        //player.physicsBody?.friction = CGFloat(0.01) // 摩擦力
+        player.physicsBody?.friction = CGFloat(0.01) // 摩擦力
+        player.physicsBody?.linearDamping = 0
+        player.physicsBody?.angularDamping = 0
         
         player.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Player
         player.physicsBody?.contactTestBitMask = CollisionCategoryBitmask.Star | CollisionCategoryBitmask.Enemy | CollisionCategoryBitmask.SeaBottom
