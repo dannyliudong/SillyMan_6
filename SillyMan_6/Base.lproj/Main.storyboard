@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BV1-FR-VrT">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Union Mode Game View Controller-->
@@ -15,13 +16,52 @@
                     <view key="view" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oda-ua-zdh">
+                                <rect key="frame" x="527" y="540" width="57" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="57" id="Tmx-QD-eU6"/>
+                                </constraints>
+                                <state key="normal" image="button_settings">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="settingsAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="4wO-lL-LuD"/>
+                                    <segue destination="dxF-Q8-1iE" kind="popoverPresentation" popoverAnchorView="Oda-ua-zdh" id="8lI-5C-cCn">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </button>
+                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Oda-ua-zdh" firstAttribute="trailing" secondItem="3se-qz-xqx" secondAttribute="trailingMargin" id="UBC-eJ-crR"/>
+                            <constraint firstAttribute="bottom" secondItem="Oda-ua-zdh" secondAttribute="bottom" constant="20" symbolic="YES" id="uJ1-dU-FL7"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-686" y="316"/>
+            <point key="canvasLocation" x="-606" y="280"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="lqs-6j-IRc">
+            <objects>
+                <viewController id="Ir9-eI-1Ts" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Dr1-A8-EYE"/>
+                        <viewControllerLayoutGuide type="bottom" id="TIl-DE-YyA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="S3A-40-bpG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pYk-bG-7zi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-565" y="1073"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="dvC-F8-QXy">
@@ -39,7 +79,72 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a1A-8b-vL5" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="124" y="324"/>
+            <point key="canvasLocation" x="1082" y="318"/>
+        </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="4ee-8h-K6P">
+            <objects>
+                <viewController id="dxF-Q8-1iE" customClass="SettingsViewController" customModule="SillyMan_6" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yZZ-lR-fBR"/>
+                        <viewControllerLayoutGuide type="bottom" id="61v-yD-H3e"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="nAW-Ox-apy" customClass="settingsUiew" customModule="SillyMan_6" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ook-NN-5uo">
+                                <rect key="frame" x="263" y="280" width="75" height="40"/>
+                                <state key="normal" backgroundImage="button_sound">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="musicAction:" destination="dxF-Q8-1iE" eventType="touchUpInside" id="Oo5-bG-jLE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eer-QZ-kYO">
+                                <rect key="frame" x="270" y="202" width="60" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="语言">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="languageAction:" destination="dxF-Q8-1iE" eventType="touchUpInside" id="h0f-bV-1QU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qff-at-N9U">
+                                <rect key="frame" x="26" y="30" width="40" height="40"/>
+                                <state key="normal" image="button_back">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="closeSettings:" destination="dxF-Q8-1iE" eventType="touchUpInside" id="Btp-Uw-qj5"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="Ook-NN-5uo" secondAttribute="centerX" id="9g1-m0-Ok8"/>
+                            <constraint firstItem="Qff-at-N9U" firstAttribute="top" secondItem="yZZ-lR-fBR" secondAttribute="bottom" constant="10" id="F0O-do-Lmn"/>
+                            <constraint firstAttribute="centerY" secondItem="Ook-NN-5uo" secondAttribute="centerY" id="YLp-vs-dt1"/>
+                            <constraint firstItem="Qff-at-N9U" firstAttribute="leading" secondItem="nAW-Ox-apy" secondAttribute="leadingMargin" constant="10" id="fbj-t2-BNX"/>
+                            <constraint firstItem="Ook-NN-5uo" firstAttribute="top" secondItem="Eer-QZ-kYO" secondAttribute="bottom" constant="30" id="fdU-yT-WUy"/>
+                            <constraint firstAttribute="centerX" secondItem="Eer-QZ-kYO" secondAttribute="centerX" id="oDw-7d-KK1"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="languageButton" destination="Eer-QZ-kYO" id="O0F-Em-PIa"/>
+                        <outlet property="musicButton" destination="Ook-NN-5uo" id="E70-mz-KNU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jbb-No-HDL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="201" y="337"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="button_back" width="40" height="40"/>
+        <image name="button_settings" width="50" height="40"/>
+        <image name="button_sound" width="75" height="40"/>
+    </resources>
 </document>

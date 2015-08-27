@@ -43,6 +43,10 @@
 		A01412341B550ED400238667 /* Get.wav in Resources */ = {isa = PBXBuildFile; fileRef = A014122E1B550ED400238667 /* Get.wav */; };
 		A0365C9E1B58E5E5009C9443 /* Star.png in Resources */ = {isa = PBXBuildFile; fileRef = A0365C9D1B58E5E5009C9443 /* Star.png */; };
 		A0365CA01B58FF03009C9443 /* PlayerTrail.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0365C9F1B58FF03009C9443 /* PlayerTrail.sks */; };
+		A03EB3CA1B8D908400DBF0AC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EB3C91B8D908400DBF0AC /* SettingsViewController.swift */; };
+		A03EB4031B8DB50700DBF0AC /* PathDynamicModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EB4021B8DB50700DBF0AC /* PathDynamicModal.swift */; };
+		A03EB4051B8DB57D00DBF0AC /* ModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EB4041B8DB57D00DBF0AC /* ModalView.swift */; };
+		A03EB4071B8DB58700DBF0AC /* ModalView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A03EB4061B8DB58700DBF0AC /* ModalView.xib */; };
 		A06178F01B59049A00EFCACB /* SKColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06178EF1B59049A00EFCACB /* SKColor+Extensions.swift */; };
 		A06178F21B591ECD00EFCACB /* LoadingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06178F11B591ECD00EFCACB /* LoadingScene.swift */; };
 		A06BB5BB1B7B41A400C1FEF7 /* sand.png in Resources */ = {isa = PBXBuildFile; fileRef = A06BB5BA1B7B41A400C1FEF7 /* sand.png */; };
@@ -56,6 +60,11 @@
 		A0A2F4481B56645A00FE5E6B /* Bow.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0A2F4471B56645A00FE5E6B /* Bow.sks */; };
 		A0A2F44C1B56658E00FE5E6B /* AnimatingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */; };
 		A0B16ED61B7B293500C7C976 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0B16ED51B7B293500C7C976 /* Images.xcassets */; };
+		A0B4A9DE1B8E9FD800312973 /* Snow.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0B4A9DD1B8E9FD800312973 /* Snow.sks */; };
+		A0B4A9E01B8EA4D200312973 /* Rain.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0B4A9DF1B8EA4D200312973 /* Rain.sks */; };
+		A0B4A9E21B8EA9FA00312973 /* paopao1.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B4A9E11B8EA9FA00312973 /* paopao1.png */; };
+		A0B4A9E61B8F10C300312973 /* LocoRocosSong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0B4A9E51B8F10C300312973 /* LocoRocosSong.mp3 */; };
+		A0B4A9E81B8F140100312973 /* tunnelPlop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0B4A9E71B8F140100312973 /* tunnelPlop.mp3 */; };
 		A0B5AD9C1B56352C005C4FD3 /* Splat.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B5AD9B1B56352C005C4FD3 /* Splat.png */; };
 		A0C83DF41B78C1C100214B11 /* Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C83DF31B78C1C100214B11 /* Shake.swift */; };
 		A0C909B11B560B6D00684831 /* SKAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */; };
@@ -117,6 +126,10 @@
 		A014122E1B550ED400238667 /* Get.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Get.wav; sourceTree = "<group>"; };
 		A0365C9D1B58E5E5009C9443 /* Star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Star.png; sourceTree = "<group>"; };
 		A0365C9F1B58FF03009C9443 /* PlayerTrail.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PlayerTrail.sks; sourceTree = "<group>"; };
+		A03EB3C91B8D908400DBF0AC /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		A03EB4021B8DB50700DBF0AC /* PathDynamicModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathDynamicModal.swift; sourceTree = "<group>"; };
+		A03EB4041B8DB57D00DBF0AC /* ModalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalView.swift; sourceTree = "<group>"; };
+		A03EB4061B8DB58700DBF0AC /* ModalView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModalView.xib; sourceTree = "<group>"; };
 		A06178EF1B59049A00EFCACB /* SKColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKColor+Extensions.swift"; sourceTree = "<group>"; };
 		A06178F11B591ECD00EFCACB /* LoadingScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingScene.swift; sourceTree = "<group>"; };
 		A06BB5BA1B7B41A400C1FEF7 /* sand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sand.png; sourceTree = "<group>"; };
@@ -130,6 +143,11 @@
 		A0A2F4471B56645A00FE5E6B /* Bow.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Bow.sks; sourceTree = "<group>"; };
 		A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingSprite.swift; sourceTree = "<group>"; };
 		A0B16ED51B7B293500C7C976 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A0B4A9DD1B8E9FD800312973 /* Snow.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Snow.sks; sourceTree = "<group>"; };
+		A0B4A9DF1B8EA4D200312973 /* Rain.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Rain.sks; sourceTree = "<group>"; };
+		A0B4A9E11B8EA9FA00312973 /* paopao1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paopao1.png; sourceTree = "<group>"; };
+		A0B4A9E51B8F10C300312973 /* LocoRocosSong.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = LocoRocosSong.mp3; sourceTree = "<group>"; };
+		A0B4A9E71B8F140100312973 /* tunnelPlop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tunnelPlop.mp3; sourceTree = "<group>"; };
 		A0B5AD9B1B56352C005C4FD3 /* Splat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Splat.png; sourceTree = "<group>"; };
 		A0C83DF31B78C1C100214B11 /* Shake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shake.swift; sourceTree = "<group>"; };
 		A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKAction+Extensions.swift"; sourceTree = "<group>"; };
@@ -221,7 +239,11 @@
 			children = (
 				A0A0DC6B1B85C6F400BCF81F /* Test */,
 				A01411E91B550D2B00238667 /* UnionModeGameViewController.swift */,
+				A03EB4041B8DB57D00DBF0AC /* ModalView.swift */,
+				A03EB4061B8DB58700DBF0AC /* ModalView.xib */,
+				A03EB4021B8DB50700DBF0AC /* PathDynamicModal.swift */,
 				A06178F11B591ECD00EFCACB /* LoadingScene.swift */,
+				A03EB3C91B8D908400DBF0AC /* SettingsViewController.swift */,
 				A0FC70831B6724E20034C8F0 /* HomeScene.swift */,
 				A01411EA1B550D2B00238667 /* UnionModeGameScene.swift */,
 			);
@@ -321,6 +343,8 @@
 			children = (
 				A0E85D7A1B79D4FD00A5E4D9 /* game_music.mp3 */,
 				A08D7B681B56563D008E90AE /* coin_steal_02.mp3 */,
+				A0B4A9E71B8F140100312973 /* tunnelPlop.mp3 */,
+				A0B4A9E51B8F10C300312973 /* LocoRocosSong.mp3 */,
 				A09C2CCD1B79E6AC007F68B1 /* crash.mp3 */,
 				A014122E1B550ED400238667 /* Get.wav */,
 			);
@@ -351,7 +375,10 @@
 				A0E85D7C1B79DAE400A5E4D9 /* missileFire.sks */,
 				A0C909B31B5634C600684831 /* GoldSplatter.sks */,
 				A0A2F4471B56645A00FE5E6B /* Bow.sks */,
+				A0B4A9DF1B8EA4D200312973 /* Rain.sks */,
+				A0B4A9DD1B8E9FD800312973 /* Snow.sks */,
 				A0E85D7D1B79DAE400A5E4D9 /* spark.png */,
+				A0B4A9E11B8EA9FA00312973 /* paopao1.png */,
 				A08D7B651B565555008E90AE /* glodPart.png */,
 				A0365C9D1B58E5E5009C9443 /* Star.png */,
 				A0B5AD9B1B56352C005C4FD3 /* Splat.png */,
@@ -454,6 +481,7 @@
 				A014122A1B550EBE00238667 /* face_1_008@2x.png in Resources */,
 				A01412261B550EBE00238667 /* face_1_006@2x.png in Resources */,
 				A0E85D7B1B79D4FD00A5E4D9 /* game_music.mp3 in Resources */,
+				A0B4A9DE1B8E9FD800312973 /* Snow.sks in Resources */,
 				A01412271B550EBE00238667 /* face_1_006@3x.png in Resources */,
 				A01412341B550ED400238667 /* Get.wav in Resources */,
 				A01412221B550EBE00238667 /* face_1_004@2x.png in Resources */,
@@ -462,16 +490,20 @@
 				A014121C1B550EBE00238667 /* face_1_001@2x.png in Resources */,
 				A0C909B41B5634C600684831 /* GoldSplatter.sks in Resources */,
 				A0B5AD9C1B56352C005C4FD3 /* Splat.png in Resources */,
+				A0B4A9E61B8F10C300312973 /* LocoRocosSong.mp3 in Resources */,
 				A01412241B550EBE00238667 /* face_1_005@2x.png in Resources */,
 				A014121F1B550EBE00238667 /* face_1_002@3x.png in Resources */,
 				A0E85D7E1B79DAE400A5E4D9 /* missileFire.sks in Resources */,
+				A0B4A9E21B8EA9FA00312973 /* paopao1.png in Resources */,
 				A0A2F4481B56645A00FE5E6B /* Bow.sks in Resources */,
+				A0B4A9E81B8F140100312973 /* tunnelPlop.mp3 in Resources */,
 				A0B16ED61B7B293500C7C976 /* Images.xcassets in Resources */,
 				A08D7B691B56563D008E90AE /* coin_steal_02.mp3 in Resources */,
 				A0365CA01B58FF03009C9443 /* PlayerTrail.sks in Resources */,
 				A01412061B550E8D00238667 /* GameSpriteAtlas.1@2x.png in Resources */,
 				A01412081B550E8D00238667 /* GameSpriteAtlas.plist in Resources */,
 				A0365C9E1B58E5E5009C9443 /* Star.png in Resources */,
+				A03EB4071B8DB58700DBF0AC /* ModalView.xib in Resources */,
 				A01412281B550EBE00238667 /* face_1_007@2x.png in Resources */,
 				A01412291B550EBE00238667 /* face_1_007@3x.png in Resources */,
 				A0E85D7F1B79DAE400A5E4D9 /* spark.png in Resources */,
@@ -485,6 +517,7 @@
 				A014121E1B550EBE00238667 /* face_1_002@2x.png in Resources */,
 				A08D7B661B565555008E90AE /* glodPart.png in Resources */,
 				A01412071B550E8D00238667 /* GameSpriteAtlas.1@3x.png in Resources */,
+				A0B4A9E01B8EA4D200312973 /* Rain.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,6 +535,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A03EB4031B8DB50700DBF0AC /* PathDynamicModal.swift in Sources */,
 				A09B6BA01B5CE88500918A48 /* SpriteKit-Spring.swift in Sources */,
 				A01411F21B550DA900238667 /* GameObjectNode.swift in Sources */,
 				A01411FE1B550E0100238667 /* SKTAudio.swift in Sources */,
@@ -515,9 +549,11 @@
 				A01411FA1B550DC100238667 /* LDSKSimpleButton.swift in Sources */,
 				A0A0DC681B85C68A00BCF81F /* GameScene.swift in Sources */,
 				A01411F11B550DA900238667 /* GameState.swift in Sources */,
+				A03EB3CA1B8D908400DBF0AC /* SettingsViewController.swift in Sources */,
 				A06178F21B591ECD00EFCACB /* LoadingScene.swift in Sources */,
 				A01411C31B550B7900238667 /* AppDelegate.swift in Sources */,
 				A06178F01B59049A00EFCACB /* SKColor+Extensions.swift in Sources */,
+				A03EB4051B8DB57D00DBF0AC /* ModalView.swift in Sources */,
 				A0FC70841B6724E20034C8F0 /* HomeScene.swift in Sources */,
 				A01411F31B550DA900238667 /* EndGameScene.swift in Sources */,
 				A01411EC1B550D2B00238667 /* UnionModeGameScene.swift in Sources */,

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="tcX-jT-eoT" customClass="ModalView" customModule="SillyMan_6" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="300"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ModalView" translatesAutoresizingMaskIntoConstraints="NO" id="EDf-bK-x6Y">
+                    <rect key="frame" x="0.0" y="0.0" width="280" height="300"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uCC-j1-lH5">
+                            <rect key="frame" x="0.0" y="240" width="280" height="60"/>
+                            <color key="backgroundColor" red="0.90588235294117647" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="WnI-ig-dUA"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                            <state key="normal" title="Close">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="handleCloseButton:" destination="tcX-jT-eoT" eventType="touchUpInside" id="tMY-4M-HDv"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.98823529409999999" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="uCC-j1-lH5" secondAttribute="trailing" id="M64-gb-n4F"/>
+                        <constraint firstItem="uCC-j1-lH5" firstAttribute="leading" secondItem="EDf-bK-x6Y" secondAttribute="leading" id="s3M-oG-B60"/>
+                        <constraint firstAttribute="bottom" secondItem="uCC-j1-lH5" secondAttribute="bottom" id="y0w-lc-yHV"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fyV-xL-BjW">
+                    <rect key="frame" x="-10" y="-10" width="25" height="25"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="3pN-K0-lee"/>
+                        <constraint firstAttribute="width" constant="25" id="SGy-d0-u7x"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="1" minY="1" maxX="1" maxY="1"/>
+                    <state key="normal" image="icon_close">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="handleBottomButton:" destination="tcX-jT-eoT" eventType="touchUpInside" id="bZx-CE-eXa"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="EDf-bK-x6Y" secondAttribute="trailing" id="52Y-Vn-oOP"/>
+                <constraint firstItem="EDf-bK-x6Y" firstAttribute="top" secondItem="tcX-jT-eoT" secondAttribute="top" id="D5Z-aB-rav"/>
+                <constraint firstItem="EDf-bK-x6Y" firstAttribute="leading" secondItem="tcX-jT-eoT" secondAttribute="leading" id="IJn-z9-rEf"/>
+                <constraint firstItem="fyV-xL-BjW" firstAttribute="leading" secondItem="tcX-jT-eoT" secondAttribute="leading" constant="-10" id="Tov-A6-XGJ"/>
+                <constraint firstItem="fyV-xL-BjW" firstAttribute="top" secondItem="tcX-jT-eoT" secondAttribute="top" constant="-10" id="Ucc-gY-3It"/>
+                <constraint firstAttribute="bottom" secondItem="EDf-bK-x6Y" secondAttribute="bottom" id="o5D-QS-59g"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="bottomButton" destination="uCC-j1-lH5" id="c4f-Oz-f9H"/>
+                <outlet property="closeButton" destination="fyV-xL-BjW" id="UCF-EF-Rgd"/>
+                <outlet property="contentView" destination="EDf-bK-x6Y" id="Xg6-Y8-hGL"/>
+            </connections>
+            <point key="canvasLocation" x="341" y="386"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_close" width="64" height="64"/>
+    </resources>
+</document>

@@ -47,6 +47,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     // 声音
     let starSound = SKAction.playSoundFileNamed("coin_steal_02.mp3", waitForCompletion: false)
     let enemySound = SKAction.playSoundFileNamed("crash.mp3", waitForCompletion: false)
+    let playerScaleSound = SKAction.playSoundFileNamed("tunnelPlop.mp3", waitForCompletion: false)
 
     var pauseButton: SKSimpleButton!
     var musicButton:SKSimpleButton!
@@ -78,6 +79,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     private var isGameBegin = false
     private var isFristRuning = true // 是否首次运行游戏
     private var isOpenUI = false // 是否在主页打开了某些界面 如果打开了 游戏不会开始
+    private var isPlayerMustScale = false // 角色
+
     
     private var scoreLabel: SKLabelNode!
     private var starsLabel: SKLabelNode!
@@ -97,6 +100,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     private var font_Name:String = "HelveticaNeue"
     
+    let gameSong = "LocoRocosSong.mp3"
     
     //MARK: Did Move To View
     override func didMoveToView(view: SKView) {
@@ -129,7 +133,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         addChild(pauseButton)
         
         //showHomePageUI()
-        showHomePageBottomButtons()
+        //showHomePageBottomButtons()
         
         isFristRuning = true
         isGameOver = false
@@ -141,10 +145,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         createBackground()
         
-        createPaoPao()
+        //createPaoPao()
+        createSnow()
         
         //  1.游戏开始前的音乐
-        SKTAudio.sharedInstance().playBackgroundMusic("night_1_v3.mp3")
+        SKTAudio.sharedInstance().playBackgroundMusic(gameSong)
         
         let music = GameState.sharedInstance.musicState
         
@@ -249,6 +254,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
 
     //MARK: 创建背景层
     func createBackground() {
+        
         background1 = SKSpriteNode(imageNamed: "BG1")
         background1.position = CGPointMake(background1.size.width/2, Screen_Height/2)
         background1.zPosition = -10
@@ -261,13 +267,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         // 底部石头
         stone1 = SKSpriteNode(imageNamed: "blackStoneDown1")
-        //stone1.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
+        stone1.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
         background1.addChild(stone1)
         
         stone2 = SKSpriteNode(imageNamed: "blackStoneDown1")
-        //stone2.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
+        stone2.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
         background2.addChild(stone2)
-        
         
         stone1.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
         stone1.physicsBody?.angularVelocity
@@ -282,8 +287,23 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         stone2.physicsBody?.affectedByGravity = true
         stone2.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
         
+        
+//        let dyTexture = SKTexture(rect: CGRectMake(0, 0, 400, 400), inTexture: SKTexture())
+//        let dyTexture1 = SKTexture(vectorNoiseWithSmoothness: 10, size: CGSizeMake(100, 100))
+//        
+//        var dynamicBG = SKSpriteNode(texture: dyTexture1, color: SKColor.random, size: CGSizeMake(Screen_Width, Screen_Height/2))
+//        dynamicBG.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
+//        background2.addChild(dynamicBG)
+        
+        
     }
     
+    
+    func createSnow() {
+        var snow = SKEmitterNode.emitterNamed("Snow")
+        snow.position = CGPointMake(Screen_Width/2, 0)
+        addChild(snow)
+    }
     
     func createPaoPao() {
         let starfieldNode = SKNode()
@@ -363,7 +383,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         let bow = SKSpriteNode(imageNamed: "zhangyu")
         bow.name = "Bow"
-        bow.position = CGPointMake(CGFloat.random(min: 10, max: Screen_Width), CGFloat.random(min: stone1.height, max: Screen_Height))
+        bow.position = CGPointMake(CGFloat.random(min: 10, max: background1.size.width), CGFloat.random(min: 10, max: background1.size.height))
         bow.zPosition = 50
         
         bow.physicsBody = SKPhysicsBody(texture: bow.texture, size: bow.size)
@@ -404,13 +424,13 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                 background1.position.x = background2.position.x + background2.size.width
                 // 生成敌人和障碍 预加载进场景
                 
-                //stone1.removeAllChildren()
+                stone1.removeAllChildren()
                 
-//                for var i = 0; i < bowCount; i++ {
-//                    let bow = createBarrier()
-//                    stone1.addChild(bow)
-//                    
-//                }
+                for var i = 0; i < bowCount; i++ {
+                    let bow = createBarrier()
+                    stone1.addChild(bow)
+                    
+                }
 
                 
             }
@@ -418,13 +438,13 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                 background2.position.x = background1.position.x + background1.size.width
                 // 生成敌人和障碍 预加载进场景
                 
-                //stone2.removeAllChildren()
+                stone2.removeAllChildren()
                 
-//                for var i = 0; i < bowCount; i++ {
-//                    let bow = createBarrier()
-//                    stone2.addChild(bow)
-//                    
-//                }
+                for var i = 0; i < bowCount; i++ {
+                    let bow = createBarrier()
+                    stone2.addChild(bow)
+                    
+                }
                 
             }
             
@@ -454,7 +474,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                 
             case CollisionCategoryBitmask.Enemy:
                 let enemyNode = other.node
-                collisionWithEnemy(enemyNode!)
+                collisionWithEnemy(player)
                 
             case CollisionCategoryBitmask.SeaBottom :
                 collisionSeaBottom(player)
@@ -501,9 +521,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             shakeCarema()
             
             showParticlesForEnemy(node)
-            
-            boatCrash()
-            
+            player.physicsBody?.allowsRotation = true
+
+            //boatCrash()
             player.removeFromParent()
             
             runAction(enemySound)
@@ -519,9 +539,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             shakeCarema()
             
             showParticlesForEnemy(node)
+            player.physicsBody?.allowsRotation = true
             
-            boatCrash()
-            
+            //boatCrash()
             player.removeFromParent()
             
             gameOver()
@@ -539,10 +559,22 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     //  碰撞海底
     func collisionSeaBottom(node:SKNode) {
         
-        collisionByBoat(player)
+        //collisionByBoat(player)
+        isPlayerMustScale = true
         
     }
     
+    
+    // 碰到边缘 会膨胀变大  增加难度
+    func playerScleToBig(node:SKNode) {
+        println("playerScleToBig")
+        let sceletobig = SKAction.scaleTo(3.0, duration: NSTimeInterval(0.5), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.5), initialSpringVelocity: CGFloat(0.5))
+        let scaletoNor = SKAction.scaleTo(1.0, duration: 0.5)
+        
+        node.runAction(SKAction.sequence([sceletobig, scaletoNor]))
+        
+        runAction(playerScaleSound)
+    }
     
     //  飞船解体
     func boatCrash() {
@@ -784,9 +816,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     //构建player
     func createPlayer(){
-        
-        player = SKSpriteNode (imageNamed: "submarine")
-        player.position = CGPointMake(150, 200)
+        let playerName = String.random
+        player = SKSpriteNode (imageNamed: playerName)
+        player.position = CGPointMake(150, Screen_Height/2)
+        player.shadowCastBitMask = UInt32(3)
         
         rootSceneNode.addChild(player)
         
@@ -801,6 +834,14 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         player.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Player
         player.physicsBody?.contactTestBitMask = CollisionCategoryBitmask.Star | CollisionCategoryBitmask.Enemy | CollisionCategoryBitmask.SeaBottom
+        
+        
+        //let emitter = SKEmitterNode.emitterNamed("missileFire")
+        //emitter.particleTexture!.filteringMode = .Nearest
+        
+        //emitter.runAction(SKAction.removeFromParentAfterDelay(0.4))
+        //player.addChild(emitter)
+        
         
         
         //        let smileSprite = SKSpriteNode(texture: atlas.face_1_face_1_001())
@@ -879,7 +920,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         //homePageUINode.removeFromParent()
         guideFigerNode.removeFromParent()
-        homePageBottomButtonsNode.removeFromParent()
+        //homePageBottomButtonsNode.removeFromParent()
         
         showGameSceneUI()
         
@@ -887,7 +928,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         let music = GameState.sharedInstance.musicState
         if music {
             // 播放音乐
-            SKTAudio.sharedInstance().playBackgroundMusic("game_music.mp3")
+            SKTAudio.sharedInstance().playBackgroundMusic(gameSong)
         }
         
         //createGameNodes()
@@ -898,7 +939,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     //MARK:  暂停游戏
     func pauseGame() {
+        
         showGamePauseUI()
+        
+        isGameBegin = false
+        println("....暂停游戏")
+        
         // 1 游戏暂停
         //gamePause = true
         
@@ -912,20 +958,21 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     }
     
     //MARK: 继续游戏
-    func continueGame() {
-        self.view?.paused = false
-        //gamePause = false
-        
-        pauseButton.hidden = false
-        
-        pauseUINode.removeFromParent()
-    }
+//    func continueGame() {
+//        self.view?.paused = false
+//        //gamePause = false
+//        isGameBegin = true
+//        
+//        println("....继续游戏")
+//        
+//        pauseButton.hidden = false
+//        
+//        pauseUINode.removeFromParent()
+//    }
     
     //MARK: 游戏结束
     func gameOver() {
         
-
-
         isGameBegin = false
         self.isGameOver = true
         self.pauseButton.removeFromParent()
@@ -1433,9 +1480,24 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     // 暂停游戏 ->继续
     func pauseContinue() {
         
+        isGameBegin = true
+        //isGameOver = true
+        
+        println("暂停游戏 ->继续")
+        
         self.paused = false
         pauseUINode.removeFromParent()
-        pauseButton.hidden = false
+        pauseButton.hidden = false        
+        
+//    self.view?.paused = false
+//    //gamePause = false
+//    isGameBegin = true
+//
+//    println("....继续游戏")
+//
+//    pauseButton.hidden = false
+//
+//    pauseUINode.removeFromParent()
         
     }
     
@@ -1479,20 +1541,33 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             //player.runAction(SKAction.moveTo(locationInNode, duration: Double(moveTime)))
             tapEffectsForTouchAtLocation(locationInNode)
             
-            player.physicsBody?.velocity = CGVectorMake(0, 0)
-            player.physicsBody?.applyImpulse(CGVectorMake(0, 10))
+            
+            if player.position.y <= Screen_Height - player.size.height/2 {
+                
+                player.physicsBody?.velocity = CGVectorMake(0, 0)
+                player.physicsBody?.applyImpulse(CGVectorMake(0, 15))
+            }
+            
+
+            
+//            let up = SKAction.scaleTo(0.8, duration: NSTimeInterval(0.3), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.1), initialSpringVelocity: CGFloat(0.3))
+//            
+//            
+//            let donw = SKAction.scaleTo(1.0, duration: NSTimeInterval(0.3), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.1), initialSpringVelocity: CGFloat(0.3))
+//            
+//            
+//            player.runAction(SKAction.sequence([up,donw]))
+            
+            
         }
         
     }
     
-    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
-        // 
-        //isLongPress = false
-    }
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         isLongPress = false
     }
+    
     
     var lastSpawnTimeInterval:NSTimeInterval  = 0// 上次更新时间
     var lastUpdateTimeInterval: NSTimeInterval = 0
@@ -1501,18 +1576,27 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         if isGameBegin {
             scrollBackground()
             
+            // 如果碰山 角色变大 离开 恢复原始大小
+            if isPlayerMustScale {
+                playerScleToBig(player)
+                
+                isPlayerMustScale = false
+            }
+            
+            // 如果角色超出顶部 解除用力
+            if player.position.y >= Screen_Height - player.size.height/2 {
+                isLongPress = false
+                impulse_dy = 0.0
+            }
+            
+            if isLongPress {
+                player.physicsBody?.applyImpulse(CGVectorMake(0, 0.7))
+            }
+            
             let displayScore = Double(score - 150) * 0.1
             scoreLabel.text = "\(Int(displayScore))"
             
-            //playerNode.physicsBody?.applyImpulse(CGVectorMake(0.1, 0))
         }
-        
-        if isLongPress {
-            player.physicsBody?.applyImpulse(CGVectorMake(0, 0.7))
-        }
-        
-
-    
         
     }
     
@@ -1536,6 +1620,24 @@ private extension CGFloat {
         return CGFloat(arc4random() % UInt32(max))
     }
 }
+
+private extension String {
+    static var random: String {
+        switch arc4random()%8 {
+        case 0: return "playerModel_01"
+        case 1: return "playerModel_02"
+        case 2: return "playerModel_03"
+        case 3: return "playerModel_04"
+        case 4: return "playerModel_05"
+        case 5: return "playerModel_06"
+        case 6: return "playerModel_07"
+        case 7: return "playerModel_08"
+        case 8: return "playerModel_09"
+        default: return "playerModel_01"
+        }
+    }
+}
+
 
 private extension SKColor {
     class var random: UIColor {
