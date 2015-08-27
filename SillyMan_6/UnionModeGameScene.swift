@@ -93,7 +93,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     private var stone1:SKSpriteNode!
     private var stone2:SKSpriteNode!
-    
+    private var stone3:SKSpriteNode!
+    private var stone4:SKSpriteNode!
     
     private var Screen_Width:CGFloat!
     private var Screen_Height:CGFloat!
@@ -149,14 +150,14 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         createSnow()
         
         //  1.游戏开始前的音乐
-        SKTAudio.sharedInstance().playBackgroundMusic(gameSong)
-        
-        let music = GameState.sharedInstance.musicState
-        
-        if !music {
-            // 暂停音乐
-            SKTAudio.sharedInstance().pauseBackgroundMusic()
-        }
+//        SKTAudio.sharedInstance().playBackgroundMusic(gameSong)
+//        
+//        let music = GameState.sharedInstance.musicState
+//        
+//        if !music {
+//            // 暂停音乐
+//            SKTAudio.sharedInstance().pauseBackgroundMusic()
+//        }
         
         
 //        delay(seconds: 2.0) {
@@ -266,11 +267,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         rootSceneNode.addChild(background2)
         
         // 底部石头
-        stone1 = SKSpriteNode(imageNamed: "blackStoneDown1")
+        stone1 = SKSpriteNode(imageNamed: "blackStoneBottom")
         stone1.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
         background1.addChild(stone1)
         
-        stone2 = SKSpriteNode(imageNamed: "blackStoneDown1")
+        stone2 = SKSpriteNode(imageNamed: "blackStoneBottom")
         stone2.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
         background2.addChild(stone2)
         
@@ -286,6 +287,29 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         stone2.physicsBody?.allowsRotation = false
         stone2.physicsBody?.affectedByGravity = true
         stone2.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+        
+        // 顶部石头
+        stone3 = SKSpriteNode(imageNamed: "blackStoneTop")
+        stone3.position = CGPointMake(0, Screen_Height/2 - (stone3.size.height/2 - 10))
+        background1.addChild(stone3)
+        
+        stone4 = SKSpriteNode(imageNamed: "blackStoneTop")
+        stone4.position = CGPointMake(0, Screen_Height/2 - (stone3.size.height/2 - 10)) //background1.size.height/2 + stone4.size.height/2
+        background2.addChild(stone4)
+        
+        stone3.physicsBody = SKPhysicsBody(texture: stone3.texture, size: stone3.size)
+        stone3.physicsBody?.angularVelocity
+        stone3.physicsBody?.dynamic = false
+        stone3.physicsBody?.allowsRotation = false
+        stone3.physicsBody?.affectedByGravity = true
+        stone3.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+        stone4.physicsBody = SKPhysicsBody(texture: stone4.texture, size: stone4.size)
+        stone4.physicsBody?.dynamic = false
+        stone4.physicsBody?.allowsRotation = false
+        stone4.physicsBody?.affectedByGravity = true
+        stone4.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
         
         
 //        let dyTexture = SKTexture(rect: CGRectMake(0, 0, 400, 400), inTexture: SKTexture())
@@ -404,15 +428,18 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     }
 
     var moveCount:Int = 0
+    var playerLastPostionX:CGFloat = 0
+
 
     //MARK: 滚动背景层
     func scrollBackground() {
+        
         player.position.x = player.position.x+3
         
-        score = max(score, Int(player.position.x))  //score : Int(player.position.x)
+        rootSceneNode.position.x = -player.position.x + 150
         
-        let ptX = player.position.x
-        rootSceneNode.position.x = -ptX + 150
+        score = max(score, Int(player.position.x))  //score : Int(player.position.x)
+
         
         var count = Int(abs(rootSceneNode.position.x ) / background1.size.width)
         if  count != moveCount {
@@ -425,6 +452,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                 // 生成敌人和障碍 预加载进场景
                 
                 stone1.removeAllChildren()
+                stone3.removeAllChildren()
                 
                 for var i = 0; i < bowCount; i++ {
                     let bow = createBarrier()
@@ -439,6 +467,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                 // 生成敌人和障碍 预加载进场景
                 
                 stone2.removeAllChildren()
+                stone4.removeAllChildren()
                 
                 for var i = 0; i < bowCount; i++ {
                     let bow = createBarrier()
@@ -556,11 +585,23 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
     }
     
+    var collisionSeaBottomCuount = 0
     //  碰撞海底
     func collisionSeaBottom(node:SKNode) {
         
         //collisionByBoat(player)
-        isPlayerMustScale = true
+        playerScleToBig(player)
+        
+//        if collisionSeaBottomCuount < 100 {
+//            playerScleToBig(player)
+//            collisionSeaBottomCuount++
+//            println(collisionSeaBottomCuount)
+//            
+//        } else if collisionSeaBottomCuount >= 100{
+//            collisionByBoat(player)
+//            collisionSeaBottomCuount = 0
+//            println(collisionSeaBottomCuount)
+//        }
         
     }
     
@@ -568,8 +609,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     // 碰到边缘 会膨胀变大  增加难度
     func playerScleToBig(node:SKNode) {
         println("playerScleToBig")
-        let sceletobig = SKAction.scaleTo(3.0, duration: NSTimeInterval(0.5), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.5), initialSpringVelocity: CGFloat(0.5))
-        let scaletoNor = SKAction.scaleTo(1.0, duration: 0.5)
+        let sceletobig = SKAction.scaleTo(2.0, duration: NSTimeInterval(0.5), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.5), initialSpringVelocity: CGFloat(0.5))
+        let scaletoNor = SKAction.scaleTo(0.8, duration: 0.5)
         
         node.runAction(SKAction.sequence([sceletobig, scaletoNor]))
         
@@ -979,7 +1020,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
 
         self.view?.removeGestureRecognizer(longPressGesture)
         
-        SKTAudio.sharedInstance().pauseBackgroundMusic()
+        //SKTAudio.sharedInstance().pauseBackgroundMusic()
         
         // 保存游戏状态 分数等信息
         GameState.sharedInstance.movingScore = Int(score)
@@ -1545,7 +1586,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             if player.position.y <= Screen_Height - player.size.height/2 {
                 
                 player.physicsBody?.velocity = CGVectorMake(0, 0)
-                player.physicsBody?.applyImpulse(CGVectorMake(0, 15))
+                player.physicsBody?.applyImpulse(CGVectorMake(0, 10))
             }
             
 
@@ -1576,12 +1617,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         if isGameBegin {
             scrollBackground()
             
-            // 如果碰山 角色变大 离开 恢复原始大小
-            if isPlayerMustScale {
-                playerScleToBig(player)
-                
-                isPlayerMustScale = false
-            }
+
             
             // 如果角色超出顶部 解除用力
             if player.position.y >= Screen_Height - player.size.height/2 {

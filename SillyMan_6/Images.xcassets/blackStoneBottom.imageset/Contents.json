@@ -7,12 +7,12 @@
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "blackStoneUp@2x.png"
+      "filename" : "blackStoneBottom@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "blackStoneUp@3x.png"
+      "filename" : "blackStoneBottom@3x.png"
     }
   ],
   "info" : {
