@@ -87,9 +87,13 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     private var staricon: SKSpriteNode!
     
     private var score: Int = 0
+    private var displayScore: Int = 0
     
     private var background1:SKSpriteNode!
     private var background2:SKSpriteNode!
+    
+    var waterBox:SFWaterNode? //  流体
+    var lastUpdateTime:NSTimeInterval = 0
     
     private var stone1:SKSpriteNode!
     private var stone2:SKSpriteNode!
@@ -110,15 +114,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         self.physicsWorld.gravity = CGVectorMake( 0.0, -2.0 )
         self.physicsWorld.contactDelegate = self
         
-        // setup background color
-        let skyColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
-        //self.backgroundColor = skyColor
-        
         Screen_Width = self.size.width
         Screen_Height = self.size.height
         
         scaleFactor = Screen_Width / 320.0
-        //self.playableRect = CGRect(x: 0, y: 0 , width: Screen_Width, height: Screen_Height)
         
         // 引导手指
         figerNode()
@@ -148,6 +147,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         //createPaoPao()
         createSnow()
+        
+        createWater()
         
         //  1.游戏开始前的音乐
 //        SKTAudio.sharedInstance().playBackgroundMusic(gameSong)
@@ -252,6 +253,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         fingerSprite.runAction(fingerTouchSequence)
     }
     
+    
+    
 
     //MARK: 创建背景层
     func createBackground() {
@@ -276,13 +279,22 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         background2.addChild(stone2)
         
         stone1.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
-        stone1.physicsBody?.angularVelocity
+        stone1.physicsBody?.friction = 0
+        stone1.physicsBody?.charge = 0
+        stone1.physicsBody?.restitution = 0
+        stone1.physicsBody?.linearDamping = 0
+        stone1.physicsBody?.angularDamping = 0
         stone1.physicsBody?.dynamic = false
         stone1.physicsBody?.allowsRotation = false
         stone1.physicsBody?.affectedByGravity = true
         stone1.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
         
         stone2.physicsBody = SKPhysicsBody(texture: stone2.texture, size: stone2.size)
+        stone2.physicsBody?.friction = 0
+        stone2.physicsBody?.charge = 0
+        stone2.physicsBody?.restitution = 0
+        stone2.physicsBody?.linearDamping = 0
+        stone2.physicsBody?.angularDamping = 0
         stone2.physicsBody?.dynamic = false
         stone2.physicsBody?.allowsRotation = false
         stone2.physicsBody?.affectedByGravity = true
@@ -299,13 +311,22 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         background2.addChild(stone4)
         
         stone3.physicsBody = SKPhysicsBody(texture: stone3.texture, size: stone3.size)
-        stone3.physicsBody?.angularVelocity
+        stone3.physicsBody?.friction = 0
+        stone3.physicsBody?.charge = 0
+        stone3.physicsBody?.restitution = 0
+        stone3.physicsBody?.linearDamping = 0
+        stone3.physicsBody?.angularDamping = 0
         stone3.physicsBody?.dynamic = false
         stone3.physicsBody?.allowsRotation = false
         stone3.physicsBody?.affectedByGravity = true
         stone3.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
         
         stone4.physicsBody = SKPhysicsBody(texture: stone4.texture, size: stone4.size)
+        stone4.physicsBody?.friction = 0
+        stone4.physicsBody?.charge = 0
+        stone4.physicsBody?.restitution = 0
+        stone4.physicsBody?.linearDamping = 0
+        stone4.physicsBody?.angularDamping = 0
         stone4.physicsBody?.dynamic = false
         stone4.physicsBody?.allowsRotation = false
         stone4.physicsBody?.affectedByGravity = true
@@ -320,6 +341,19 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
 //        background2.addChild(dynamicBG)
         
         
+    }
+    
+    func createWater() {
+
+        let startPoint = CGPointMake(100, 100)
+        let endPoint = CGPointMake(200, 200)
+        
+        let tex = SKTexture(imageNamed: "playerModel_01")
+        
+        self.waterBox = SFWaterNode(startPoint: startPoint, endPoint: endPoint, jointWidth: 5, depth: 100, texture: tex)
+        waterBox?.zPosition = -9
+        
+        //addChild(waterBox!)
     }
     
     
@@ -341,10 +375,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     }
     
     func starfieldEmitterNode(#speed: CGFloat, lifetime: CGFloat, scale: CGFloat, birthRate: CGFloat, color: SKColor) -> SKEmitterNode {
-        
-        //        let star = SKLabelNode(fontNamed: "Helvetica")
-        //        star.fontSize = 80.0
-        //        star.text = "✦"
         
         let sk = SKSpriteNode(imageNamed: "paopao")
         sk.alpha = 0.5
@@ -405,7 +435,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         //let randomEnemyY = CGFloat.random(Int(self.size.height) +  20 )
         
-        let bow = SKSpriteNode(imageNamed: "zhangyu")
+        let bow = SKSpriteNode(imageNamed: randomEmenyName())
         bow.name = "Bow"
         bow.position = CGPointMake(CGFloat.random(min: 10, max: background1.size.width), CGFloat.random(min: 10, max: background1.size.height))
         bow.zPosition = 50
@@ -435,17 +465,24 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     func scrollBackground() {
         
         player.position.x = player.position.x+3
-        
         rootSceneNode.position.x = -player.position.x + 150
+        score = max(score, Int(player.position.x))
         
-        score = max(score, Int(player.position.x))  //score : Int(player.position.x)
+        displayScore = Int(Double(score - 150) * 0.1)
+        
+        scoreLabel.text = "\(Int(displayScore))"
 
-        
         var count = Int(abs(rootSceneNode.position.x ) / background1.size.width)
         if  count != moveCount {
             moveCount = count
             
-            var bowCount:Int = 3 
+            var bowCount:Int = 3
+            
+            for var i = 0; i < bowCount; i++ {
+                let bow = createBarrier()
+                rootSceneNode.addChild(bow)
+            }
+            
             
             if moveCount % 2 != 0 {
                 background1.position.x = background2.position.x + background2.size.width
@@ -459,8 +496,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                     stone1.addChild(bow)
                     
                 }
-
-                
             }
             if moveCount % 2 == 0 {
                 background2.position.x = background1.position.x + background1.size.width
@@ -489,7 +524,15 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
     }
     
-    //MARK: 碰撞检测
+    
+    override func didSimulatePhysics() {
+        
+    }
+    
+    // MARK:碰撞委托方法 protocol Method
+    
+    
+    // 碰撞开始
     func didBeginContact(contact: SKPhysicsContact) {
         
         if !isGameOver {
@@ -499,14 +542,14 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             switch other.categoryBitMask {
             case CollisionCategoryBitmask.Star:
                 let starNode = other.node
-                collisionWithStar(starNode!)
+                collisionBeginWithStar(starNode!)
                 
             case CollisionCategoryBitmask.Enemy:
                 let enemyNode = other.node
-                collisionWithEnemy(player)
+                collisionBeginWithEnemy(player)
                 
             case CollisionCategoryBitmask.SeaBottom :
-                collisionSeaBottom(player)
+                collisionBeginSeaBottom(player)
                 
             default:
                 break;
@@ -515,13 +558,67 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         }
     }
     
-    override func didSimulatePhysics() {
+    
+    // 碰撞结束
+    func didEndContact(contact: SKPhysicsContact) {
+        if !isGameOver {
+            
+            let other = (contact.bodyA.categoryBitMask == CollisionCategoryBitmask.Player ? contact.bodyB : contact.bodyA)
+            
+            switch other.categoryBitMask {
+            case CollisionCategoryBitmask.Star:
+                println("Collision Star")
+                
+            case CollisionCategoryBitmask.Enemy:
+                println("Collision Enemy")
+            case CollisionCategoryBitmask.SeaBottom :
+                collisionEndSeaBottom(player)
+                
+            default:
+                break;
+            }
+            
+        }
+    }
+    
+
+    
+
+
+    func collisionEndSeaBottom(node:SKNode) {
+        println("collisionEndSeaBottom")
+    }
+    
+    // 撞到敌人
+    func collisionBeginWithEnemy(node:SKNode) {
         
+        collisionByBoat(node)
+        node.removeFromParent()
+        
+    }
+    
+    var collisionSeaBottomCuount = 0
+    //  碰撞海底
+    func collisionBeginSeaBottom(node:SKNode) {
+        //collisionByBoat(player)
+        playerScleToBig(player)
+    }
+    
+    
+    // 碰到边缘 会膨胀变大  增加难度
+    func playerScleToBig(node:SKNode) {
+        println("playerScleToBig")
+        let sceletobig = SKAction.scaleTo(2.0, duration: NSTimeInterval(0.5), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.5), initialSpringVelocity: CGFloat(0.5))
+        let scaletoNor = SKAction.scaleTo(0.8, duration: 0.5)
+        
+        node.runAction(SKAction.sequence([sceletobig, scaletoNor]))
+        
+        //runAction(playerScaleSound)
     }
     
     
     //MARK: 碰撞结果执行
-    func collisionWithStar(node:SKNode) {
+    func collisionBeginWithStar(node:SKNode) {
         let musicOn = GameState.sharedInstance.musicState
         if musicOn {
             runAction(starSound, completion: { () -> Void in
@@ -531,9 +628,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             node.removeFromParent()
         }
         
-        GameState.sharedInstance.stars += 1
+        //GameState.sharedInstance.stars += 1
         updateHUD()
-       
+        
     }
     
     //  飞船撞毁
@@ -551,7 +648,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             
             showParticlesForEnemy(node)
             player.physicsBody?.allowsRotation = true
-
+            
             //boatCrash()
             player.removeFromParent()
             
@@ -576,46 +673,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             gameOver()
         }
     }
+
     
-    // 撞到敌人
-    func collisionWithEnemy(node:SKNode) {
-        
-        collisionByBoat(node)
-        node.removeFromParent()
-        
-    }
-    
-    var collisionSeaBottomCuount = 0
-    //  碰撞海底
-    func collisionSeaBottom(node:SKNode) {
-        
-        //collisionByBoat(player)
-        playerScleToBig(player)
-        
-//        if collisionSeaBottomCuount < 100 {
-//            playerScleToBig(player)
-//            collisionSeaBottomCuount++
-//            println(collisionSeaBottomCuount)
-//            
-//        } else if collisionSeaBottomCuount >= 100{
-//            collisionByBoat(player)
-//            collisionSeaBottomCuount = 0
-//            println(collisionSeaBottomCuount)
-//        }
-        
-    }
-    
-    
-    // 碰到边缘 会膨胀变大  增加难度
-    func playerScleToBig(node:SKNode) {
-        println("playerScleToBig")
-        let sceletobig = SKAction.scaleTo(2.0, duration: NSTimeInterval(0.5), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.5), initialSpringVelocity: CGFloat(0.5))
-        let scaletoNor = SKAction.scaleTo(0.8, duration: 0.5)
-        
-        node.runAction(SKAction.sequence([sceletobig, scaletoNor]))
-        
-        runAction(playerScaleSound)
-    }
     
     //  飞船解体
     func boatCrash() {
@@ -669,7 +728,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     func shakeCarema() {
         let sceneView = self.view
         if let view = sceneView {
-            view.shakeC(10, delta: 10, interval: 0.03, shakeDirection: ShakeDirection.ShakeDirectionVertical)
+            view.shakeC(10, delta: 5, interval: 0.03, shakeDirection: ShakeDirection.ShakeDirectionVertical)
         }
     }
     
@@ -728,17 +787,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     func updateHUD() {
         // 更新分数
-        starsLabel.text = "\(GameState.sharedInstance.stars)"
+        scoreLabel.text = "\(displayScore)"
         let scaleIn = SKAction.scaleTo(1.5, duration: 0.1)
-        let scaleOut = SKAction.scaleTo(1, duration: 0.2)
-        starsLabel.runAction(SKAction.sequence([scaleIn, scaleOut])) //starsLabel.yScale
+        let scaleOut = SKAction.scaleTo(1.5, duration: 0.2)
+        scoreLabel.runAction(SKAction.sequence([scaleIn, scaleOut])) //starsLabel.yScale
         
     }
-
-//    func updateMovingExtent() {
-//        // 更新移动距离
-//        scoreLabel.text = "\(Int(movingExtent))"
-//    }
     
     
     //MARK: 构建游戏Node
@@ -869,7 +923,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         player.physicsBody?.allowsRotation = false
         player.physicsBody?.affectedByGravity = true
         
-        player.physicsBody?.friction = CGFloat(0.01) // 摩擦力
+        player.physicsBody?.friction = 0
+        player.physicsBody?.charge = 0
+        player.physicsBody?.restitution = 0
         player.physicsBody?.linearDamping = 0
         player.physicsBody?.angularDamping = 0
         
@@ -1023,7 +1079,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         //SKTAudio.sharedInstance().pauseBackgroundMusic()
         
         // 保存游戏状态 分数等信息
-        GameState.sharedInstance.movingScore = Int(score)
+        GameState.sharedInstance.currentScore = Int(displayScore)
         GameState.sharedInstance.saveState()
         
         // 获取所有enemyNode 销毁掉
@@ -1045,6 +1101,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             dispatch_after(popTime, dispatch_get_main_queue()) { () -> Void in
                 
                 self.showGameOverBottomButtons()
+                self.updateHUD()
             }
             
         }
@@ -1156,9 +1213,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         // 飞行米数
         scoreLabel = SKLabelNode(fontNamed: font_Name)
         scoreLabel.fontSize = 24
+        scoreLabel.fontColor = SKColor.whiteColor()
         scoreLabel.position = CGPoint(x:25 , y: Screen_Height-30)
         scoreLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-        scoreLabel.text = "\(Int(score))" //"0 M"
+        scoreLabel.text = "\(Int(score))"
         gameSceneUINode.addChild(scoreLabel)
         
 //        // 金币图标
@@ -1316,8 +1374,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         let scaleAction = SKAction.scaleYTo(60, duration: 0.1)
         belt.runAction(scaleAction)
         
+        
+        
+        
         let label = SKLabelNode(fontNamed: font_Name)
-        label.text = "WOW 玩砸了!"
+        label.text = "Top:\(GameState.sharedInstance.highScore)"
         label.position = CGPointMake(-Screen_Width/2, -5)
         iAdNode.addChild(label)
         
@@ -1358,7 +1419,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         starsLabel.fontColor = SKColor.whiteColor()
         starsLabel.position = CGPoint(x: 50, y: self.size.height-40)
         starsLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-        starsLabel.text = String(format: "%d", GameState.sharedInstance.stars)
+        //starsLabel.text = String(format: "%d", GameState.sharedInstance.stars)
         homePageUINode.addChild(starsLabel)
         
     }
@@ -1443,13 +1504,13 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         let scoreTotalLabel = SKLabelNode(fontNamed: font_Name)
         scoreTotalLabel.position = CGPointMake(0, 0)
         scoreTotalLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
-        scoreTotalLabel.text = String(format: "收集金币: %d", GameState.sharedInstance.stars)
+        //scoreTotalLabel.text = String(format: "收集金币: %d", GameState.sharedInstance.stars)
         overUINode.addChild(scoreTotalLabel)
         
         let distanceLabel = SKLabelNode(fontNamed: font_Name)
         distanceLabel.position = CGPointMake(0, -40)
         distanceLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
-        distanceLabel.text = String(format: "飞行距离: %d", GameState.sharedInstance.movingScore)
+        //distanceLabel.text = String(format: "飞行距离: %d", GameState.sharedInstance.movingScore)
         overUINode.addChild(distanceLabel)
         
         let scoreHigthLabel = SKLabelNode(fontNamed: font_Name)
@@ -1589,6 +1650,9 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                 player.physicsBody?.applyImpulse(CGVectorMake(0, 10))
             }
             
+            
+            
+            waterBox?.splash(locationInNode, speed: -50)
 
             
 //            let up = SKAction.scaleTo(0.8, duration: NSTimeInterval(0.3), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.1), initialSpringVelocity: CGFloat(0.3))
@@ -1614,6 +1678,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     var lastUpdateTimeInterval: NSTimeInterval = 0
     
     override func update(currentTime: CFTimeInterval) {
+        
+        waterBox?.update(currentTime)
+        
+        
         if isGameBegin {
             scrollBackground()
             
@@ -1629,11 +1697,20 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
                 player.physicsBody?.applyImpulse(CGVectorMake(0, 0.7))
             }
             
-            let displayScore = Double(score - 150) * 0.1
-            scoreLabel.text = "\(Int(displayScore))"
+
             
         }
         
+    }
+    
+    func randomEmenyName() ->String{
+        switch arc4random()%4 {
+        case 0: return "EmenyModel_01"
+        case 1: return "zhangyu"
+        case 2: return "zhangyu"
+        case 3: return "EmenyModel_01"
+        default: return "EmenyModel_01"
+        }
     }
     
     func randomStarMoon() -> SKTexture{

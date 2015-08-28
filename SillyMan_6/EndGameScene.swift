@@ -34,7 +34,7 @@ class EndGameScene: SKScene {
         lblStars.fontColor = SKColor.whiteColor()
         lblStars.position = CGPoint(x: 50, y: self.size.height-40)
         lblStars.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-        lblStars.text = String(format: "X %d", GameState.sharedInstance.stars)
+        //lblStars.text = String(format: "X %d", GameState.sharedInstance.stars)
         addChild(lblStars)
         
         // Score
@@ -43,7 +43,7 @@ class EndGameScene: SKScene {
         lblScore.fontColor = SKColor.yellowColor()
         lblScore.position = CGPoint(x: self.size.width / 2, y: 300)
         lblScore.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
-        lblScore.text = String(format: "本次得分: %d", GameState.sharedInstance.stars)
+        //lblScore.text = String(format: "本次得分: %d", GameState.sharedInstance.stars)
         addChild(lblScore)
         
         // High Score

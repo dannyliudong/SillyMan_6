@@ -57,6 +57,7 @@
 		A09C2CCE1B79E6AC007F68B1 /* crash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A09C2CCD1B79E6AC007F68B1 /* crash.mp3 */; };
 		A0A0DC681B85C68A00BCF81F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A0DC671B85C68A00BCF81F /* GameScene.swift */; };
 		A0A0DC6A1B85C6F200BCF81F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A0DC691B85C6F200BCF81F /* GameViewController.swift */; };
+		A0A127971B90035D00B895F9 /* SFWaterNode.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A127961B90035D00B895F9 /* SFWaterNode.m */; };
 		A0A2F4481B56645A00FE5E6B /* Bow.sks in Resources */ = {isa = PBXBuildFile; fileRef = A0A2F4471B56645A00FE5E6B /* Bow.sks */; };
 		A0A2F44C1B56658E00FE5E6B /* AnimatingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */; };
 		A0B16ED61B7B293500C7C976 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0B16ED51B7B293500C7C976 /* Images.xcassets */; };
@@ -140,6 +141,9 @@
 		A09C2CCD1B79E6AC007F68B1 /* crash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = crash.mp3; sourceTree = "<group>"; };
 		A0A0DC671B85C68A00BCF81F /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		A0A0DC691B85C6F200BCF81F /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		A0A127941B90035D00B895F9 /* SillyMan_6-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SillyMan_6-Bridging-Header.h"; sourceTree = "<group>"; };
+		A0A127951B90035D00B895F9 /* SFWaterNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFWaterNode.h; sourceTree = "<group>"; };
+		A0A127961B90035D00B895F9 /* SFWaterNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFWaterNode.m; sourceTree = "<group>"; };
 		A0A2F4471B56645A00FE5E6B /* Bow.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Bow.sks; sourceTree = "<group>"; };
 		A0A2F44B1B56658E00FE5E6B /* AnimatingSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatingSprite.swift; sourceTree = "<group>"; };
 		A0B16ED51B7B293500C7C976 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -197,6 +201,7 @@
 		A01411BF1B550B7900238667 /* SillyMan_6 */ = {
 			isa = PBXGroup;
 			children = (
+				A0A127931B90035000B895F9 /* SFWaterNode */,
 				A0C83DEE1B78C10300214B11 /* ViewEffect */,
 				A0EF88991B55145100CEB65A /* Other */,
 				A01411FF1B550E7300238667 /* Resouce */,
@@ -358,6 +363,16 @@
 				A0A0DC671B85C68A00BCF81F /* GameScene.swift */,
 			);
 			name = Test;
+			sourceTree = "<group>";
+		};
+		A0A127931B90035000B895F9 /* SFWaterNode */ = {
+			isa = PBXGroup;
+			children = (
+				A0A127951B90035D00B895F9 /* SFWaterNode.h */,
+				A0A127961B90035D00B895F9 /* SFWaterNode.m */,
+				A0A127941B90035D00B895F9 /* SillyMan_6-Bridging-Header.h */,
+			);
+			name = SFWaterNode;
 			sourceTree = "<group>";
 		};
 		A0C83DEE1B78C10300214B11 /* ViewEffect */ = {
@@ -539,6 +554,7 @@
 				A09B6BA01B5CE88500918A48 /* SpriteKit-Spring.swift in Sources */,
 				A01411F21B550DA900238667 /* GameObjectNode.swift in Sources */,
 				A01411FE1B550E0100238667 /* SKTAudio.swift in Sources */,
+				A0A127971B90035D00B895F9 /* SFWaterNode.m in Sources */,
 				A01411FC1B550DC100238667 /* MyUtils.swift in Sources */,
 				A0C909B11B560B6D00684831 /* SKAction+Extensions.swift in Sources */,
 				A01411F91B550DC100238667 /* SKEmitterNode+Extras.swift in Sources */,
@@ -694,7 +710,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "880e8c17-c712-4a7d-ad98-093ba714da0e";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "SillyMan_6/SillyMan_6-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -710,7 +726,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "880e8c17-c712-4a7d-ad98-093ba714da0e";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "SillyMan_6/SillyMan_6-Bridging-Header.h";
 			};
 			name = Release;
 		};

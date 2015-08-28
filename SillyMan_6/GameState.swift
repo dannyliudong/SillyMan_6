@@ -10,9 +10,9 @@ import Foundation
 
 class GameState {
     
-    var movingScore: Int
+    var currentScore: Int
     var highScore: Int
-    var stars: Int
+    //var stars: Int
     
     
     // 用户设置的状态
@@ -33,9 +33,9 @@ class GameState {
         
         print("GameState Init ..........")
         
-        movingScore = 0
+        currentScore = 0
         highScore = 0
-        stars = 0
+        //stars = 0
         
         
         // 用户设置数据
@@ -48,20 +48,20 @@ class GameState {
         
         //movingScore = defaults.integerForKey("movingScore")
         highScore = defaults.integerForKey("highScore")
-        stars = defaults.integerForKey("stars")
+        //stars = defaults.integerForKey("stars")
         
     }
     
     func saveState() {
         // Update highScore if the current score is greater
-        highScore = max(movingScore, highScore)
+        highScore = max(currentScore, highScore)
         
         // Store in user defaults
         let defaults = NSUserDefaults.standardUserDefaults()
         
-        defaults.setInteger(movingScore, forKey: "movingScore")
+        defaults.setInteger(currentScore, forKey: "currentScore")
         defaults.setInteger(highScore, forKey: "highScore")
-        defaults.setInteger(stars, forKey: "stars")
+        //defaults.setInteger(stars, forKey: "stars")
         
         // 保存设置状态
         defaults.setBool(musicState, forKey: "musicState")
