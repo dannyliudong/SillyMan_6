@@ -45,24 +45,6 @@
             </objects>
             <point key="canvasLocation" x="-606" y="280"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="lqs-6j-IRc">
-            <objects>
-                <viewController id="Ir9-eI-1Ts" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Dr1-A8-EYE"/>
-                        <viewControllerLayoutGuide type="bottom" id="TIl-DE-YyA"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="S3A-40-bpG">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pYk-bG-7zi" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-565" y="1073"/>
-        </scene>
         <!--Game View Controller-->
         <scene sceneID="dvC-F8-QXy">
             <objects>
@@ -139,7 +121,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jbb-No-HDL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="201" y="337"/>
+            <point key="canvasLocation" x="203" y="297"/>
         </scene>
     </scenes>
     <resources>

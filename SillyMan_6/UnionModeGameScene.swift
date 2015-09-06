@@ -81,7 +81,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     private var isOpenUI = false // 是否在主页打开了某些界面 如果打开了 游戏不会开始
     private var isPlayerMustScale = false // 角色
 
-    
     private var scoreLabel: SKLabelNode!
     private var starsLabel: SKLabelNode!
     private var staricon: SKSpriteNode!
@@ -91,9 +90,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     private var background1:SKSpriteNode!
     private var background2:SKSpriteNode!
-    
-    var waterBox:SFWaterNode? //  流体
-    var lastUpdateTime:NSTimeInterval = 0
     
     private var stone1:SKSpriteNode!
     private var stone2:SKSpriteNode!
@@ -144,11 +140,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         createPlayer()
         
         createBackground()
+        createShapeBG()
         
         //createPaoPao()
         createSnow()
         
-        createWater()
+        //createWater()
         
         //  1.游戏开始前的音乐
 //        SKTAudio.sharedInstance().playBackgroundMusic(gameSong)
@@ -254,28 +251,52 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     }
     
     
-    
+    //MARK: 创建图形背景
+    func createShapeBG() {
+        var ball = SKShapeNode()
+        ball.position = CGPointMake(Screen_Width/2, Screen_Height/2)
+        
+        let path = CGPathCreateMutable()
+        CGPathAddArc(path, nil, 0, 0, 50, 0, CGFloat(M_PI*2), true)
+        ball.path = path
+        
+        ball.lineWidth = 1.0
+        ball.fillColor = SKColor.greenColor()
+        ball.strokeColor = SKColor.whiteColor()
+        ball.glowWidth = 0.5
+        
+        ball.fillTexture = SKTexture(imageNamed: "bgte")
+
+        ball.antialiased = true
+        
+        rootSceneNode.addChild(ball)
+    }
 
     //MARK: 创建背景层
     func createBackground() {
         
-        background1 = SKSpriteNode(imageNamed: "BG1")
+        
+        let bgcolor = UIColor.random
+        
+        background1 = SKSpriteNode(color: bgcolor, size: self.size) //SKSpriteNode(imageNamed: "BG1")
         background1.position = CGPointMake(background1.size.width/2, Screen_Height/2)
         background1.zPosition = -10
         rootSceneNode.addChild(background1)
         
-        background2 = SKSpriteNode(imageNamed: "BG1")
+        println("background1 size: \(background1.size)")
+        
+        background2 = SKSpriteNode(color: bgcolor, size: self.size) //SKSpriteNode(imageNamed: "BG1")
         background2.zPosition = -10
         background2.position = CGPointMake((background1.position.x + background1.size.width), Screen_Height/2);
         rootSceneNode.addChild(background2)
         
         // 底部石头
-        stone1 = SKSpriteNode(imageNamed: "blackStoneBottom")
-        stone1.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
+        stone1 = SKSpriteNode(imageNamed: "blackStoneDown")
+        stone1.position = CGPointMake(0, -((background1.size.height / 2) + stone1.size.height/2))
         background1.addChild(stone1)
         
-        stone2 = SKSpriteNode(imageNamed: "blackStoneBottom")
-        stone2.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
+        stone2 = SKSpriteNode(imageNamed: "blackStoneDown")
+        stone2.position = CGPointMake(0, -((background1.size.height / 2) + stone1.size.height/2))
         background2.addChild(stone2)
         
         stone1.physicsBody = SKPhysicsBody(texture: stone1.texture, size: stone1.size)
@@ -341,19 +362,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
 //        background2.addChild(dynamicBG)
         
         
-    }
-    
-    func createWater() {
-
-        let startPoint = CGPointMake(100, 100)
-        let endPoint = CGPointMake(200, 200)
-        
-        let tex = SKTexture(imageNamed: "playerModel_01")
-        
-        self.waterBox = SFWaterNode(startPoint: startPoint, endPoint: endPoint, jointWidth: 5, depth: 100, texture: tex)
-        waterBox?.zPosition = -9
-        
-        //addChild(waterBox!)
     }
     
     
@@ -428,9 +436,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
     }
     
-    // 随机 发射 炮弹
-    
-    // 构建导弹
+    // 构建怪物
     func createBarrier() ->SKSpriteNode {
         
         //let randomEnemyY = CGFloat.random(Int(self.size.height) +  20 )
@@ -446,13 +452,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         bow.physicsBody?.collisionBitMask = 0
         bow.physicsBody?.contactTestBitMask = 0
         
-        let moveDonw = SKAction.moveToY(-50, duration: 2.0)
-        let moveUp = SKAction.moveToY(300, duration: 2.0)
+        let moveDonw = SKAction.moveToY(-50, duration: 3.0)
+        let moveUp = SKAction.moveToY(300, duration: 3.0)
         
         let seuqueAction = SKAction.sequence([moveDonw,moveUp])
         
         bow.runAction(SKAction.repeatActionForever(seuqueAction))
-
         
         return bow
     }
@@ -464,7 +469,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     //MARK: 滚动背景层
     func scrollBackground() {
         
-        player.position.x = player.position.x+3
+        player.position.x = player.position.x+4
         rootSceneNode.position.x = -player.position.x + 150
         score = max(score, Int(player.position.x))
         
@@ -601,7 +606,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     //  碰撞海底
     func collisionBeginSeaBottom(node:SKNode) {
         //collisionByBoat(player)
-        playerScleToBig(player)
+        //playerScleToBig(player)
     }
     
     
@@ -1651,10 +1656,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             }
             
             
-            
-            waterBox?.splash(locationInNode, speed: -50)
-
-            
 //            let up = SKAction.scaleTo(0.8, duration: NSTimeInterval(0.3), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.1), initialSpringVelocity: CGFloat(0.3))
 //            
 //            
@@ -1679,13 +1680,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     override func update(currentTime: CFTimeInterval) {
         
-        waterBox?.update(currentTime)
-        
-        
         if isGameBegin {
             scrollBackground()
-            
-
             
             // 如果角色超出顶部 解除用力
             if player.position.y >= Screen_Height - player.size.height/2 {
@@ -1696,9 +1692,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             if isLongPress {
                 player.physicsBody?.applyImpulse(CGVectorMake(0, 0.7))
             }
-            
-
-            
         }
         
     }
@@ -1722,6 +1715,21 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         case 3: return atlas.bgstar_bgstarmoon_0004()
         default: return atlas.bgstar_bgstarmoon_0004()
         }
+    }
+    
+    func randomColor() ->SKColor{
+        
+        
+        var color = CGFloat(CGFloat(random())/CGFloat(RAND_MAX))
+        var color1 = CGFloat(CGFloat(random())/CGFloat(RAND_MAX))
+        var color2 = CGFloat(CGFloat(random())/CGFloat(RAND_MAX))
+        var color3 = CGFloat(CGFloat(random())/CGFloat(RAND_MAX))
+        
+        let bgcolor = UIColor(red: color, green: color1, blue: color2, alpha: 0.8)
+        
+        
+        return bgcolor
+        
     }
 }
 
@@ -1752,15 +1760,18 @@ private extension String {
 }
 
 
-private extension SKColor {
+private extension UIColor {
     class var random: UIColor {
-        switch arc4random()%5 {
-        case 0: return SKColor.brownColor()
-        case 1: return SKColor.blueColor()
-        case 2: return SKColor.orangeColor()
-        case 3: return SKColor.magentaColor()
-        case 4: return SKColor.purpleColor()
-        default: return SKColor.purpleColor()
+        switch arc4random()%8 {
+        case 0: return UIColor(red: 188.0/255.0, green: 217.0/255.0, blue: 247.0/255.0, alpha: 1) //SKColorWithRGBA(188, 217, 247, 1)
+        case 1: return UIColor(red: 78.0/255.0, green: 152.0/255.0, blue: 181.0/255.0, alpha: 1) //SKColorWithRGBA(78, 152, 181, 1)
+        case 2: return UIColor(red: 238.0/255.0, green: 239.0/255.0, blue: 221.0/255.0, alpha: 1) //SKColorWithRGBA(238, 239, 221, 1)
+        case 3: return UIColor(red: 53.0/255.0, green: 80.0/255.0, blue: 75.0/255.0, alpha: 1) //SKColorWithRGBA(53, 80, 75, 1)
+        case 4: return UIColor(red: 233.0/255.0, green: 216.0/255.0, blue: 162.0/255.0, alpha: 1) //SKColorWithRGBA(233, 216, 162, 1)
+        case 5: return UIColor(red: 194.0/255.0, green: 213.0/255.0, blue: 219.0/255.0, alpha: 1) //SKColorWithRGBA(194, 213, 219, 1)
+        case 6: return UIColor(red: 121.0/255.0, green: 156.0/255.0, blue: 150.0/255.0, alpha: 1) //SKColorWithRGBA(121, 156, 150, 1)
+        case 7: return UIColor(red: 251.0/255.0, green: 212.0/255.0, blue: 137.0/255.0, alpha: 1) //SKColorWithRGBA(251, 212, 137, 1)
+        default: return UIColor(red: 226.0/255.0, green: 226.0/255.0, blue: 226.0/255.0, alpha: 1) //SKColorWithRGBA(226, 226, 226, 1)
         }
     }
 }
