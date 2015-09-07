@@ -67,6 +67,7 @@
 		A0B4A9E61B8F10C300312973 /* LocoRocosSong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0B4A9E51B8F10C300312973 /* LocoRocosSong.mp3 */; };
 		A0B4A9E81B8F140100312973 /* tunnelPlop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0B4A9E71B8F140100312973 /* tunnelPlop.mp3 */; };
 		A0B5AD9C1B56352C005C4FD3 /* Splat.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B5AD9B1B56352C005C4FD3 /* Splat.png */; };
+		A0BC13051B9D895A00083D6A /* CurveData.plist in Resources */ = {isa = PBXBuildFile; fileRef = A0BC13041B9D895A00083D6A /* CurveData.plist */; };
 		A0C6F62F1B9C1BA200B3F5AD /* bgte.png in Resources */ = {isa = PBXBuildFile; fileRef = A0C6F62E1B9C1BA200B3F5AD /* bgte.png */; };
 		A0C83DF41B78C1C100214B11 /* Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C83DF31B78C1C100214B11 /* Shake.swift */; };
 		A0C909B11B560B6D00684831 /* SKAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */; };
@@ -154,6 +155,7 @@
 		A0B4A9E51B8F10C300312973 /* LocoRocosSong.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = LocoRocosSong.mp3; sourceTree = "<group>"; };
 		A0B4A9E71B8F140100312973 /* tunnelPlop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tunnelPlop.mp3; sourceTree = "<group>"; };
 		A0B5AD9B1B56352C005C4FD3 /* Splat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Splat.png; sourceTree = "<group>"; };
+		A0BC13041B9D895A00083D6A /* CurveData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CurveData.plist; sourceTree = "<group>"; };
 		A0C6F62E1B9C1BA200B3F5AD /* bgte.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgte.png; sourceTree = "<group>"; };
 		A0C83DF31B78C1C100214B11 /* Shake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shake.swift; sourceTree = "<group>"; };
 		A0C909B01B560B6D00684831 /* SKAction+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKAction+Extensions.swift"; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 				A03EB3C91B8D908400DBF0AC /* SettingsViewController.swift */,
 				A0FC70831B6724E20034C8F0 /* HomeScene.swift */,
 				A01411EA1B550D2B00238667 /* UnionModeGameScene.swift */,
+				A0BC13041B9D895A00083D6A /* CurveData.plist */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -513,6 +516,7 @@
 				A014121F1B550EBE00238667 /* face_1_002@3x.png in Resources */,
 				A0E85D7E1B79DAE400A5E4D9 /* missileFire.sks in Resources */,
 				A0C6F62F1B9C1BA200B3F5AD /* bgte.png in Resources */,
+				A0BC13051B9D895A00083D6A /* CurveData.plist in Resources */,
 				A0B4A9E21B8EA9FA00312973 /* paopao1.png in Resources */,
 				A0A2F4481B56645A00FE5E6B /* Bow.sks in Resources */,
 				A0B4A9E81B8F140100312973 /* tunnelPlop.mp3 in Resources */,

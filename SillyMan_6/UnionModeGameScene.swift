@@ -20,6 +20,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     let ButtonSpaceY:CGFloat = 1.3 // 按钮 Y间距
     let Button_Width:CGFloat = 70
     
+    let playerOffset:CGFloat = 100
+    
     let atlas = GameSpriteAtlas()
     
     //var playableRect: CGRect! //游戏区域
@@ -115,6 +117,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         scaleFactor = Screen_Width / 320.0
         
+        self.backgroundColor = SKColor.random
+        
         // 引导手指
         figerNode()
         
@@ -139,7 +143,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         createPlayer()
         
-        createBackground()
+        //createBackground()
         createShapeBG()
         
         //createPaoPao()
@@ -182,7 +186,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         longPressGesture.minimumPressDuration = 0.2 // 最少按住时间
         
         self.view?.addGestureRecognizer(longPressGesture)
-        
         
 
     }
@@ -253,28 +256,163 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     //MARK: 创建图形背景
     func createShapeBG() {
-        var ball = SKShapeNode()
-        ball.position = CGPointMake(Screen_Width/2, Screen_Height/2)
+//        var ball = SKShapeNode()
+//        ball.position = CGPointMake(Screen_Width/2, Screen_Height/2)
+//        
+//        let path = CGPathCreateMutable()
+//        CGPathAddArc(path, nil, 0, 0, 50, 0, CGFloat(M_PI*2), true)
+//        ball.path = path
+//        
+//        ball.lineWidth = 1.0
+//        ball.fillColor = SKColor.greenColor()
+//        ball.strokeColor = SKColor.whiteColor()
+//        ball.glowWidth = 0.5
+//        
+//        ball.fillTexture = SKTexture(imageNamed: "bgte")
+//
+//        ball.antialiased = true
+//        
+//        rootSceneNode.addChild(ball)
         
-        let path = CGPathCreateMutable()
-        CGPathAddArc(path, nil, 0, 0, 50, 0, CGFloat(M_PI*2), true)
-        ball.path = path
         
-        ball.lineWidth = 1.0
-        ball.fillColor = SKColor.greenColor()
-        ball.strokeColor = SKColor.whiteColor()
-        ball.glowWidth = 0.5
+        // 五边形
+//        var fiveEdge = SKShapeNode()
+//
+//        let fivePath = UIBezierPath()
+//        fivePath.lineWidth = 5.0
+//        fivePath.lineCapStyle = kCGLineCapRound
+//        fivePath.lineJoinStyle = kCGLineJoinRound// = kCGLineCapRound
+//        
+//        fivePath.moveToPoint(CGPointMake(100.0, 0.0))
+//        
+//        fivePath.addLineToPoint(CGPointMake(200.0, 40.0))
+//        fivePath.addLineToPoint(CGPointMake(160.0, 140.0))
+//        fivePath.addLineToPoint(CGPointMake(40.0, 140.0))
+//        fivePath.addLineToPoint(CGPointMake(0.0, 140.0))
+//        fivePath.closePath()
+//        
+//        //fivePath.stroke()
+//        
+//        var ball1 = SKShapeNode()
+//        ball1.position = CGPointMake(Screen_Width/2, Screen_Height/2)
+//        ball1.path = fivePath.CGPath
+//        ball1.lineWidth = 1.0
+//        ball1.fillColor = SKColor.greenColor()
+//        ball1.strokeColor = SKColor.whiteColor()
+//        ball1.glowWidth = 0.5
+//        ball1.fillTexture = SKTexture(imageNamed: "bgte")
+//        ball1.antialiased = true
+//        
+//        rootSceneNode.addChild(ball1)
         
-        ball.fillTexture = SKTexture(imageNamed: "bgte")
+        
+        // 绘制二次贝塞尔曲线
+//        let beizerPathTwo = UIBezierPath()
+//        beizerPathTwo.lineWidth = 5.0
+//        beizerPathTwo.lineCapStyle = kCGLineCapRound
+//        beizerPathTwo.lineJoinStyle = kCGLineJoinRound
+//        
+//        beizerPathTwo.moveToPoint(CGPointMake(0.0, 0.0))
+//        beizerPathTwo.addQuadCurveToPoint(CGPointMake(220.0, 50.0), controlPoint: CGPointMake(70.0, 150))
+//        beizerPathTwo.addQuadCurveToPoint(CGPointMake(500.0, 0.0), controlPoint: CGPointMake(270.0, 170))
+//        beizerPathTwo.addQuadCurveToPoint(CGPointMake(500.0, 0.0), controlPoint: CGPointMake(270.0, 170))
+//        //beizerPathTwo.stroke()
+//        
+//        var beizerCurve = SKShapeNode()
+//        beizerCurve.position = CGPointMake(0, 0)
+//        beizerCurve.path = beizerPathTwo.CGPath
+//        beizerCurve.lineWidth = 1.0
+//        beizerCurve.fillColor = SKColor.greenColor()
+//        beizerCurve.strokeColor = SKColor.whiteColor()
+//        beizerCurve.glowWidth = 0.5
+//        beizerCurve.fillTexture = SKTexture(imageNamed: "bgte")
+//        beizerCurve.antialiased = true
+//        
+//        rootSceneNode.addChild(beizerCurve)
+        
+        
+        
+        // 绘制三次贝塞尔曲线
+        let beizerPathThree = UIBezierPath()
+        beizerPathThree.lineWidth = 5.0
+        beizerPathThree.lineCapStyle = kCGLineCapRound
+        beizerPathThree.lineJoinStyle = kCGLineJoinRound
+        
+        beizerPathThree.moveToPoint(CGPointMake(0, -10))
+        
+        let curve_EndPoint = CGPointMake(200, 20)
+        let P1 = CGPointMake(20, 100)
+        let P2 = CGPointMake(110, -20)
+        
+        for var i=0; i < 10; i++ {
+            beizerPathThree.addCurveToPoint(curve_EndPoint, controlPoint1: P1, controlPoint2: P2)
+            
 
-        ball.antialiased = true
+        }
         
-        rootSceneNode.addChild(ball)
+        beizerPathThree.addQuadCurveToPoint(CGPointMake(Screen_Width, -10), controlPoint: CGPointMake(420, 100))
+        
+        beizerPathThree.stroke()
+        
+        var beizerCurveThree = SKShapeNode()
+        beizerCurveThree.position = CGPointMake(0, 0)
+        beizerCurveThree.path = beizerPathThree.CGPath
+        beizerCurveThree.lineWidth = 3
+        beizerCurveThree.fillColor = UIColor.randomColor
+        beizerCurveThree.strokeColor = SKColor.lightGrayColor()
+        beizerCurveThree.glowWidth = 0
+        beizerCurveThree.fillTexture = SKTexture(imageNamed: "bgte")
+        beizerCurveThree.antialiased = true
+        rootSceneNode.addChild(beizerCurveThree)
+        
+        beizerCurveThree.physicsBody = SKPhysicsBody(edgeLoopFromPath: beizerPathThree.CGPath)
+        beizerCurveThree.physicsBody?.friction = 0
+        beizerCurveThree.physicsBody?.charge = 0
+        beizerCurveThree.physicsBody?.restitution = 0
+        beizerCurveThree.physicsBody?.linearDamping = 0
+        beizerCurveThree.physicsBody?.angularDamping = 0
+        beizerCurveThree.physicsBody?.dynamic = false
+        beizerCurveThree.physicsBody?.allowsRotation = false
+        beizerCurveThree.physicsBody?.affectedByGravity = true
+        beizerCurveThree.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        
+        
     }
+    
+     //  连续的曲线
+//    func createMountain() {
+//        
+//        for var i = 0; i < 10; i++ {
+//            // 绘制三次贝塞尔曲线
+//            
+//            let beizerPathThree = UIBezierPath()
+//            beizerPathThree.lineWidth = 5.0
+//            beizerPathThree.lineCapStyle = kCGLineCapRound
+//            beizerPathThree.lineJoinStyle = kCGLineJoinRound
+//            
+//            beizerPathThree.moveToPoint(CGPointMake(20, 50))
+//            beizerPathThree.addCurveToPoint(CGPointMake(200, 50), controlPoint1: CGPointMake(110, 0), controlPoint2: CGPointMake(110, 110))
+//            
+//            beizerPathThree.moveToPoint(CGPointMake(30, 50))
+//            beizerPathThree.addCurveToPoint(CGPointMake(250, 50), controlPoint1: CGPointMake(110, 0), controlPoint2: CGPointMake(110, 110))
+//            
+//            var beizerCurveThree = SKShapeNode()
+//            beizerCurveThree.position = CGPointMake(200, 50)
+//            beizerCurveThree.path = beizerPathThree.CGPath
+//            beizerCurveThree.lineWidth = 1.0
+//            beizerCurveThree.fillColor = SKColor.greenColor()
+//            beizerCurveThree.strokeColor = SKColor.lightGrayColor()
+//            beizerCurveThree.glowWidth = 0.5
+//            beizerCurveThree.fillTexture = SKTexture(imageNamed: "bgte")
+//            beizerCurveThree.antialiased = true
+//            
+//            rootSceneNode.addChild(beizerCurveThree)
+//        }
+//    }
+    
 
     //MARK: 创建背景层
     func createBackground() {
-        
         
         let bgcolor = UIColor.random
         
@@ -470,10 +608,10 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     func scrollBackground() {
         
         player.position.x = player.position.x+4
-        rootSceneNode.position.x = -player.position.x + 150
+        rootSceneNode.position.x = -player.position.x + playerOffset
         score = max(score, Int(player.position.x))
         
-        displayScore = Int(Double(score - 150) * 0.1)
+        displayScore = Int(Double(score - Int(playerOffset)) * 0.1)
         
         scoreLabel.text = "\(Int(displayScore))"
 
@@ -918,7 +1056,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     func createPlayer(){
         let playerName = String.random
         player = SKSpriteNode (imageNamed: playerName)
-        player.position = CGPointMake(150, Screen_Height/2)
+        player.position = CGPointMake(playerOffset, Screen_Height/2)
         player.shadowCastBitMask = UInt32(3)
         
         rootSceneNode.addChild(player)
@@ -1675,14 +1813,27 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     }
     
     
+    
+    
+    func moveBG() {
+        
+        player.position.x = player.position.x+4
+        rootSceneNode.position.x = -player.position.x + playerOffset
+        score = max(score, Int(player.position.x))
+        
+        displayScore = Int(Double(score - Int(playerOffset)) * 0.1)
+        
+        scoreLabel.text = "\(Int(displayScore))"
+    }
+    
     var lastSpawnTimeInterval:NSTimeInterval  = 0// 上次更新时间
     var lastUpdateTimeInterval: NSTimeInterval = 0
     
     override func update(currentTime: CFTimeInterval) {
         
         if isGameBegin {
-            scrollBackground()
-            
+            //scrollBackground()
+            moveBG()
             // 如果角色超出顶部 解除用力
             if player.position.y >= Screen_Height - player.size.height/2 {
                 isLongPress = false
@@ -1719,14 +1870,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     func randomColor() ->SKColor{
         
-        
         var color = CGFloat(CGFloat(random())/CGFloat(RAND_MAX))
         var color1 = CGFloat(CGFloat(random())/CGFloat(RAND_MAX))
         var color2 = CGFloat(CGFloat(random())/CGFloat(RAND_MAX))
         var color3 = CGFloat(CGFloat(random())/CGFloat(RAND_MAX))
         
         let bgcolor = UIColor(red: color, green: color1, blue: color2, alpha: 0.8)
-        
         
         return bgcolor
         
@@ -1760,8 +1909,8 @@ private extension String {
 }
 
 
-private extension UIColor {
-    class var random: UIColor {
+private extension SKColor {
+    class var random: SKColor {
         switch arc4random()%8 {
         case 0: return UIColor(red: 188.0/255.0, green: 217.0/255.0, blue: 247.0/255.0, alpha: 1) //SKColorWithRGBA(188, 217, 247, 1)
         case 1: return UIColor(red: 78.0/255.0, green: 152.0/255.0, blue: 181.0/255.0, alpha: 1) //SKColorWithRGBA(78, 152, 181, 1)
@@ -1772,6 +1921,22 @@ private extension UIColor {
         case 6: return UIColor(red: 121.0/255.0, green: 156.0/255.0, blue: 150.0/255.0, alpha: 1) //SKColorWithRGBA(121, 156, 150, 1)
         case 7: return UIColor(red: 251.0/255.0, green: 212.0/255.0, blue: 137.0/255.0, alpha: 1) //SKColorWithRGBA(251, 212, 137, 1)
         default: return UIColor(red: 226.0/255.0, green: 226.0/255.0, blue: 226.0/255.0, alpha: 1) //SKColorWithRGBA(226, 226, 226, 1)
+        }
+    }
+}
+
+private extension SKColor {
+    class var randomColor: SKColor {
+        switch arc4random()%8 {
+        case 0: return SKColor.redColor()
+        case 1: return SKColor.greenColor()
+        case 2: return SKColor.blueColor()
+        case 3: return SKColor.cyanColor()
+        case 4: return SKColor.yellowColor()
+        case 5: return SKColor.magentaColor()
+        case 6: return SKColor.orangeColor()
+        case 7: return SKColor.purpleColor()
+        default: return SKColor.blackColor()
         }
     }
 }
