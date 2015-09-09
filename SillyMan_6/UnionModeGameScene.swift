@@ -145,7 +145,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         //createBackground()
         createShapeBG()
-        
+
         //createPaoPao()
         createSnow()
         
@@ -254,83 +254,20 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     }
     
     
+    
+    var leve = 0
+    
+    var starPoint:CGPoint = CGPointMake(-10, 120)
+    
+    var endPoint:CGPoint!
+    
+    var lastPoint:CGPoint = CGPointMake(100, 20)
+    
+    var curveEndPointArray = [CGPoint]()
+    //var ppBezierWidth:CGFloat = 30
+
     //MARK: 创建图形背景
     func createShapeBG() {
-//        var ball = SKShapeNode()
-//        ball.position = CGPointMake(Screen_Width/2, Screen_Height/2)
-//        
-//        let path = CGPathCreateMutable()
-//        CGPathAddArc(path, nil, 0, 0, 50, 0, CGFloat(M_PI*2), true)
-//        ball.path = path
-//        
-//        ball.lineWidth = 1.0
-//        ball.fillColor = SKColor.greenColor()
-//        ball.strokeColor = SKColor.whiteColor()
-//        ball.glowWidth = 0.5
-//        
-//        ball.fillTexture = SKTexture(imageNamed: "bgte")
-//
-//        ball.antialiased = true
-//        
-//        rootSceneNode.addChild(ball)
-        
-        
-        // 五边形
-//        var fiveEdge = SKShapeNode()
-//
-//        let fivePath = UIBezierPath()
-//        fivePath.lineWidth = 5.0
-//        fivePath.lineCapStyle = kCGLineCapRound
-//        fivePath.lineJoinStyle = kCGLineJoinRound// = kCGLineCapRound
-//        
-//        fivePath.moveToPoint(CGPointMake(100.0, 0.0))
-//        
-//        fivePath.addLineToPoint(CGPointMake(200.0, 40.0))
-//        fivePath.addLineToPoint(CGPointMake(160.0, 140.0))
-//        fivePath.addLineToPoint(CGPointMake(40.0, 140.0))
-//        fivePath.addLineToPoint(CGPointMake(0.0, 140.0))
-//        fivePath.closePath()
-//        
-//        //fivePath.stroke()
-//        
-//        var ball1 = SKShapeNode()
-//        ball1.position = CGPointMake(Screen_Width/2, Screen_Height/2)
-//        ball1.path = fivePath.CGPath
-//        ball1.lineWidth = 1.0
-//        ball1.fillColor = SKColor.greenColor()
-//        ball1.strokeColor = SKColor.whiteColor()
-//        ball1.glowWidth = 0.5
-//        ball1.fillTexture = SKTexture(imageNamed: "bgte")
-//        ball1.antialiased = true
-//        
-//        rootSceneNode.addChild(ball1)
-        
-        
-        // 绘制二次贝塞尔曲线
-//        let beizerPathTwo = UIBezierPath()
-//        beizerPathTwo.lineWidth = 5.0
-//        beizerPathTwo.lineCapStyle = kCGLineCapRound
-//        beizerPathTwo.lineJoinStyle = kCGLineJoinRound
-//        
-//        beizerPathTwo.moveToPoint(CGPointMake(0.0, 0.0))
-//        beizerPathTwo.addQuadCurveToPoint(CGPointMake(220.0, 50.0), controlPoint: CGPointMake(70.0, 150))
-//        beizerPathTwo.addQuadCurveToPoint(CGPointMake(500.0, 0.0), controlPoint: CGPointMake(270.0, 170))
-//        beizerPathTwo.addQuadCurveToPoint(CGPointMake(500.0, 0.0), controlPoint: CGPointMake(270.0, 170))
-//        //beizerPathTwo.stroke()
-//        
-//        var beizerCurve = SKShapeNode()
-//        beizerCurve.position = CGPointMake(0, 0)
-//        beizerCurve.path = beizerPathTwo.CGPath
-//        beizerCurve.lineWidth = 1.0
-//        beizerCurve.fillColor = SKColor.greenColor()
-//        beizerCurve.strokeColor = SKColor.whiteColor()
-//        beizerCurve.glowWidth = 0.5
-//        beizerCurve.fillTexture = SKTexture(imageNamed: "bgte")
-//        beizerCurve.antialiased = true
-//        
-//        rootSceneNode.addChild(beizerCurve)
-        
-        
         
         // 绘制三次贝塞尔曲线
         let beizerPathThree = UIBezierPath()
@@ -338,21 +275,131 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         beizerPathThree.lineCapStyle = kCGLineCapRound
         beizerPathThree.lineJoinStyle = kCGLineJoinRound
         
-        beizerPathThree.moveToPoint(CGPointMake(0, -10))
+        beizerPathThree.moveToPoint(CGPointMake(-10, -10))
+        beizerPathThree.addLineToPoint(starPoint)
         
-        let curve_EndPoint = CGPointMake(200, 20)
-        let P1 = CGPointMake(20, 100)
-        let P2 = CGPointMake(110, -20)
         
-        for var i=0; i < 10; i++ {
-            beizerPathThree.addCurveToPoint(curve_EndPoint, controlPoint1: P1, controlPoint2: P2)
+//        for var i = 0; i < 100; i++ {
+//            
+//            if leve == 0 {
+//                // 偏下的位置
+//                
+//                let width = randomEndPointWidth()
+//                
+//                endPoint = CGPointMake(endPoint.x + width, randomEndPointLow())
+//                curveEndPointArray.append(endPoint)
+//                
+//                ppBezierWidth = randomBezierWidth()
+//                
+//                let P1 = CGPointMake((starPoint.x + ppBezierWidth), starPoint.y)
+//                let P2 = CGPointMake(endPoint.x - ppBezierWidth, endPoint.y)
+//                
+//                beizerPathThree.addCurveToPoint(endPoint, controlPoint1: P1, controlPoint2: P2)
+//                
+//                leve = 1
+//                
+//            } else if leve == 1 {
+//                let width = randomEndPointWidth()
+//                
+//                endPoint = CGPointMake(endPoint.x + width, randomEndPointHight()) // 偏上的位置
+//                
+//                let P1  = CGPointMake(curveEndPointArray.last!.x + ppBezierWidth, starPoint.y) // 偏上的位置
+//                
+//                curveEndPointArray.append(endPoint)
+//
+//                let P2 = CGPointMake(endPoint.x - ppBezierWidth, endPoint.y)
+//                
+//                
+//                beizerPathThree.addCurveToPoint(endPoint, controlPoint1: P1, controlPoint2: P2)
+//                
+//                leve = 0
+//            }
+//        }
+        
+        //curveEndPointArray.append(starPoint)
+        //curveEndPointArray.append(endPoint)
+        
+        
+
+        for var i = 0; i < 100; i++ {
             
+            let width = randomEndPointWidth()
+            
+            let ppBezierWidth = randomBezierWidth()
+
+
+            if leve == 0 {
+                // 偏下的位置
+                
+                endPoint = CGPointMake(self.lastPoint.x + width , randomEndPointLow())
+                //curveEndPointArray.append(endPoint)
+                
+                leve = 1
+                
+            } else if leve == 1 {
+                
+                endPoint = CGPointMake(self.lastPoint.x + width, randomEndPointHight()) // 偏上的位置
+                //curveEndPointArray.append(endPoint)
+                leve = 0
+            }
+            
+            //let lastPoint = curveEndPointArray[curveEndPointArray.count-1]
+            //let lastlastPoint = curveEndPointArray[curveEndPointArray.count-2]
+            
+            let P1 = CGPointMake((lastPoint.x + ppBezierWidth), lastPoint.y)
+            let P2 = CGPointMake(endPoint.x - ppBezierWidth, endPoint.y)
+            
+            beizerPathThree.addCurveToPoint(endPoint, controlPoint1: P1, controlPoint2: P2)
+            
+            
+            lastPoint = endPoint
+            
+            println(i)
 
         }
         
-        beizerPathThree.addQuadCurveToPoint(CGPointMake(Screen_Width, -10), controlPoint: CGPointMake(420, 100))
         
-        beizerPathThree.stroke()
+        //  读取plist 设置
+        // Load the level
+//        let dataPlist = NSBundle.mainBundle().pathForResource("CurveData01", ofType: "plist")
+//        let curveData = NSDictionary(contentsOfFile: dataPlist!)!
+//        let items = curveData["CurvePoint"] as! [NSDictionary]
+//        
+//        for item in items {
+//            
+//            let endPoint = item["EndPoint"] as! NSDictionary
+//            let p1 = item["p1"] as! NSDictionary
+//            let p2 = item["p2"] as! NSDictionary
+//            
+//            let endPointX = endPoint["x"]!.floatValue
+//            let endPointY = endPoint["y"]!.floatValue
+//            
+//            let p1X = p1["x"]!.floatValue
+//            let p1Y = p1["y"]!.floatValue
+//            
+//            let p2X = p2["x"]!.floatValue
+//            let p2Y = p2["y"]!.floatValue
+//            
+//            let curve_EndPoint = CGPointMake(CGFloat(endPointX), CGFloat(endPointY))
+//            let P1 = CGPointMake(CGFloat(p1X), CGFloat(p1Y))
+//            let P2 = CGPointMake(CGFloat(p2X), CGFloat(p2Y))
+//            
+//            beizerPathThree.addCurveToPoint(curve_EndPoint, controlPoint1: P1, controlPoint2: P2)
+//            
+//        }
+
+//        var lastPointX:CGFloat!
+//        if let lastItem = items.last {
+//            let endPoint = lastItem["EndPoint"] as! NSDictionary
+//            let endPointX = endPoint["x"]!.floatValue
+//            lastPointX = CGFloat(endPointX)
+//        }
+        
+        
+        // 收尾线
+        beizerPathThree.addLineToPoint(CGPointMake(lastPoint.x, -10))
+        
+        //beizerPathThree.stroke()
         
         var beizerCurveThree = SKShapeNode()
         beizerCurveThree.position = CGPointMake(0, 0)
@@ -378,6 +425,27 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         
     }
+    
+    // 山丘高点位置范围 随机值
+    func randomEndPointHight() ->CGFloat {
+        return CGFloat(arc4random_uniform(100) + 100)
+    }
+    
+    // 山丘低点位置范围 随机值
+    func randomEndPointLow() ->CGFloat {
+        return CGFloat(arc4random_uniform(30) + 10)
+    }
+    
+    //  曲线宽度 随机
+    func randomEndPointWidth () ->CGFloat {
+        return CGFloat(arc4random_uniform(200) + 200)
+    }
+    
+    //  角度横向值 随机
+    func randomBezierWidth () ->CGFloat {
+        return CGFloat(arc4random_uniform(50) + 50)
+    }
+
     
      //  连续的曲线
 //    func createMountain() {
@@ -1912,15 +1980,15 @@ private extension String {
 private extension SKColor {
     class var random: SKColor {
         switch arc4random()%8 {
-        case 0: return UIColor(red: 188.0/255.0, green: 217.0/255.0, blue: 247.0/255.0, alpha: 1) //SKColorWithRGBA(188, 217, 247, 1)
-        case 1: return UIColor(red: 78.0/255.0, green: 152.0/255.0, blue: 181.0/255.0, alpha: 1) //SKColorWithRGBA(78, 152, 181, 1)
-        case 2: return UIColor(red: 238.0/255.0, green: 239.0/255.0, blue: 221.0/255.0, alpha: 1) //SKColorWithRGBA(238, 239, 221, 1)
-        case 3: return UIColor(red: 53.0/255.0, green: 80.0/255.0, blue: 75.0/255.0, alpha: 1) //SKColorWithRGBA(53, 80, 75, 1)
-        case 4: return UIColor(red: 233.0/255.0, green: 216.0/255.0, blue: 162.0/255.0, alpha: 1) //SKColorWithRGBA(233, 216, 162, 1)
-        case 5: return UIColor(red: 194.0/255.0, green: 213.0/255.0, blue: 219.0/255.0, alpha: 1) //SKColorWithRGBA(194, 213, 219, 1)
-        case 6: return UIColor(red: 121.0/255.0, green: 156.0/255.0, blue: 150.0/255.0, alpha: 1) //SKColorWithRGBA(121, 156, 150, 1)
-        case 7: return UIColor(red: 251.0/255.0, green: 212.0/255.0, blue: 137.0/255.0, alpha: 1) //SKColorWithRGBA(251, 212, 137, 1)
-        default: return UIColor(red: 226.0/255.0, green: 226.0/255.0, blue: 226.0/255.0, alpha: 1) //SKColorWithRGBA(226, 226, 226, 1)
+        case 0: return UIColor(red: 188.0/255.0, green: 217.0/255.0, blue: 247.0/255.0, alpha: 1)
+        case 1: return UIColor(red: 78.0/255.0, green: 152.0/255.0, blue: 181.0/255.0, alpha: 1)
+        case 2: return UIColor(red: 238.0/255.0, green: 239.0/255.0, blue: 221.0/255.0, alpha: 1)
+        case 3: return UIColor(red: 53.0/255.0, green: 80.0/255.0, blue: 75.0/255.0, alpha: 1)
+        case 4: return UIColor(red: 233.0/255.0, green: 216.0/255.0, blue: 162.0/255.0, alpha: 1)
+        case 5: return UIColor(red: 194.0/255.0, green: 213.0/255.0, blue: 219.0/255.0, alpha: 1)
+        case 6: return UIColor(red: 121.0/255.0, green: 156.0/255.0, blue: 150.0/255.0, alpha: 1)
+        case 7: return UIColor(red: 251.0/255.0, green: 212.0/255.0, blue: 137.0/255.0, alpha: 1)
+        default: return UIColor(red: 226.0/255.0, green: 226.0/255.0, blue: 226.0/255.0, alpha: 1)
         }
     }
 }

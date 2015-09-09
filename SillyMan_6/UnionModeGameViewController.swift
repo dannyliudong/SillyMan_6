@@ -21,7 +21,7 @@ class UnionModeGameViewController: UIViewController{
         let scene = UnionModeGameScene(size:skView.bounds.size)
         skView.showsFPS = true
         skView.showsNodeCount = true
-        //skView.showsPhysics = true
+        skView.showsPhysics = true
         
         skView.ignoresSiblingOrder = true
         scene.scaleMode = .AspectFill
