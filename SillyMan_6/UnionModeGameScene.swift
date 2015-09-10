@@ -32,7 +32,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     var enemyNode: SKNode!
     var starNode: SKNode!
     
-    var hillShape:SKShapeNode = SKShapeNode()
+    var hillShape:SKShapeNode! // = SKShapeNode()
     
     var overUINode:SKNode! // GameOverUINode
     var pauseUINode:SKNode! // 游戏暂停UINode
@@ -364,27 +364,27 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         //beizerPathThree.stroke()
         
-        var hillShape = SKShapeNode()
-        beizerCurveThree.position = CGPointMake(0, 0)
-        beizerCurveThree.path = beizerPathThree.CGPath
-        beizerCurveThree.lineWidth = 3
-        beizerCurveThree.fillColor = UIColor.randomColor
-        beizerCurveThree.strokeColor = SKColor.lightGrayColor()
-        beizerCurveThree.glowWidth = 0
-        beizerCurveThree.fillTexture = SKTexture(imageNamed: "bgte")
-        beizerCurveThree.antialiased = true
-        rootSceneNode.addChild(beizerCurveThree)
+        hillShape = SKShapeNode()
+        hillShape.position = CGPointMake(0, 0)
+        hillShape.path = beizerPathThree.CGPath
+        hillShape.lineWidth = 3
+        hillShape.fillColor = UIColor.randomColor
+        hillShape.strokeColor = SKColor.lightGrayColor()
+        hillShape.glowWidth = 0
+        hillShape.fillTexture = SKTexture(imageNamed: "bgte")
+        hillShape.antialiased = true
+        rootSceneNode.addChild(hillShape)
         
-        beizerCurveThree.physicsBody = SKPhysicsBody(edgeLoopFromPath: beizerPathThree.CGPath)
+        hillShape.physicsBody = SKPhysicsBody(edgeLoopFromPath: beizerPathThree.CGPath)
 //        beizerCurveThree.physicsBody?.friction = 0
 //        beizerCurveThree.physicsBody?.charge = 0
 //        beizerCurveThree.physicsBody?.restitution = 0
 //        beizerCurveThree.physicsBody?.linearDamping = 0
 //        beizerCurveThree.physicsBody?.angularDamping = 0
-        beizerCurveThree.physicsBody?.dynamic = false
-        beizerCurveThree.physicsBody?.allowsRotation = false
-        beizerCurveThree.physicsBody?.affectedByGravity = true
-        beizerCurveThree.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
+        hillShape.physicsBody?.dynamic = false
+        hillShape.physicsBody?.allowsRotation = false
+        hillShape.physicsBody?.affectedByGravity = true
+        hillShape.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
         
     }
     
