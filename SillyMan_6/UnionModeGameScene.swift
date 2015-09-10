@@ -144,7 +144,11 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         createPlayer()
         
         //createBackground()
-        createShapeBG()
+        
+        for var i = 0; i < 10; i++ {
+            createShapeBG()
+
+        }
 
         //createPaoPao()
         createSnow()
@@ -257,11 +261,12 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     
     var leve = 0
     
-    var starPoint:CGPoint = CGPointMake(-10, 120)
+    var starPoint1:CGPoint = CGPointMake(-10, -10)
+    var starPoint2:CGPoint = CGPointMake(-10, 120)
     
     var endPoint:CGPoint!
     
-    var lastPoint:CGPoint = CGPointMake(100, 20)
+    var lastPoint:CGPoint = CGPointMake(60, 20)
     
     var curveEndPointArray = [CGPoint]()
     //var ppBezierWidth:CGFloat = 30
@@ -275,88 +280,47 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         beizerPathThree.lineCapStyle = kCGLineCapRound
         beizerPathThree.lineJoinStyle = kCGLineJoinRound
         
-        beizerPathThree.moveToPoint(CGPointMake(-10, -10))
-        beizerPathThree.addLineToPoint(starPoint)
+        beizerPathThree.moveToPoint(starPoint1)
+        beizerPathThree.addLineToPoint(starPoint2)
+        
+        let width = randomEndPointWidth()
+        let ppBezierWidth = randomBezierWidth()
+        
+        if leve == 0 {
+            // 偏下的位置
+            endPoint = CGPointMake(self.lastPoint.x + width , randomEndPointLow())
+            leve = 1
+            
+        } else if leve == 1 {
+            endPoint = CGPointMake(self.lastPoint.x + width, randomEndPointHight()) // 偏上的位置
+            leve = 0
+        }
+        
+        let P1 = CGPointMake((lastPoint.x + ppBezierWidth), lastPoint.y)
+        let P2 = CGPointMake(endPoint.x - ppBezierWidth, endPoint.y)
+        
+        beizerPathThree.addCurveToPoint(endPoint, controlPoint1: P1, controlPoint2: P2)
+        
+        // 收尾线
+        
+
+        
+        lastPoint = endPoint
         
         
+        println("lastPoint.x: \(lastPoint.x)")
+
+        let closePoint = CGPointMake(lastPoint.x, -10)
+        beizerPathThree.addLineToPoint(closePoint)
+        
+        starPoint1 = closePoint
+        starPoint2 = lastPoint
+
 //        for var i = 0; i < 100; i++ {
 //            
-//            if leve == 0 {
-//                // 偏下的位置
-//                
-//                let width = randomEndPointWidth()
-//                
-//                endPoint = CGPointMake(endPoint.x + width, randomEndPointLow())
-//                curveEndPointArray.append(endPoint)
-//                
-//                ppBezierWidth = randomBezierWidth()
-//                
-//                let P1 = CGPointMake((starPoint.x + ppBezierWidth), starPoint.y)
-//                let P2 = CGPointMake(endPoint.x - ppBezierWidth, endPoint.y)
-//                
-//                beizerPathThree.addCurveToPoint(endPoint, controlPoint1: P1, controlPoint2: P2)
-//                
-//                leve = 1
-//                
-//            } else if leve == 1 {
-//                let width = randomEndPointWidth()
-//                
-//                endPoint = CGPointMake(endPoint.x + width, randomEndPointHight()) // 偏上的位置
-//                
-//                let P1  = CGPointMake(curveEndPointArray.last!.x + ppBezierWidth, starPoint.y) // 偏上的位置
-//                
-//                curveEndPointArray.append(endPoint)
 //
-//                let P2 = CGPointMake(endPoint.x - ppBezierWidth, endPoint.y)
-//                
-//                
-//                beizerPathThree.addCurveToPoint(endPoint, controlPoint1: P1, controlPoint2: P2)
-//                
-//                leve = 0
-//            }
+//
 //        }
-        
-        //curveEndPointArray.append(starPoint)
-        //curveEndPointArray.append(endPoint)
-        
-        
-
-        for var i = 0; i < 100; i++ {
-            
-            let width = randomEndPointWidth()
-            
-            let ppBezierWidth = randomBezierWidth()
-
-
-            if leve == 0 {
-                // 偏下的位置
-                
-                endPoint = CGPointMake(self.lastPoint.x + width , randomEndPointLow())
-                //curveEndPointArray.append(endPoint)
-                
-                leve = 1
-                
-            } else if leve == 1 {
-                
-                endPoint = CGPointMake(self.lastPoint.x + width, randomEndPointHight()) // 偏上的位置
-                //curveEndPointArray.append(endPoint)
-                leve = 0
-            }
-            
-            //let lastPoint = curveEndPointArray[curveEndPointArray.count-1]
-            //let lastlastPoint = curveEndPointArray[curveEndPointArray.count-2]
-            
-            let P1 = CGPointMake((lastPoint.x + ppBezierWidth), lastPoint.y)
-            let P2 = CGPointMake(endPoint.x - ppBezierWidth, endPoint.y)
-            
-            beizerPathThree.addCurveToPoint(endPoint, controlPoint1: P1, controlPoint2: P2)
-            
-            
-            lastPoint = endPoint
-            
-            println(i)
-
-        }
         
         
         //  读取plist 设置
@@ -396,8 +360,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
 //        }
         
         
-        // 收尾线
-        beizerPathThree.addLineToPoint(CGPointMake(lastPoint.x, -10))
+
         
         //beizerPathThree.stroke()
         
@@ -413,16 +376,15 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         rootSceneNode.addChild(beizerCurveThree)
         
         beizerCurveThree.physicsBody = SKPhysicsBody(edgeLoopFromPath: beizerPathThree.CGPath)
-        beizerCurveThree.physicsBody?.friction = 0
-        beizerCurveThree.physicsBody?.charge = 0
-        beizerCurveThree.physicsBody?.restitution = 0
-        beizerCurveThree.physicsBody?.linearDamping = 0
-        beizerCurveThree.physicsBody?.angularDamping = 0
+//        beizerCurveThree.physicsBody?.friction = 0
+//        beizerCurveThree.physicsBody?.charge = 0
+//        beizerCurveThree.physicsBody?.restitution = 0
+//        beizerCurveThree.physicsBody?.linearDamping = 0
+//        beizerCurveThree.physicsBody?.angularDamping = 0
         beizerCurveThree.physicsBody?.dynamic = false
         beizerCurveThree.physicsBody?.allowsRotation = false
         beizerCurveThree.physicsBody?.affectedByGravity = true
         beizerCurveThree.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
-        
         
     }
     
@@ -446,38 +408,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         return CGFloat(arc4random_uniform(50) + 50)
     }
 
-    
-     //  连续的曲线
-//    func createMountain() {
-//        
-//        for var i = 0; i < 10; i++ {
-//            // 绘制三次贝塞尔曲线
-//            
-//            let beizerPathThree = UIBezierPath()
-//            beizerPathThree.lineWidth = 5.0
-//            beizerPathThree.lineCapStyle = kCGLineCapRound
-//            beizerPathThree.lineJoinStyle = kCGLineJoinRound
-//            
-//            beizerPathThree.moveToPoint(CGPointMake(20, 50))
-//            beizerPathThree.addCurveToPoint(CGPointMake(200, 50), controlPoint1: CGPointMake(110, 0), controlPoint2: CGPointMake(110, 110))
-//            
-//            beizerPathThree.moveToPoint(CGPointMake(30, 50))
-//            beizerPathThree.addCurveToPoint(CGPointMake(250, 50), controlPoint1: CGPointMake(110, 0), controlPoint2: CGPointMake(110, 110))
-//            
-//            var beizerCurveThree = SKShapeNode()
-//            beizerCurveThree.position = CGPointMake(200, 50)
-//            beizerCurveThree.path = beizerPathThree.CGPath
-//            beizerCurveThree.lineWidth = 1.0
-//            beizerCurveThree.fillColor = SKColor.greenColor()
-//            beizerCurveThree.strokeColor = SKColor.lightGrayColor()
-//            beizerCurveThree.glowWidth = 0.5
-//            beizerCurveThree.fillTexture = SKTexture(imageNamed: "bgte")
-//            beizerCurveThree.antialiased = true
-//            
-//            rootSceneNode.addChild(beizerCurveThree)
-//        }
-//    }
-    
 
     //MARK: 创建背景层
     func createBackground() {
@@ -558,15 +488,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         stone4.physicsBody?.allowsRotation = false
         stone4.physicsBody?.affectedByGravity = true
         stone4.physicsBody?.categoryBitMask = CollisionCategoryBitmask.SeaBottom
-        
-        
-//        let dyTexture = SKTexture(rect: CGRectMake(0, 0, 400, 400), inTexture: SKTexture())
-//        let dyTexture1 = SKTexture(vectorNoiseWithSmoothness: 10, size: CGSizeMake(100, 100))
-//        
-//        var dynamicBG = SKSpriteNode(texture: dyTexture1, color: SKColor.random, size: CGSizeMake(Screen_Width, Screen_Height/2))
-//        dynamicBG.position = CGPointMake(0, -background1.size.height/2 + stone1.size.height/2)
-//        background2.addChild(dynamicBG)
-        
         
     }
     
@@ -1131,14 +1052,14 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         player.physicsBody = SKPhysicsBody(texture: player.texture, size: player.size)
         player.physicsBody?.dynamic = false
-        player.physicsBody?.allowsRotation = false
+        player.physicsBody?.allowsRotation = true
         player.physicsBody?.affectedByGravity = true
         
-        player.physicsBody?.friction = 0
-        player.physicsBody?.charge = 0
-        player.physicsBody?.restitution = 0
-        player.physicsBody?.linearDamping = 0
-        player.physicsBody?.angularDamping = 0
+//        player.physicsBody?.friction = 0.2
+//        player.physicsBody?.charge = 0
+//        player.physicsBody?.restitution = 0
+//        player.physicsBody?.linearDamping = 0
+//        player.physicsBody?.angularDamping = 0
         
         player.physicsBody?.categoryBitMask = CollisionCategoryBitmask.Player
         player.physicsBody?.contactTestBitMask = CollisionCategoryBitmask.Star | CollisionCategoryBitmask.Enemy | CollisionCategoryBitmask.SeaBottom
@@ -1857,30 +1778,30 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             
             if player.position.y <= Screen_Height - player.size.height/2 {
                 
-                player.physicsBody?.velocity = CGVectorMake(0, 0)
-                player.physicsBody?.applyImpulse(CGVectorMake(0, 10))
+                //player.physicsBody?.velocity = CGVectorMake(0, 0)
+                //player.physicsBody?.applyImpulse(CGVectorMake(0, 10))
+                wake()
             }
-            
-            
-//            let up = SKAction.scaleTo(0.8, duration: NSTimeInterval(0.3), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.1), initialSpringVelocity: CGFloat(0.3))
-//            
-//            
-//            let donw = SKAction.scaleTo(1.0, duration: NSTimeInterval(0.3), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.1), initialSpringVelocity: CGFloat(0.3))
-//            
-//            
-//            player.runAction(SKAction.sequence([up,donw]))
-            
             
         }
         
+    }
+    
+    var awake = false
+    
+    func wake() {
+        awake = true
+        player.physicsBody?.applyImpulse(CGVectorMake(5, 10))
+    }
+    
+    func dive() {
+        player.physicsBody?.applyImpulse(CGVectorMake(0, 10))
     }
     
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         isLongPress = false
     }
-    
-    
     
     
     func moveBG() {
@@ -1909,7 +1830,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
             }
             
             if isLongPress {
-                player.physicsBody?.applyImpulse(CGVectorMake(0, 0.7))
+                player.physicsBody?.applyImpulse(CGVectorMake(0, -1.7))
             }
         }
         
