@@ -32,6 +32,8 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
     var enemyNode: SKNode!
     var starNode: SKNode!
     
+    var hillShape:SKShapeNode = SKShapeNode()
+    
     var overUINode:SKNode! // GameOverUINode
     var pauseUINode:SKNode! // 游戏暂停UINode
     var homePageUINode:SKNode! // 主页UINode
@@ -143,7 +145,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         createPlayer()
         
-        //createBackground()
         
         for var i = 0; i < 10; i++ {
             createShapeBG()
@@ -153,7 +154,6 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         //createPaoPao()
         createSnow()
         
-        //createWater()
         
         //  1.游戏开始前的音乐
 //        SKTAudio.sharedInstance().playBackgroundMusic(gameSong)
@@ -364,7 +364,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         
         //beizerPathThree.stroke()
         
-        var beizerCurveThree = SKShapeNode()
+        var hillShape = SKShapeNode()
         beizerCurveThree.position = CGPointMake(0, 0)
         beizerCurveThree.path = beizerPathThree.CGPath
         beizerCurveThree.lineWidth = 3
