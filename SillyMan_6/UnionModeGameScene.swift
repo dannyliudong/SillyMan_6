@@ -1717,7 +1717,7 @@ class UnionModeGameScene: SKScene, SKPhysicsContactDelegate, UIGestureRecognizer
         isGameBegin = true
         //isGameOver = true
         
-        println("暂停游戏 ->继续")
+        print("暂停游戏 ->继续")
         
         self.paused = false
         pauseUINode.removeFromParent()
